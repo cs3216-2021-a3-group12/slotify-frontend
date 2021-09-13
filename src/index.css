@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --ion-color-primary: #5669ff;
+    --ion-color-primary-rgb: 86, 105, 255;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #4c5ce0;
+    --ion-color-primary-tint: #6778ff;
+}
