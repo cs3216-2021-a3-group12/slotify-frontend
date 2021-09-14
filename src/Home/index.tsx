@@ -8,13 +8,14 @@ import {
     IonPage,
     IonHeader,
 } from "@ionic/react";
-import EventCard, { Event } from "./EventCard";
+import { StrippedEvent } from "../types/Event";
+import EventCard from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
 
 function Home() {
     const [name, setName] = useState("");
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<StrippedEvent[]>([]);
     const [groups, setGroups] = useState<Group[]>([]);
     useEffect(() => {
         setName("User Name");
@@ -60,7 +61,7 @@ function Home() {
     }, []);
     return (
         <IonPage id="main">
-            <IonHeader className="h-1/5">
+            <IonHeader className="ion-no-border h-1/5">
                 <IonToolbar color="primary" className="h-1/2">
                     <MenuButton />
                 </IonToolbar>

@@ -28,6 +28,10 @@ function SideMenu() {
                         <IonIcon icon={home} slot="start" />
                         <IonLabel>Home</IonLabel>
                     </IonItem>
+                    <IonItem href="/explore">
+                        <IonIcon icon={home} slot="start" />
+                        <IonLabel>Explore</IonLabel>
+                    </IonItem>
                 </IonList>
             </IonContent>
         </IonMenu>
@@ -36,8 +40,8 @@ function SideMenu() {
 
 const openSideMenu = () => menuController.open();
 
-export const MenuButton = () => (
-    <IonButtons>
+export const MenuButton = ({ ...props }) => (
+    <IonButtons {...props}>
         <IonMenuButton autoHide={false} onClick={openSideMenu} />
     </IonButtons>
 );

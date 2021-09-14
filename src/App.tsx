@@ -7,6 +7,7 @@ import {
 import { IonApp } from "@ionic/react";
 
 import Home from "./Home";
+import Explore from "./Explore";
 
 import "@ionic/react/css/core.css";
 import "./index.css";
@@ -19,6 +20,7 @@ function App() {
                 <IonApp>
                     <SideMenu />
                     <Switch>
+                        <Route path="/explore" component={Explore}></Route>
                         <Route path="/home" component={Home}></Route>
                         <Route path="/">
                             <Redirect to="/home" />
