@@ -62,17 +62,17 @@ function Home() {
     }, []);
     return (
         <IonPage id="main">
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonButtons className="">
+            <IonHeader className="h-1/5">
+                <IonToolbar color="primary" className="h-1/2">
+                    <IonButtons>
                         <IonMenuButton
                             autoHide={false}
                             onClick={openSideMenu}
                         />
                     </IonButtons>
                 </IonToolbar>
-                <IonToolbar color="primary" className="rounded-b-3xl">
-                    <IonTitle size="large" className="w-full text-2xl">
+                <IonToolbar color="primary" className="rounded-b-3xl h-1/2">
+                    <IonTitle size="large" className="w-full">
                         Hello, {name}!
                     </IonTitle>
                 </IonToolbar>

@@ -17,7 +17,7 @@ function SideMenu() {
         <IonMenu side="start" menuId="side-menu" contentId="main">
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle color="primary">Menu</IonTitle>
+                    <IonTitle>Menu</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
