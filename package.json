@@ -34,8 +34,6 @@
     "workbox-streams": "^5.1.3"
   },
   "scripts": {
-    "ionic:build": "craco build",
-    "ionic:serve": "craco start",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",

@@ -8,6 +8,7 @@ import {
     IonTitle,
     IonToolbar,
     IonPage,
+    IonHeader,
 } from "@ionic/react";
 import EventCard, { Event } from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
@@ -18,7 +19,7 @@ function Home() {
     const [events, setEvents] = useState<Event[]>([]);
     const [groups, setGroups] = useState<Group[]>([]);
     useEffect(() => {
-        setName("User name");
+        setName("User Name");
         setEvents([
             {
                 id: "id-1",
@@ -61,18 +62,22 @@ function Home() {
     }, []);
     return (
         <IonPage id="main">
-            <IonToolbar
-                color="primary"
-                className="rounded-b-3xl h-1/5 flex flex-col"
-            >
-                <IonButtons className="">
-                    <IonMenuButton autoHide={false} onClick={openSideMenu} />
-                </IonButtons>
-                <IonTitle className="text-left text-2xl h-auto block">
-                    Hello, {name}!
-                </IonTitle>
-            </IonToolbar>
-            <IonContent className="h-auto overflow-scroll p-2">
+            <IonHeader>
+                <IonToolbar color="primary">
+                    <IonButtons className="">
+                        <IonMenuButton
+                            autoHide={false}
+                            onClick={openSideMenu}
+                        />
+                    </IonButtons>
+                </IonToolbar>
+                <IonToolbar color="primary" className="rounded-b-3xl">
+                    <IonTitle size="large" className="w-full text-2xl">
+                        Hello, {name}!
+                    </IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent fullscreen={true} scrollEvents={true}>
                 <div className="h-80 flex flex-col">
                     <div className="p-3 h-12">
                         <span className="text-xl">Your Events</span>
