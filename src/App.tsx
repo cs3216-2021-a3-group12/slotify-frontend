@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Redirect,
+} from "react-router-dom";
 import { IonApp } from "@ionic/react";
 
 import Home from "./Home";
 
 import "@ionic/react/css/core.css";
-import "@ionic/react/css/normalize.css";
-import "@ionic/react/css/structure.css";
-import "@ionic/react/css/typography.css";
 import "./index.css";
 import SideMenu from "./Components/SideMenu";
 
@@ -18,7 +20,9 @@ function App() {
                     <SideMenu />
                     <Switch>
                         <Route path="/home" component={Home}></Route>
-                        <Route path="/" component={Home}></Route>
+                        <Route path="/">
+                            <Redirect to="/home" />
+                        </Route>
                     </Switch>
                 </IonApp>
             </div>

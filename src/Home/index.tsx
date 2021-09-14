@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-    IonButtons,
     IonContent,
-    IonMenuButton,
     IonSlide,
     IonSlides,
     IonTitle,
@@ -12,7 +10,7 @@ import {
 } from "@ionic/react";
 import EventCard, { Event } from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
-import { openSideMenu } from "../Components/SideMenu";
+import { MenuButton } from "../Components/SideMenu";
 
 function Home() {
     const [name, setName] = useState("");
@@ -64,12 +62,7 @@ function Home() {
         <IonPage id="main">
             <IonHeader className="h-1/5">
                 <IonToolbar color="primary" className="h-1/2">
-                    <IonButtons>
-                        <IonMenuButton
-                            autoHide={false}
-                            onClick={openSideMenu}
-                        />
-                    </IonButtons>
+                    <MenuButton />
                 </IonToolbar>
                 <IonToolbar color="primary" className="rounded-b-3xl h-1/2">
                     <IonTitle size="large" className="w-full">

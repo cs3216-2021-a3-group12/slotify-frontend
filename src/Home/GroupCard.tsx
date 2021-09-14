@@ -21,6 +21,7 @@ function GroupCard({ group }: { group: Group }) {
             <div className="h-full w-1/3">
                 <img
                     className="h-full w-full p-2 object-fill rounded-2xl"
+                    alt="Group"
                     src={group.imgUrl}
                 />
             </div>

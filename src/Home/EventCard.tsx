@@ -22,6 +22,7 @@ function EventCard({ event }: { event: Event }) {
             <div className="w-full h-3/5 flex flex-col items-stretch">
                 <img
                     className="p-2 w-auto object-fill rounded-2xl"
+                    alt="Event"
                     src={event.imgUrl}
                 />
             </div>

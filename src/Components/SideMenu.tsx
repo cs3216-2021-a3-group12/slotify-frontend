@@ -9,6 +9,8 @@ import {
     IonItem,
     IonIcon,
     IonLabel,
+    IonButtons,
+    IonMenuButton,
 } from "@ionic/react";
 import { home } from "ionicons/icons";
 
@@ -32,6 +34,12 @@ function SideMenu() {
     );
 }
 
-export const openSideMenu = () => menuController.open();
+const openSideMenu = () => menuController.open();
+
+export const MenuButton = () => (
+    <IonButtons>
+        <IonMenuButton autoHide={false} onClick={openSideMenu} />
+    </IonButtons>
+);
 
 export default SideMenu;
