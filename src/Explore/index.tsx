@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import {
-    IonContent,
-    IonSlide,
-    IonSlides,
     IonTitle,
     IonToolbar,
     IonPage,
     IonHeader,
     IonSegment,
-    IonLabel,
-    IonSegmentButton,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 

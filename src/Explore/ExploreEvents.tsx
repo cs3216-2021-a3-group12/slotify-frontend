@@ -1,15 +1,9 @@
 import {
     IonCard,
     IonCardHeader,
-    IonCardSubtitle,
     IonCardContent,
-    IonChip,
-    IonLabel,
     IonCardTitle,
     IonContent,
-    IonList,
-    IonInfiniteScroll,
-    IonHeader,
 } from "@ionic/react";
 import { useState, useEffect, Fragment } from "react";
 import { StrippedEvent } from "../types/Event";
@@ -21,54 +15,28 @@ export interface ExploreEventsProps {
 
 function ExploreEvents() {
     const [events, setEvents] = useState<StrippedEvent[]>([]);
+    const [displayedEvents, setDisplayedEvents] = useState<StrippedEvent[]>([]);
 
     useEffect(() => {
-        setEvents([
-            {
-                id: "id-1",
-                name: "Event Name 1",
-                datetime: "Time 1",
-                location: "Location 1",
-                imgUrl: "https://picsum.photos/200",
-            },
-            {
-                id: "id-2",
-                name: "Event Name 2",
-                datetime: "Time 2",
-                location: "Location 2",
-                imgUrl: "https://picsum.photos/200",
-            },
-            {
-                id: "id-3",
-                name: "Event Name 3",
-                datetime: "Time 3",
-                location: "Location 3",
-                imgUrl: "https://picsum.photos/200",
-            },
-            {
-                id: "id-3",
-                name: "Event Name 3",
-                datetime: "Time 3",
-                location: "Location 3",
-                imgUrl: "https://picsum.photos/200",
-            },
-            {
-                id: "id-3",
-                name: "Event Name 3",
-                datetime: "Time 3",
-                location: "Location 3",
-                imgUrl: "https://picsum.photos/200",
-            },
-        ]);
+        setEvents(testEvents);
+        setDisplayedEvents(testEvents);
     }, []);
+
+    function searchEvents(text: string) {
+        setDisplayedEvents(
+            events.filter((event) =>
+                Object.values(event).join(" ").includes(text)
+            )
+        );
+    }
 
     return (
         <Fragment>
             <div>
-                <SearchBar />
+                <SearchBar onSearch={searchEvents} />
             </div>
             <IonContent>
-                {events.map((event) => {
+                {displayedEvents.map((event) => {
                     return (
                         <IonCard
                             className="explore-event-card"
@@ -103,3 +71,41 @@ function ExploreEvents() {
 }
 
 export default ExploreEvents;
+
+const testEvents = [
+    {
+        id: "id-1",
+        name: "Event Name 1",
+        datetime: "Time 1",
+        location: "Location 1",
+        imgUrl: "https://picsum.photos/200",
+    },
+    {
+        id: "id-2",
+        name: "Event Name 2",
+        datetime: "Time 2",
+        location: "Location 2",
+        imgUrl: "https://picsum.photos/200",
+    },
+    {
+        id: "id-3",
+        name: "Event Name 3",
+        datetime: "Time 3",
+        location: "Location 3",
+        imgUrl: "https://picsum.photos/200",
+    },
+    {
+        id: "id-3",
+        name: "Event Name 3",
+        datetime: "Time 3",
+        location: "Location 3",
+        imgUrl: "https://picsum.photos/200",
+    },
+    {
+        id: "id-3",
+        name: "Event Name 3",
+        datetime: "Time 3",
+        location: "Location 3",
+        imgUrl: "https://picsum.photos/200",
+    },
+];
