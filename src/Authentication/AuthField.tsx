@@ -24,7 +24,7 @@ const AuthField: React.FC<AuthFieldProps> = ({
         type={type}
         value={value}
         placeholder={placeholder}
-        onIonChange={(e) => setValue}
+        onIonChange={(e) => setValue(e.detail.value!)}
       ></IonInput>
     </IonItem>
   );

@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className="sm: mx-10 lg:mx-40">
       <IonContent className="text-center">
         <div className="mt-10">
           <IonLabel color="primary" className="text-5xl">
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
           </IonLabel>
         </div>
 
-        <IonList lines="none" className="sm: mx-10 md: mx-20 lg:mx-40">
+        <IonList lines="none">
           <AuthField
             type="email"
             icon={mailOutline}
@@ -41,8 +41,14 @@ const Login: React.FC = () => {
             setValue={setPassword}
           />
         </IonList>
-        <IonButton onClick={loginUser}>Log in</IonButton>
-        <IonButton routerLink="/signup">Sign up</IonButton>
+        <div className="flex flex-col items-center gap-5">
+          <IonButton onClick={loginUser} className="w-5/6">
+            Log in
+          </IonButton>
+          <IonButton routerLink="/signup" className="w-5/6">
+            Sign up
+          </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

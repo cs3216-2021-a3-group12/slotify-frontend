@@ -9,37 +9,39 @@ import {
 import {
   personOutline,
   mailOutline,
-  lockClosedOutline,
   idCardOutline,
   globeOutline,
   paperPlaneOutline,
 } from "ionicons/icons";
-import { useState } from "react";
-import AuthField from "./AuthField";
-const Signup: React.FC = () => {
+import { useEffect, useState } from "react";
+import AuthField from "../Authentication/AuthField";
+
+const EditProfile: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [studentNum, setStudentNum] = useState("");
   const [nusnetId, setNusnetId] = useState("");
   const [telegramHandle, setTelegramHandle] = useState("");
 
-  function signUpUser() {
+  function editUserProfile() {
     console.log(name);
   }
+
+  useEffect(() => {
+    // Load Current User Profile and replace values with it
+  });
 
   return (
     <IonPage className="sm: mx-10 lg:mx-40">
       <IonBackButton
         color="primary"
-        defaultHref="/login"
+        defaultHref="/profile"
         className="mx-4 w-10"
       />
 
       <IonContent className="text-center">
         <IonLabel color="primary" className="text-5xl">
-          Sign Up
+          Edit Profile
         </IonLabel>
         <IonList lines="none">
           <AuthField
@@ -54,20 +56,6 @@ const Signup: React.FC = () => {
             value={email}
             placeholder="Email"
             setValue={setEmail}
-          />
-          <AuthField
-            type="password"
-            icon={lockClosedOutline}
-            value={password}
-            placeholder="Enter Password"
-            setValue={setPassword}
-          />
-          <AuthField
-            type="password"
-            icon={lockClosedOutline}
-            value={confirmPassword}
-            placeholder="Confirm Password"
-            setValue={setConfirmPassword}
           />
           <AuthField
             icon={idCardOutline}
@@ -88,12 +76,12 @@ const Signup: React.FC = () => {
             setValue={setTelegramHandle}
           />
         </IonList>
-        <IonButton onClick={signUpUser} className="w-5/6">
-          Sign up
+        <IonButton onClick={editUserProfile} className="w-5/6">
+          Confirm
         </IonButton>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Signup;
+export default EditProfile;
