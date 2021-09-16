@@ -32,11 +32,11 @@ const EditProfile: React.FC = () => {
   });
 
   return (
-    <IonPage className="sm: mx-10 lg:mx-40">
+    <IonPage className="sm: m-0 lg:mx-40">
       <IonBackButton
         color="primary"
         defaultHref="/profile"
-        className="mx-4 w-10"
+        className="m-4 w-1/4"
       />
 
       <IonContent className="text-center">
@@ -76,7 +76,7 @@ const EditProfile: React.FC = () => {
             setValue={setTelegramHandle}
           />
         </IonList>
-        <IonButton onClick={editUserProfile} className="w-5/6">
+        <IonButton onClick={editUserProfile} className="w-2/3">
           Confirm
         </IonButton>
       </IonContent>

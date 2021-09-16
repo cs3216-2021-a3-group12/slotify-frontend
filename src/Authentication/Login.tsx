@@ -17,9 +17,9 @@ const Login: React.FC = () => {
   }
 
   return (
-    <IonPage className="sm: mx-10 lg:mx-40">
+    <IonPage className="sm: mx-2 lg:mx-40">
       <IonContent className="text-center">
-        <div className="mt-10">
+        <div className="mt-10 mb-5">
           <IonLabel color="primary" className="text-5xl">
             Slotify
           </IonLabel>
@@ -42,10 +42,10 @@ const Login: React.FC = () => {
           />
         </IonList>
         <div className="flex flex-col items-center gap-5">
-          <IonButton onClick={loginUser} className="w-5/6">
+          <IonButton onClick={loginUser} className="w-2/3">
             Log in
           </IonButton>
-          <IonButton routerLink="/signup" className="w-5/6">
+          <IonButton routerLink="/signup" className="w-2/3">
             Sign up
           </IonButton>
         </div>

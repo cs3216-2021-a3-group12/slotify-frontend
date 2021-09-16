@@ -17,7 +17,7 @@ const AuthField: React.FC<AuthFieldProps> = ({
   setValue,
 }) => {
   return (
-    <IonItem className="m-3">
+    <IonItem className="mx-5 my-6">
       <IonIcon slot="start" icon={icon} />
 
       <IonInput

@@ -30,18 +30,18 @@ const Signup: React.FC = () => {
   }
 
   return (
-    <IonPage className="sm: mx-10 lg:mx-40">
+    <IonPage className="sm: my-3 lg:mx-40">
       <IonBackButton
         color="primary"
         defaultHref="/login"
-        className="mx-4 w-10"
+        className="mx-3 w-1/4"
       />
 
       <IonContent className="text-center">
         <IonLabel color="primary" className="text-5xl">
           Sign Up
         </IonLabel>
-        <IonList lines="none">
+        <IonList lines="none" className="mt-1">
           <AuthField
             icon={personOutline}
             value={name}

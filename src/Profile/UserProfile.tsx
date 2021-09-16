@@ -25,15 +25,12 @@ const UserProfile: React.FC = () => {
   const telegramHandle = "@johnwick";
 
   return (
-    <IonPage className="sm: mx-10 lg:mx-40">
-      <div className="flex items-center">
-        <IonBackButton
-          color="primary"
-          defaultHref="/home"
-          className="mx-4 w-10"
-        />
-        <IonLabel className="text-xl">Profile</IonLabel>
-      </div>
+    <IonPage className="sm: m-0 lg:mx-40">
+      <IonBackButton
+        color="primary"
+        defaultHref="/home"
+        className="m-4 w-1/4"
+      />
       <IonContent className="text-center">
         <div className="flex flex-col items-center">
           <IonLabel className="text-5xl font-serif">John Wick</IonLabel>
