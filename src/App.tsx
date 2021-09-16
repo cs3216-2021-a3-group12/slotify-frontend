@@ -36,6 +36,7 @@ function App() {
                         <Route path="/profile" component={UserProfile}></Route>
                         <Route path="/signup" component={Signup}></Route>
                         <Route path="/login" component={Login}></Route>
+                        <Route path="/explore" component={Explore}></Route>
                         <Route path="/home" component={Home}></Route>
                         <Route path="/">
                             <Redirect to="/home" />
