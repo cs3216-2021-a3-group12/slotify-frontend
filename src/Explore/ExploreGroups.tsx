@@ -35,6 +35,7 @@ function ExploreGroups() {
         } else {
             setDisplayedGroups(groupsInSelectedCategories());
         }
+        // eslint-disable-next-line
     }, [selectedCategories]);
 
     function onTapCategory(categoryId: string) {
