@@ -7,11 +7,15 @@ import {
     IonToolbar,
     IonPage,
     IonHeader,
+    IonButton,
+    IonIcon,
+    IonButtons,
 } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import EventCard from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
+import { personCircleOutline } from "ionicons/icons";
 
 function Home() {
     const [name, setName] = useState("");
@@ -64,6 +68,11 @@ function Home() {
             <IonHeader className="ion-no-border h-1/5">
                 <IonToolbar color="primary" className="h-1/2">
                     <MenuButton />
+                    <IonButtons slot="end">
+                        <IonButton routerLink="/profile">
+                            <IonIcon size="large" icon={personCircleOutline} />
+                        </IonButton>
+                    </IonButtons>
                 </IonToolbar>
                 <IonToolbar color="primary" className="rounded-b-3xl h-1/2">
                     <IonTitle size="large" className="w-full">
