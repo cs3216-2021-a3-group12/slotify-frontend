@@ -6,7 +6,12 @@ import {
     IonLabel,
     IonCardTitle,
     IonContent,
+    IonList,
+    IonItem,
+    IonItemOptions,
+    IonIcon,
 } from "@ionic/react";
+import { addOutline, addCircle } from "ionicons/icons";
 import { useState, useEffect, Fragment } from "react";
 import { StrippedGroup } from "../types/Group";
 import { Category } from "../types/Category";
@@ -22,8 +27,8 @@ function ExploreGroups() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     useEffect(() => {
-        setGroups(testGroups);
-        setDisplayedGroups(testGroups);
+        // setGroups(testGroups);
+        // setDisplayedGroups(testGroups);
         setCategories(testCategories);
         setIsLoaded(true);
     }, []);
@@ -87,34 +92,54 @@ function ExploreGroups() {
             </div>
 
             <IonContent>
-                {displayedGroups.map((group) => {
-                    return (
-                        <IonCard className="explore-group-card">
-                            <div className="explore-group-card-img-div">
-                                <img
-                                    className="explore-group-card-img"
-                                    alt="Group"
-                                    src={group.imgUrl}
-                                />
-                            </div>
+                {displayedGroups.length ? (
+                    displayedGroups.map((group) => {
+                        return (
+                            <IonCard className="explore-group-card">
+                                <div className="explore-group-card-img-div">
+                                    <img
+                                        className="explore-group-card-img"
+                                        alt="Group"
+                                        src={group.imgUrl}
+                                    />
+                                </div>
 
-                            <div className="explore-group-card-text-div">
-                                <IonCardHeader className="explore-group-card-header">
-                                    <IonCardTitle className="explore-group-card-name">
-                                        {group.name}
-                                    </IonCardTitle>
-                                </IonCardHeader>
-                                <IonCardContent className="explore-group-card-content">
-                                    <IonChip color="primary">
-                                        <IonLabel color="primary">
-                                            {group.category}
-                                        </IonLabel>
-                                    </IonChip>
-                                </IonCardContent>
+                                <div className="explore-group-card-text-div">
+                                    <IonCardHeader className="explore-group-card-header">
+                                        <IonCardTitle className="explore-group-card-name">
+                                            {group.name}
+                                        </IonCardTitle>
+                                    </IonCardHeader>
+                                    <IonCardContent className="explore-group-card-content">
+                                        <IonChip color="primary">
+                                            <IonLabel color="primary">
+                                                {group.category}
+                                            </IonLabel>
+                                        </IonChip>
+                                    </IonCardContent>
+                                </div>
+                            </IonCard>
+                        );
+                    })
+                ) : (
+                    <div className="p-2">
+                        <IonChip
+                            color="primary"
+                            className="border-2 border-indigo-500 border-dashed h-32 w-full m-auto"
+                        >
+                            <div className="flex flex-col items-center w-full">
+                                <IonIcon
+                                    size="large"
+                                    icon={addOutline}
+                                    className="p-2"
+                                />
+                                <p className="text-lg text-center w-full">
+                                    Can't find a group? Create one!
+                                </p>
                             </div>
-                        </IonCard>
-                    );
-                })}
+                        </IonChip>
+                    </div>
+                )}
             </IonContent>
         </Fragment>
     );
