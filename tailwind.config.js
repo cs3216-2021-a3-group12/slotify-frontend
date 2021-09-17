@@ -3,10 +3,14 @@ module.exports = {
     purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
     darkMode: false, // or 'media' or 'class'
     theme: {
-        extend: {},
+        extend: {
+            boxShadow: {
+                behind: "0px 5px 20px 0px rgba(0,0,0,0.1)",
+            },
+        },
     },
     variants: {
         extend: {},
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/line-clamp")],
 };

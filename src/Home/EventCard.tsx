@@ -7,16 +7,9 @@ import {
     IonCardTitle,
 } from "@ionic/react";
 import { timeOutline, locationOutline } from "ionicons/icons";
+import { StrippedEvent } from "../types/Event";
 
-export interface Event {
-    id: string;
-    name: string;
-    datetime: string;
-    location: string;
-    imgUrl: string;
-}
-
-function EventCard({ event }: { event: Event }) {
+function EventCard({ event }: { event: StrippedEvent }) {
     return (
         <IonCard className="rounded-2xl w-full h-full">
             <div className="w-full h-3/5 flex flex-col items-stretch">
