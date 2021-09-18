@@ -11,15 +11,6 @@
   --ion-color-primary-tint: #6159e8;
 }
 
-/* .ion-color-primary {
-    --ion-color-base: var(--ion-color-primary);
-    --ion-color-base-rgb: var(--ion-color-primary-rgb);
-    --ion-color-contrast: var(--ion-color-primary-contrast);
-    --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
-    --ion-color-shade: var(--ion-color-primary-shade);
-    --ion-color-tint: var(--ion-color-primary-tint);
-} */
-
 ion-textarea {
   --padding-top: 0 !important;
   --padding-bottom: 0 !important;
