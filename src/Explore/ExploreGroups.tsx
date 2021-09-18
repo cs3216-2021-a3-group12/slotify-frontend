@@ -23,7 +23,6 @@ function ExploreGroups() {
   const history = useHistory();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [loadError, setLoadError] = useState("");
   const [groups, setGroups] = useState<StrippedGroup[]>([]);
   const [displayedGroups, setDisplayedGroups] = useState<StrippedGroup[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -45,8 +44,8 @@ function ExploreGroups() {
         setIsLoaded(true);
       })
       .catch((err) => {
+        console.error(err);
         setIsLoaded(true);
-        setLoadError(err);
       });
   }, []);
 
