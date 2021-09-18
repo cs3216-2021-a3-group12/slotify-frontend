@@ -8,16 +8,11 @@ import TextInput from "../Components/TextInput";
 import TextArea from "../Components/TextArea";
 import Tag from "../Components/Tag";
 import React from "react";
+import { CreateGroupDetails } from "../types/Group";
 
-type FormDetails = {
-  name: string;
-  description: string;
-  category?: string;
-  imgBlob?: string;
-};
 type GroupFormProps = {
   submitButtonLabel: string;
-  onSubmit: (group: FormDetails) => void;
+  onSubmit: (group: CreateGroupDetails) => void;
   [other: string]: any;
 };
 
@@ -29,7 +24,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
   const [image, setImage] = useState("");
 
   useEffect(() => {
@@ -37,15 +32,15 @@ const GroupForm: React.FC<GroupFormProps> = ({
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setCategories(data);
+        setCategories(data.results);
       });
   }, []);
 
-  function onCategoryClick(value: string) {
-    if (selectedCategory === value) {
-      setSelectedCategory("");
+  function onCategoryClick(value: number) {
+    if (selectedCategoryId === value) {
+      setSelectedCategoryId(-1);
     } else {
-      setSelectedCategory(value);
+      setSelectedCategoryId(value);
     }
   }
 
@@ -54,10 +49,17 @@ const GroupForm: React.FC<GroupFormProps> = ({
       setNameError("Please enter a group name");
       return;
     }
+
+    setNameError("");
+
+    const category = categories.find(
+      (category) => category.id === selectedCategoryId
+    );
     onSubmit({
       name,
       description,
-      category: selectedCategory,
+      categoryId: category?.id,
+      categoryName: category?.name,
       imgBlob: image,
     });
   }
@@ -69,7 +71,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         outline={true}
         value={name}
         placeholder="Group Name"
-        setValue={setName}
+        onValueChange={setName}
         errorValue={nameError}
       />
       <TextArea
@@ -86,7 +88,9 @@ const GroupForm: React.FC<GroupFormProps> = ({
             return (
               <Tag
                 key={category.id}
-                color={selectedCategory === category.id ? "primary" : undefined}
+                color={
+                  selectedCategoryId === category.id ? "primary" : undefined
+                }
                 label={category.name}
                 className="whitespace-nowrap"
                 onClick={() => onCategoryClick(category.id)}

@@ -4,9 +4,10 @@ import { IonIcon, IonItem, IonTextarea } from "@ionic/react";
 type TextAreaProps = {
   outline?: boolean;
   icon: string;
-  value: string;
-  placeholder: string;
-  onValueChange: (value: string) => void;
+  value?: string;
+  placeholder?: string;
+  onValueChange?: (value: string) => void;
+  textareaProps?: React.ComponentProps<typeof IonTextarea>;
 };
 
 const TextArea: React.FC<TextAreaProps> = ({
@@ -15,10 +16,11 @@ const TextArea: React.FC<TextAreaProps> = ({
   value,
   placeholder,
   onValueChange,
+  textareaProps = {},
 }) => {
   function onChange(event: CustomEvent<TextareaChangeEventDetail>) {
     const text = event.detail.value as string;
-    if (text !== undefined) {
+    if (text !== undefined && onValueChange) {
       onValueChange(text);
     }
   }
@@ -32,6 +34,7 @@ const TextArea: React.FC<TextAreaProps> = ({
         placeholder={placeholder}
         onIonChange={onChange}
         rows={4}
+        {...textareaProps}
       ></IonTextarea>
     </IonItem>
   );

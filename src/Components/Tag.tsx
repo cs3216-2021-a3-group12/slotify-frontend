@@ -2,7 +2,7 @@ import { IonChip, IonLabel } from "@ionic/react";
 
 type TagProps = {
   color?: string;
-  label: string;
+  label?: string;
   [other: string]: any;
 };
 
