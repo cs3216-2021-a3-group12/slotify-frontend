@@ -24,43 +24,57 @@ const GroupForm: React.FC<GroupFormProps> = ({
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
-  const [image, setImage] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageFileName, setImageFileName] = useState("");
 
   useEffect(() => {
     fetch("https://api.slotify.club/api/v1/groups/categories/?format=json")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setCategories(data.results);
+        const defaultCategory = data.results.at(-1);
+        if (defaultCategory) setSelectedCategoryId(defaultCategory.id);
       });
   }, []);
 
-  function onCategoryClick(value: number) {
-    if (selectedCategoryId === value) {
-      setSelectedCategoryId(-1);
-    } else {
-      setSelectedCategoryId(value);
-    }
+  function onImageChange(imageSrc: string, fileName: string) {
+    setImageSrc(imageSrc);
+    setImageFileName(fileName);
   }
 
   function onSubmitButtonClick() {
+    var hasError = false;
     if (!name) {
       setNameError("Please enter a group name");
-      return;
+      hasError = true;
     }
-
-    setNameError("");
-
+    if (!description) {
+      setDescriptionError("Please enter a group description");
+      hasError = true;
+    }
     const category = categories.find(
       (category) => category.id === selectedCategoryId
     );
+    if (!category) {
+      setCategoryError("Please select a category for your group");
+      hasError = true;
+    }
+    if (hasError) return;
+
+    setNameError("");
+    setDescriptionError("");
+    setCategoryError("");
+
     onSubmit({
       name,
       description,
-      categoryId: category?.id,
-      categoryName: category?.name,
-      imgBlob: image,
+      categoryId: category!.id,
+      categoryName: category!.name,
+      imgBlob: imageSrc,
+      imgFileName: imageFileName,
     });
   }
 
@@ -80,6 +94,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         value={description}
         placeholder="Description"
         onValueChange={setDescription}
+        errorValue={descriptionError}
       ></TextArea>
       <div className="m-3">
         <IonLabel>Select a Category</IonLabel>
@@ -93,15 +108,20 @@ const GroupForm: React.FC<GroupFormProps> = ({
                 }
                 label={category.name}
                 className="whitespace-nowrap"
-                onClick={() => onCategoryClick(category.id)}
+                onClick={() => setSelectedCategoryId(category.id)}
               />
             );
           })}
         </div>
+        {categoryError && (
+          <p className="text-left mx-1 text-red-500 text-sm italic">
+            * {categoryError}
+          </p>
+        )}
       </div>
       <ImageUploadInput
-        value={image}
-        setValue={setImage}
+        imgSrc={imageSrc}
+        onImgSrcChange={onImageChange}
         promptText="Upload Banner"
         className="m-3"
       />

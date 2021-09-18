@@ -3,25 +3,24 @@ import { imageOutline } from "ionicons/icons";
 import { ChangeEvent, useRef } from "react";
 
 type ImageUploadInputProps = {
-  value?: string;
-  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  imgSrc?: string;
+  onImgSrcChange?: (imgSrc: string, fileName: string) => void;
   promptText?: string;
   [other: string]: any;
 };
 
 const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
-  value = "",
+  imgSrc,
   promptText = "Upload an image",
-  setValue = () => {},
+  onImgSrcChange,
   ...props
 }) => {
   const fileInput = useRef<HTMLInputElement>(null);
 
   function uploadImage(event: ChangeEvent<HTMLInputElement>) {
     const files = (event.target as HTMLInputElement).files as FileList;
-    if (files.length) {
-      console.log(URL.createObjectURL(files[0]));
-      setValue(URL.createObjectURL(files[0]));
+    if (files.length && onImgSrcChange) {
+      onImgSrcChange(URL.createObjectURL(files[0]), files[0].name);
     }
   }
 
@@ -46,8 +45,8 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
       >
         <div className="flex flex-col items-center w-full h-full">
           <div className="h-3/4">
-            {value ? (
-              <img className="h-full" src={value} alt="uploaded banner" />
+            {imgSrc ? (
+              <img className="h-full" src={imgSrc} alt="uploaded banner" />
             ) : (
               <IonIcon
                 size="large"

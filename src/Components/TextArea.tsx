@@ -3,6 +3,7 @@ import { IonIcon, IonItem, IonTextarea } from "@ionic/react";
 
 type TextAreaProps = {
   outline?: boolean;
+  errorValue?: string;
   icon: string;
   value?: string;
   placeholder?: string;
@@ -12,6 +13,7 @@ type TextAreaProps = {
 
 const TextArea: React.FC<TextAreaProps> = ({
   outline = false,
+  errorValue,
   icon,
   value,
   placeholder,
@@ -25,18 +27,25 @@ const TextArea: React.FC<TextAreaProps> = ({
     }
   }
   return (
-    <IonItem
-      className={`m-3 ${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
-    >
-      <IonIcon slot="start" icon={icon} />
-      <IonTextarea
-        value={value}
-        placeholder={placeholder}
-        onIonChange={onChange}
-        rows={4}
-        {...textareaProps}
-      ></IonTextarea>
-    </IonItem>
+    <div className="m-3">
+      <IonItem
+        className={`${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
+      >
+        <IonIcon slot="start" icon={icon} />
+        <IonTextarea
+          value={value}
+          placeholder={placeholder}
+          onIonChange={onChange}
+          rows={4}
+          {...textareaProps}
+        ></IonTextarea>
+      </IonItem>
+      {errorValue && (
+        <p className="text-left mx-1 text-red-500 text-sm italic">
+          * {errorValue}
+        </p>
+      )}
+    </div>
   );
 };
 

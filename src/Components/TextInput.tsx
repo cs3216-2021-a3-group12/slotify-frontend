@@ -1,6 +1,5 @@
 import { InputChangeEventDetail, TextFieldTypes } from "@ionic/core";
 import { IonIcon, IonInput, IonItem } from "@ionic/react";
-import { Fragment } from "react";
 
 type TextInputProps = {
   type?: TextFieldTypes;
@@ -30,28 +29,26 @@ const TextInput: React.FC<TextInputProps> = ({
     }
   }
   return (
-    <Fragment>
-      <div className="m-3">
-        <IonItem
-          className={`${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
-        >
-          <IonIcon slot="start" icon={icon} />
+    <div className="m-3">
+      <IonItem
+        className={`${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
+      >
+        <IonIcon slot="start" icon={icon} />
 
-          <IonInput
-            type={type}
-            value={value}
-            placeholder={placeholder}
-            onIonChange={onChange}
-            {...inputProps}
-          ></IonInput>
-        </IonItem>
-        {errorValue && (
-          <p className="text-left mx-1 text-red-500 text-sm italic">
-            * {errorValue}
-          </p>
-        )}
-      </div>
-    </Fragment>
+        <IonInput
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          onIonChange={onChange}
+          {...inputProps}
+        ></IonInput>
+      </IonItem>
+      {errorValue && (
+        <p className="text-left mx-1 text-red-500 text-sm italic">
+          * {errorValue}
+        </p>
+      )}
+    </div>
   );
 };
 

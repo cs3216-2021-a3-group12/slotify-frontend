@@ -8,8 +8,9 @@ export interface StrippedGroup {
 
 export type CreateGroupDetails = {
   name: string;
-  description?: string;
-  categoryId?: number;
-  categoryName?: string;
+  description: string;
+  categoryId: number;
+  categoryName: string;
   imgBlob?: string;
+  imgFileName?: string;
 };

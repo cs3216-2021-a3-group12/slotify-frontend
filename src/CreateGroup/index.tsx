@@ -13,63 +13,69 @@ import { MenuButton } from "../Components/SideMenu";
 import GroupForm from "./GroupForm";
 import GroupReview from "./GroupReview";
 import GroupDone from "./GroupDone";
-
-type GroupDetails = {
-  name: string;
-  description?: string;
-  categoryId?: number;
-  categoryName?: string;
-  imgBlob?: string;
-};
+import { CreateGroupDetails } from "../types/Group";
 
 function CreateGroup() {
   const slidersRef = useRef<HTMLIonSlidesElement>(null);
-  const [groupDetails, setGroupDetails] = useState<GroupDetails | undefined>(
-    undefined
-  );
+  const [groupDetails, setGroupDetails] = useState<
+    CreateGroupDetails | undefined
+  >(undefined);
+  const [groupId, setGroupId] = useState<number | undefined>(undefined);
 
-  function onFormNext(group: GroupDetails) {
+  function onFormNext(group: CreateGroupDetails) {
     setGroupDetails(group);
-    if (slidersRef.current) slidersRef.current.slideNext();
+    slideNext();
   }
 
   function slidePrevious() {
     if (slidersRef.current) slidersRef.current.slidePrev();
   }
+  function slideNext() {
+    if (slidersRef.current) slidersRef.current.slideNext();
+  }
 
-  function createGroup() {
-    if (groupDetails) {
-      const formData = new FormData();
-      var key: keyof GroupDetails;
-      for (key in groupDetails) {
-        var value = groupDetails[key];
-        if (value) {
-          formData.append(key, value as string | Blob);
-        }
-      }
-      // @ts-ignore
-      // Display the key/value pairs
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
+  async function createGroup() {
+    if (!groupDetails) return;
 
-      fetch("https://api.slotify.club/api/v1/groups/new", {
-        method: "POST",
-        headers: {
-          Authorisation:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjMxOTc4MTA3LCJqdGkiOiIzYjkwZjU5MDg1Y2Y0Mjc5OWQ0MDY3MTdjMjE5NzkwZCIsInVzZXJfaWQiOjF9.pRXxh3jeoBPpWrDwhikM20BxY0fKatgxPFdYyWZy_LU",
-        },
-        body: formData,
-      })
-        .then((res) => {
-          console.log(res.json());
-        })
+    const formData = new FormData();
+    formData.append("name", groupDetails.name);
+    formData.append("description", groupDetails.description ?? "");
+    if (groupDetails.categoryId) {
+      formData.append("category", groupDetails.categoryId.toString());
+    }
+    if (groupDetails.imgBlob) {
+      const blob = await fetch(groupDetails.imgBlob)
+        .then((res) => res.blob())
         .catch((err) => {
           console.error(err);
         });
+      if (blob) {
+        console.log(blob);
+        formData.append(
+          "banner_url",
+          blob,
+          groupDetails.imgFileName ?? "banner.jpg"
+        );
+      }
     }
 
-    // if (slidersRef.current) slidersRef.current.slideNext();
+    // TODO: Authorization flow
+    fetch("https://api.slotify.club/api/v1/groups/new", {
+      method: "POST",
+      headers: {
+        Authorization:
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjMyNTA0OTI1LCJqdGkiOiI1MjliMTg0ZjBhYjk0YWZhOTBhODc1YTYxNGI0NzhmNCIsInVzZXJfaWQiOjF9.hRpTrSU8J9b0mETwRrIwJFvHRot_qWbWZCoWKvP8CRo",
+      },
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setGroupId(data.id);
+        slideNext();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (
@@ -77,7 +83,9 @@ function CreateGroup() {
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <MenuButton slot="start" />
-          <IonTitle className="text-2xl">Create a Group</IonTitle>
+          <IonTitle className="text-2xl pr-0 text-left">
+            Create a Group
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -100,7 +108,7 @@ function CreateGroup() {
             )}
           </IonSlide>
           <IonSlide>
-            <GroupDone gotoGroup={slidePrevious} />
+            <GroupDone groupId={groupId} gotoGroup={slidePrevious} />
           </IonSlide>
         </IonSlides>
       </IonContent>
