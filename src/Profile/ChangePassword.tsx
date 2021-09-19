@@ -25,7 +25,7 @@ const ChangePassword: React.FC = () => {
         className="mx-4 w-10"
       />
 
-      <IonContent className="text-center">
+      <IonContent className="text-center" scrollY={false}>
         <IonLabel color="primary" className="text-5xl">
           Change Password
         </IonLabel>

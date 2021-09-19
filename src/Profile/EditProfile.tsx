@@ -39,7 +39,7 @@ const EditProfile: React.FC = () => {
         className="m-4 w-1/4"
       />
 
-      <IonContent className="text-center">
+      <IonContent className="text-center" scrollY={false}>
         <IonLabel color="primary" className="text-5xl">
           Edit Profile
         </IonLabel>

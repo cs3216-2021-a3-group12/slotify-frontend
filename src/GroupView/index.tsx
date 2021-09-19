@@ -22,6 +22,7 @@ import GroupViewSegmentButton from "./GroupViewSegmentButton";
 import "./GroupView.css";
 import { StrippedGroup } from "../types/Group";
 import GroupAbout from "./GroupAbout";
+import GroupEvents from "./GroupEvents";
 
 function GroupView() {
   const [selectedSegment, setSelectedSegment] = useState("about");
@@ -79,7 +80,7 @@ function GroupView() {
         <GroupAbout />
       </SegmentPanel>
       <SegmentPanel value="events" selected={selectedSegment}>
-        {/* <GroupEvents /> */}
+        <GroupEvents />
       </SegmentPanel>
       <SegmentPanel value="members" selected={selectedSegment}>
         {/* <GroupMembers /> */}

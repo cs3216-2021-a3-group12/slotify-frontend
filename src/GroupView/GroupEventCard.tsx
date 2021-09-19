@@ -5,25 +5,24 @@ import {
   IonCardContent,
   IonChip,
   IonLabel,
-  IonContent,
-  IonIcon,
   IonCardTitle,
+  IonIcon,
 } from "@ionic/react";
 import { timeOutline, locationOutline } from "ionicons/icons";
 import { StrippedEvent } from "../types/Event";
 
 function GroupEventCard({ event }: { event: StrippedEvent }) {
   return (
-    <IonCard className="rounded-2xl w-full h-full">
-      <div className="w-full h-3/5 flex flex-col items-stretch">
+    <IonCard className="rounded-2xl w-auto h-1/3 mt-3 flex justify-between">
+      <div className="h-full w-1/3">
         <img
-          className="p-2 w-auto object-fill rounded-2xl"
-          alt="Event"
+          className="h-full w-full p-2 object-fill rounded-2xl"
+          alt="Group"
           src={event.imgUrl}
         />
       </div>
 
-      <IonContent className="h-2/5" scrollY={false}>
+      <div className="w-2/3 flex flex-col justify-center p-3">
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
             {event.name}
@@ -37,7 +36,7 @@ function GroupEventCard({ event }: { event: StrippedEvent }) {
             <span>{event.location}</span>
           </IonCardSubtitle>
         </IonCardHeader>
-      </IonContent>
+      </div>
     </IonCard>
   );
 }

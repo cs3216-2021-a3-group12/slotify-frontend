@@ -37,7 +37,7 @@ const Signup: React.FC = () => {
         className="mx-3 w-1/4"
       />
 
-      <IonContent className="text-center">
+      <IonContent className="text-center" scrollY={false}>
         <IonLabel color="primary" className="text-5xl">
           Sign Up
         </IonLabel>

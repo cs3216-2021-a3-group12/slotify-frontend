@@ -31,7 +31,7 @@ const UserProfile: React.FC = () => {
         defaultHref="/home"
         className="m-4 w-1/4"
       />
-      <IonContent className="text-center">
+      <IonContent className="text-center" scrollY={false}>
         <div className="flex flex-col items-center">
           <IonLabel className="text-5xl font-serif">John Wick</IonLabel>
         </div>
