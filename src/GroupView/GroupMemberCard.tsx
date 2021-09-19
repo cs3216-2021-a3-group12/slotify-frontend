@@ -1,18 +1,12 @@
 import {
   IonButton,
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
   IonIcon,
 } from "@ionic/react";
-import {
-  paperPlaneOutline,
-  mailOutline,
-  locationOutline,
-} from "ionicons/icons";
-import { StrippedEvent } from "../types/Event";
+import { paperPlaneOutline, mailOutline } from "ionicons/icons";
 import { Member } from "../types/Member";
 import Tag from "../Components/Tag";
 
@@ -27,8 +21,8 @@ function GroupMemberCard({
     <IonCard className="rounded-2xl w-5/6 h-1/3 mt-3 flex justify-between">
       <IonCardHeader className="text-left px-2 py-0 truncate">
         <div className="flex content-between">
-          <div className="w-1/2 flex flex-col p-3">
-            <IonCardTitle className="truncate text-base">
+          <div className="w-1/2-screen flex flex-col p-3">
+            <IonCardTitle className="truncate text-lg">
               {member.name}
             </IonCardTitle>
             <IonCardSubtitle>A0123456X</IonCardSubtitle>
@@ -44,8 +38,8 @@ function GroupMemberCard({
                 <IonIcon icon={mailOutline} className="m-1" />
               </IonButton>
             </IonCardSubtitle>
-            <div className="flex flex-col">
-              <Tag color="primary" label={member.tagName} />
+            <div className="flex flex-col place-self-center">
+              <Tag color="primary" label={member.tagName} className="px-5" />
               {isAdmin && (
                 <IonButton size="small" color="danger">
                   Remove

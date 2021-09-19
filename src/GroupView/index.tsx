@@ -1,21 +1,14 @@
 import { useState, useEffect } from "react";
 import {
-  IonTitle,
-  IonToolbar,
   IonPage,
-  IonHeader,
   IonSegment,
   IonBackButton,
   IonButtons,
   IonLabel,
-  IonRow,
-  IonGrid,
-  IonCol,
   IonButton,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 
-import { MenuButton } from "../Components/SideMenu";
 import SegmentPanel from "../Components/SegmentPanel";
 import GroupViewSegmentButton from "./GroupViewSegmentButton";
 
@@ -42,7 +35,7 @@ function GroupView() {
     <IonPage>
       <div className="h-1/4">
         <IonButtons slot="start" className="h-10">
-          <IonBackButton color="light" defaultHref="/home" className="p-2" />
+          <IonBackButton color="light" defaultHref="/home" className="pt-4" />
         </IonButtons>
         <img
           className="group-banner-img -mt-10"

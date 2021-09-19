@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { IonContent, IonSlide, IonButton } from "@ionic/react";
-import { StrippedEvent } from "../types/Event";
-import GroupEventCard from "./GroupEventCard";
+import { IonContent, IonSlide } from "@ionic/react";
 import { Member } from "../types/Member";
 import GroupMemberCard from "./GroupMemberCard";
 
@@ -9,7 +7,7 @@ function GroupEvents() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [members, setMembers] = useState<Member[]>([]);
   useEffect(() => {
-    setIsAdmin(true);
+    setIsAdmin(false);
     setMembers([
       {
         userId: 1,
