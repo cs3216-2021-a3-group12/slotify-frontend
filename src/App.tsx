@@ -1,5 +1,6 @@
-import { Route, Switch, Redirect } from "react-router-dom";
-import { IonApp } from "@ionic/react";
+import { Route, Redirect } from "react-router-dom";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
+
 import "@ionic/react/css/core.css";
 
 import "./index.css";
@@ -13,39 +14,33 @@ import ChangePassword from "./Profile/ChangePassword";
 import Home from "./Home";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
+import usePageTracking from "./Components/usePageTracking";
 
 function App() {
-    return (
-        <Router>
-            <div id="app">
-                <IonApp>
-                    <SideMenu />
-                    <Switch>
-                        <Route
-                            path="/profile/editprofile"
-                            component={EditProfile}
-                        ></Route>
-                        <Route
-                            path="/profile/changepassword"
-                            component={ChangePassword}
-                        ></Route>
-                        <Route path="/profile" component={UserProfile}></Route>
-                        <Route path="/signup" component={Signup}></Route>
-                        <Route path="/login" component={Login}></Route>
-                        <Route path="/explore" component={Explore}></Route>
-                        <Route
-                            path="/group/create"
-                            component={CreateGroup}
-                        ></Route>
-                        <Route path="/home" component={Home}></Route>
-                        <Route path="/">
-                            <Redirect to="/home" />
-                        </Route>
-                    </Switch>
-                </IonApp>
-            </div>
-        </Router>
-    );
+  usePageTracking();
+  return (
+    <div id="app">
+      <IonApp>
+        <SideMenu />
+        <IonRouterOutlet id="main" mode="md">
+          <Route path="/group/create" component={CreateGroup}></Route>
+          <Route path="/profile/editprofile" component={EditProfile}></Route>
+          <Route
+            path="/profile/changepassword"
+            component={ChangePassword}
+          ></Route>
+          <Route path="/profile" component={UserProfile}></Route>
+          <Route path="/signup" component={Signup}></Route>
+          <Route path="/login" component={Login}></Route>
+          <Route path="/explore" component={Explore}></Route>
+          <Route path="/home" component={Home}></Route>
+          <Route>
+            <Redirect to="/home" />
+          </Route>
+        </IonRouterOutlet>
+      </IonApp>
+    </div>
+  );
 }
 
 export default App;

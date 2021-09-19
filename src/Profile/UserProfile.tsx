@@ -6,6 +6,9 @@ import {
   IonList,
   IonBackButton,
   IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
 } from "@ionic/react";
 import {
   createOutline,
@@ -26,11 +29,13 @@ const UserProfile: React.FC = () => {
 
   return (
     <IonPage className="sm: m-0 lg:mx-40">
-      <IonBackButton
-        color="primary"
-        defaultHref="/home"
-        className="m-4 w-1/4"
-      />
+      <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <IonButtons>
+            <IonBackButton color="primary" />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="text-center">
         <div className="flex flex-col items-center">
           <IonLabel className="text-5xl font-serif">John Wick</IonLabel>

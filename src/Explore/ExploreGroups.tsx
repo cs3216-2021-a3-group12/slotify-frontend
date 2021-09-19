@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   IonCard,
   IonCardHeader,
@@ -9,6 +9,7 @@ import {
   IonCardTitle,
   IonContent,
   IonIcon,
+  IonList,
 } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 
@@ -20,8 +21,6 @@ import { Category } from "../types/Category";
 import groupPlaceholder from "../resources/group-placeholder.jpg";
 
 function ExploreGroups() {
-  const history = useHistory();
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [groups, setGroups] = useState<StrippedGroup[]>([]);
   const [displayedGroups, setDisplayedGroups] = useState<StrippedGroup[]>([]);
@@ -85,25 +84,29 @@ function ExploreGroups() {
 
   return (
     <Fragment>
-      <div>
-        <SearchBar onSearch={searchGroups} />
-      </div>
+      <IonList>
+        <div>
+          <SearchBar onSearch={searchGroups} />
+        </div>
 
-      <div className="whitespace-nowrap overflow-x-scroll py-2 mx-2">
-        {categories.map((category, idx) => {
-          return (
-            <Tag
-              key={idx}
-              color={
-                selectedCategories.includes(category.id) ? "primary" : undefined
-              }
-              label={category.name}
-              className="whitespace-nowrap"
-              onClick={() => onTapCategory(category.id)}
-            />
-          );
-        })}
-      </div>
+        <div className="whitespace-nowrap overflow-x-scroll py-2 mx-2">
+          {categories.map((category, idx) => {
+            return (
+              <Tag
+                key={idx}
+                color={
+                  selectedCategories.includes(category.id)
+                    ? "primary"
+                    : undefined
+                }
+                label={category.name}
+                className="whitespace-nowrap"
+                onClick={() => onTapCategory(category.id)}
+              />
+            );
+          })}
+        </div>
+      </IonList>
 
       <IonContent>
         {displayedGroups.length ? (
@@ -135,20 +138,19 @@ function ExploreGroups() {
           })
         ) : (
           <div className="p-2">
-            <IonChip
-              color="primary"
-              className="border-2 border-indigo-500 border-dashed h-32 w-full m-auto"
-              onClick={() => {
-                history.push("/group/create");
-              }}
-            >
-              <div className="flex flex-col items-center w-full">
-                <IonIcon size="large" icon={addOutline} className="p-2" />
-                <p className="text-lg text-center w-full">
-                  Can't find a group? Create one!
-                </p>
-              </div>
-            </IonChip>
+            <Link to="/group/create">
+              <IonChip
+                color="primary"
+                className="border-2 border-indigo-500 border-dashed h-32 w-full m-auto"
+              >
+                <div className="flex flex-col items-center w-full">
+                  <IonIcon size="large" icon={addOutline} className="p-2" />
+                  <p className="text-lg text-center w-full">
+                    Can't find a group? Create one!
+                  </p>
+                </div>
+              </IonChip>
+            </Link>
           </div>
         )}
       </IonContent>
