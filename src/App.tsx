@@ -14,6 +14,7 @@ import Home from "./Home";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
 import usePageTracking from "./Components/usePageTracking";
+import GroupView from "./GroupView";
 
 function App() {
   usePageTracking();

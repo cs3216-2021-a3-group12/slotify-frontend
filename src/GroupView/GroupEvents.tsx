@@ -1,16 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  IonContent,
-  IonSlide,
-  IonSlides,
-  IonTitle,
-  IonToolbar,
-  IonPage,
-  IonHeader,
-  IonButton,
-  IonIcon,
-  IonButtons,
-} from "@ionic/react";
+import { IonContent, IonSlide, IonButton } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import GroupEventCard from "./GroupEventCard";
 
