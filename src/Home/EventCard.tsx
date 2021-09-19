@@ -20,7 +20,7 @@ function EventCard({ event }: { event: StrippedEvent }) {
                 />
             </div>
 
-            <IonContent className="h-2/5" scrollEvents={false} scrollY={false}>
+            <IonContent className="h-2/5" scrollY={false}>
                 <IonCardHeader className="text-left px-2 py-0 truncate">
                     <IonCardTitle className="truncate text-base">
                         {event.name}

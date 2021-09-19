@@ -1,7 +1,18 @@
 export interface StrippedGroup {
-    id: string;
+  id: number;
+  name: string;
+  category: {
+    id: number;
     name: string;
-    categoryId: string;
-    category: string;
-    imgUrl: string;
+  };
+  banner_url: string;
 }
+
+export type CreateGroupDetails = {
+  name: string;
+  description: string;
+  categoryId: number;
+  categoryName: string;
+  imgBlob?: string;
+  imgFileName?: string;
+};

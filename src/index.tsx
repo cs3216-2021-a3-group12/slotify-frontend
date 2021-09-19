@@ -4,13 +4,13 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router } from "react-router-dom";
+import { IonReactRouter } from "@ionic/react-router";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <IonReactRouter>
       <App />
-    </Router>
+    </IonReactRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

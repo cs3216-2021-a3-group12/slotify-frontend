@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-    --ion-color-primary: #4f46e5;
-    --ion-color-primary-rgb: 79, 70, 229;
-    --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #463eca;
-    --ion-color-primary-tint: #6159e8;
+  --ion-color-primary: #4f46e5;
+  --ion-color-primary-rgb: 79, 70, 229;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #463eca;
+  --ion-color-primary-tint: #6159e8;
 }
 
-.ion-color-primary {
-    --ion-color-base: var(--ion-color-primary);
-    --ion-color-base-rgb: var(--ion-color-primary-rgb);
-    --ion-color-contrast: var(--ion-color-primary-contrast);
-    --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
-    --ion-color-shade: var(--ion-color-primary-shade);
-    --ion-color-tint: var(--ion-color-primary-tint);
+ion-textarea {
+  --padding-top: 0 !important;
+  --padding-bottom: 0 !important;
+}
+
+ion-list {
+  padding: 0 !important;
 }
