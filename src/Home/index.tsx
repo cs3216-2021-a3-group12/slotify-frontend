@@ -80,7 +80,7 @@ function Home() {
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen={true} scrollEvents={true}>
+            <IonContent fullscreen={true}>
                 <div className="h-80 flex flex-col">
                     <div className="p-3 h-12">
                         <span className="text-xl">Your Events</span>

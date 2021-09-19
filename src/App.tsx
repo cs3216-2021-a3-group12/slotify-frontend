@@ -1,22 +1,18 @@
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Redirect,
-} from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { IonApp } from "@ionic/react";
-
-import Home from "./Home";
-import Explore from "./Explore";
-
 import "@ionic/react/css/core.css";
+
 import "./index.css";
+
 import SideMenu from "./Components/SideMenu";
 import Login from "./Authentication/Login";
 import Signup from "./Authentication/Signup";
 import EditProfile from "./Profile/EditProfile";
 import UserProfile from "./Profile/UserProfile";
 import ChangePassword from "./Profile/ChangePassword";
+import Home from "./Home";
+import Explore from "./Explore";
+import CreateGroup from "./CreateGroup";
 
 function App() {
     return (
@@ -37,6 +33,10 @@ function App() {
                         <Route path="/signup" component={Signup}></Route>
                         <Route path="/login" component={Login}></Route>
                         <Route path="/explore" component={Explore}></Route>
+                        <Route
+                            path="/group/create"
+                            component={CreateGroup}
+                        ></Route>
                         <Route path="/home" component={Home}></Route>
                         <Route path="/">
                             <Redirect to="/home" />
