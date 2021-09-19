@@ -1,9 +1,4 @@
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Redirect,
-} from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { IonApp } from "@ionic/react";
 import "@ionic/react/css/core.css";
 
