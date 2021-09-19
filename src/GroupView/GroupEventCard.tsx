@@ -10,7 +10,7 @@ import { StrippedEvent } from "../types/Event";
 
 function GroupEventCard({ event }: { event: StrippedEvent }) {
   return (
-    <IonCard className="rounded-2xl w-auto h-1/3 mt-3 flex justify-between">
+    <IonCard className="rounded-2xl mx-5 flex">
       <div className="h-full w-1/3">
         <img
           className="h-full w-full p-2 object-fill rounded-2xl"

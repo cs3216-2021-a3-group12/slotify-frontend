@@ -1,16 +1,20 @@
-/** Segment */
-/* .group-view-segment {
-  @apply w-1/2 rounded-full bg-gray-100 mx-auto my-2;
-} */
-
-/** Segment Button */
-/* ion-segment-button.rounded-segment-button::part(indicator-background) {
-  @apply rounded-full shadow-behind;
-} */
 /** Prompt Text */
 .group-about-text {
   @apply text-center leading-none p-10;
 }
 .group-banner-img {
   @apply h-full w-full object-cover;
+}
+
+/** Search Bar */
+ion-searchbar .searchbar-input-container {
+  @apply border-b border-indigo-500;
+}
+
+ion-searchbar .searchbar-input-container .searchbar-input {
+  @apply bg-transparent;
+}
+
+ion-searchbar .searchbar-input-container ion-icon {
+  --icon-color: theme(colors.indigo.500);
 }

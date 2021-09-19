@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IonContent, IonSlide, IonButton } from "@ionic/react";
+import { IonContent, IonButton } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import GroupEventCard from "./GroupEventCard";
 
@@ -36,17 +36,13 @@ function GroupEvents() {
     <IonContent>
       <div className="flex flex-col ">
         {isAdmin && (
-          <IonButton shape="round" className="mx-10 my-4">
+          <IonButton shape="round" className="mx-10 mt-4">
             Create an Event
           </IonButton>
         )}
 
         {events.map((event) => {
-          return (
-            <IonSlide key={event.id}>
-              <GroupEventCard event={event} />
-            </IonSlide>
-          );
+          return <GroupEventCard event={event} />;
         })}
       </div>
     </IonContent>
