@@ -1,4 +1,3 @@
-import { menuController } from "@ionic/core";
 import {
   IonMenu,
   IonHeader,
@@ -11,13 +10,13 @@ import {
   IonLabel,
   IonButtons,
   IonMenuButton,
+  IonMenuToggle,
 } from "@ionic/react";
 import { home, personCircleOutline, searchOutline } from "ionicons/icons";
-import { Link } from "react-router-dom";
 
 function SideMenu() {
   return (
-    <IonMenu side="start" menuId="side-menu" contentId="main">
+    <IonMenu menuId="side-menu" contentId="main">
       <IonHeader>
         <IonToolbar>
           <IonTitle>Menu</IonTitle>
@@ -25,35 +24,29 @@ function SideMenu() {
       </IonHeader>
       <IonContent>
         <IonList>
-          <Link to="/home">
-            <IonItem>
+          <IonMenuToggle>
+            <IonItem routerLink="/home">
               <IonIcon icon={home} slot="start" />
               <IonLabel>Home</IonLabel>
             </IonItem>
-          </Link>
-          <Link to="/explore">
-            <IonItem>
+            <IonItem routerLink="/explore">
               <IonIcon icon={searchOutline} slot="start" />
               <IonLabel>Explore</IonLabel>
             </IonItem>
-          </Link>
-          <Link to="/profile">
-            <IonItem>
+            <IonItem routerLink="/profile">
               <IonIcon icon={personCircleOutline} slot="start" />
               <IonLabel>Profile</IonLabel>
             </IonItem>
-          </Link>
+          </IonMenuToggle>
         </IonList>
       </IonContent>
     </IonMenu>
   );
 }
 
-const openSideMenu = () => menuController.open();
-
 export const MenuButton = ({ ...props }) => (
   <IonButtons {...props}>
-    <IonMenuButton autoHide={false} onClick={openSideMenu} />
+    <IonMenuButton slot="start" />
   </IonButtons>
 );
 

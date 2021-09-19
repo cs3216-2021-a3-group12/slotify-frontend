@@ -1,10 +1,6 @@
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Redirect,
-} from "react-router-dom";
-import { IonApp } from "@ionic/react";
+import { Route, Redirect } from "react-router-dom";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
 
 import Home from "./Home";
 import Explore from "./Explore";
@@ -19,33 +15,30 @@ import UserProfile from "./Profile/UserProfile";
 import ChangePassword from "./Profile/ChangePassword";
 
 function App() {
-    return (
-        <Router>
-            <div id="app">
-                <IonApp>
-                    <SideMenu />
-                    <Switch>
-                        <Route
-                            path="/profile/editprofile"
-                            component={EditProfile}
-                        ></Route>
-                        <Route
-                            path="/profile/changepassword"
-                            component={ChangePassword}
-                        ></Route>
-                        <Route path="/profile" component={UserProfile}></Route>
-                        <Route path="/signup" component={Signup}></Route>
-                        <Route path="/login" component={Login}></Route>
-                        <Route path="/explore" component={Explore}></Route>
-                        <Route path="/home" component={Home}></Route>
-                        <Route path="/">
-                            <Redirect to="/home" />
-                        </Route>
-                    </Switch>
-                </IonApp>
-            </div>
-        </Router>
-    );
+  return (
+    <div id="app">
+      <IonApp>
+        <IonReactRouter>
+          <SideMenu />
+          <IonRouterOutlet id="main">
+            <Route path="/profile/editprofile" component={EditProfile}></Route>
+            <Route
+              path="/profile/changepassword"
+              component={ChangePassword}
+            ></Route>
+            <Route path="/profile" component={UserProfile}></Route>
+            <Route path="/signup" component={Signup}></Route>
+            <Route path="/login" component={Login}></Route>
+            <Route path="/explore" component={Explore}></Route>
+            <Route path="/home" component={Home}></Route>
+            <Route>
+              <Redirect to="/home" />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonApp>
+    </div>
+  );
 }
 
 export default App;
