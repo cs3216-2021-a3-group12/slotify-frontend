@@ -8,7 +8,8 @@ const usePageTracking = () => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (window.location.href.includes("localhost")) {
+    // Won't track localhost activities
+    if (!window.location.href.includes("localhost")) {
       ReactGA.initialize("UA-207938666-1");
     }
     setInitialized(true);
