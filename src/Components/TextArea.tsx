@@ -3,6 +3,7 @@ import { IonIcon, IonItem, IonTextarea } from "@ionic/react";
 
 type TextAreaProps = {
   outline?: boolean;
+  color?: string;
   errorValue?: string;
   icon: string;
   value?: string;
@@ -13,6 +14,7 @@ type TextAreaProps = {
 
 const TextArea: React.FC<TextAreaProps> = ({
   outline = false,
+  color,
   errorValue,
   icon,
   value,
@@ -31,7 +33,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       <IonItem
         className={`${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
       >
-        <IonIcon slot="start" icon={icon} />
+        <IonIcon slot="start" color={color} icon={icon} />
         <IonTextarea
           value={value}
           placeholder={placeholder}
