@@ -12,7 +12,12 @@ import {
   IonMenuButton,
   IonMenuToggle,
 } from "@ionic/react";
-import { home, personCircleOutline, searchOutline } from "ionicons/icons";
+import {
+  home,
+  personCircleOutline,
+  searchOutline,
+  logOutOutline,
+} from "ionicons/icons";
 
 function SideMenu() {
   return (
@@ -36,6 +41,10 @@ function SideMenu() {
             <IonItem routerLink="/profile">
               <IonIcon icon={personCircleOutline} slot="start" />
               <IonLabel>Profile</IonLabel>
+            </IonItem>
+            <IonItem href="/login">
+              <IonIcon icon={logOutOutline} slot="start" />
+              <IonLabel>Logout</IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>
