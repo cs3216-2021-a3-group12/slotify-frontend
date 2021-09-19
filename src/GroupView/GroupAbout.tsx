@@ -1,12 +1,5 @@
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-  IonCardTitle,
-  IonContent,
-  IonButton,
-} from "@ionic/react";
-import { useState, useEffect, Fragment } from "react";
+import { IonContent, IonButton } from "@ionic/react";
+import { useState, useEffect } from "react";
 import { StrippedEvent } from "../types/Event";
 import { StrippedGroup } from "../types/Group";
 
@@ -19,17 +12,19 @@ function GroupAbout() {
   const [group, setGroup] = useState<StrippedGroup>(testGroup);
 
   useEffect(() => {
-    setIsAdmin(false);
+    setIsAdmin(true);
     setGroup(testGroup);
   }, []);
 
   return (
     <IonContent>
-      <p className="group-about-text">group.about</p>
-      <div className="flex flex-col">
-        <IonButton>Edit Group</IonButton>
-        <IonButton>Delete Group</IonButton>
-      </div>
+      <p className="group-about-text p-10">{group.description}</p>
+      {isAdmin && (
+        <div className="flex flex-col mx-12">
+          <IonButton>Edit Group</IonButton>
+          <IonButton color="danger">Delete Group</IonButton>
+        </div>
+      )}
     </IonContent>
   );
 }
@@ -37,10 +32,13 @@ function GroupAbout() {
 export default GroupAbout;
 
 const testGroup = {
-  id: "id-1",
+  id: 1,
   name: "Group Name 1",
-  categoryId: "cid-1",
-  category: "Category 1",
-  imgUrl: "https://picsum.photos/200",
-  about: "This is About",
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum amet, enim sit cursus metus, imperdiet tortor volutpat. Turpis donec donec egestas enim, risus at quis ultrices etiam. Fermentum tortor in amet lorem vitae tristique quis sit convallis. Lorem quam cursus dolor, et turpis.",
+  category: {
+    id: 1,
+    name: "Category 1",
+  },
+  banner_url: "https://picsum.photos/200",
 };

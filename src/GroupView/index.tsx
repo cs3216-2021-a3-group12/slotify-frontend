@@ -6,6 +6,12 @@ import {
   IonHeader,
   IonSegment,
   IonBackButton,
+  IonButtons,
+  IonLabel,
+  IonRow,
+  IonGrid,
+  IonCol,
+  IonButton,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 
@@ -15,6 +21,7 @@ import GroupViewSegmentButton from "./GroupViewSegmentButton";
 
 import "./GroupView.css";
 import { StrippedGroup } from "../types/Group";
+import GroupAbout from "./GroupAbout";
 
 function GroupView() {
   const [selectedSegment, setSelectedSegment] = useState("about");
@@ -30,13 +37,30 @@ function GroupView() {
   }
 
   return (
-    <IonPage id="main">
-      <IonBackButton />
-      <img className="group-banner-img" alt="Group Banner" src={group.imgUrl} />
+    <IonPage>
+      <div className="h-1/4">
+        <IonButtons slot="start" className="h-10">
+          <IonBackButton color="light" defaultHref="/home" className="p-2" />
+        </IonButtons>
+        <img
+          className="group-banner-img -mt-10"
+          alt="Group Banner"
+          src={group.banner_url}
+        />
+      </div>
+      <div className="m-4 text-center">
+        <IonLabel className="text-2xl font-bold">{group.name}</IonLabel>
+        <div className="flex flex-row justify-around items-center mt-3">
+          <IonLabel className="font-bold">{group.category.name}</IonLabel>
+          <IonButton size="small" className="w-1/4">
+            Share
+          </IonButton>
+        </div>
+      </div>
       <div>
         <IonSegment
           mode="ios"
-          className="group-view-segment"
+          className="group-view-segment m"
           value={selectedSegment}
           onIonChange={changeSegment}
         >
@@ -52,7 +76,7 @@ function GroupView() {
         </IonSegment>
       </div>
       <SegmentPanel value="about" selected={selectedSegment}>
-        {/* <GroupAbout /> */}
+        <GroupAbout />
       </SegmentPanel>
       <SegmentPanel value="events" selected={selectedSegment}>
         {/* <GroupEvents /> */}
@@ -67,10 +91,12 @@ function GroupView() {
 export default GroupView;
 
 const testGroup = {
-  id: "id-1",
+  id: 1,
   name: "Group Name 1",
-  categoryId: "cid-1",
-  category: "Category 1",
-  imgUrl: "https://picsum.photos/200",
-  about: "This is About",
+  description: "This is About",
+  category: {
+    id: 1,
+    name: "Category 1",
+  },
+  banner_url: "https://picsum.photos/200",
 };
