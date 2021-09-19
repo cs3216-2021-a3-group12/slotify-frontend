@@ -7,6 +7,8 @@ import {
   IonContent,
   IonSlides,
   IonSlide,
+  IonBackButton,
+  IonButtons,
 } from "@ionic/react";
 
 import { MenuButton } from "../Components/SideMenu";
@@ -14,6 +16,7 @@ import GroupForm from "./GroupForm";
 import GroupReview from "./GroupReview";
 import GroupDone from "./GroupDone";
 import { CreateGroupDetails } from "../types/Group";
+import { arrowBack } from "ionicons/icons";
 
 function CreateGroup() {
   const slidersRef = useRef<HTMLIonSlidesElement>(null);
@@ -82,7 +85,9 @@ function CreateGroup() {
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
-          <MenuButton slot="start" />
+          <IonButtons>
+            <IonBackButton color="primary" defaultHref="/home" />
+          </IonButtons>
           <IonTitle className="text-2xl pr-0 text-left">
             Create a Group
           </IonTitle>
