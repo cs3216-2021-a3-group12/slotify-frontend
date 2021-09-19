@@ -1,7 +1,7 @@
-import { Route, Switch, Redirect, Router } from "react-router-dom";
-import { IonApp } from "@ionic/react";
-import "@ionic/react/css/core.css";
+import { Route, Redirect } from "react-router-dom";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
 
+import "@ionic/react/css/core.css";
 import "./index.css";
 
 import SideMenu from "./Components/SideMenu";
@@ -13,14 +13,16 @@ import ChangePassword from "./Profile/ChangePassword";
 import Home from "./Home";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
-import GroupView from "./GroupView/index";
+import usePageTracking from "./Components/usePageTracking";
 
 function App() {
+  usePageTracking();
   return (
     <div id="app">
       <IonApp>
         <SideMenu />
-        <Switch>
+        <IonRouterOutlet id="main" mode="md">
+          <Route path="/group/create" component={CreateGroup}></Route>
           <Route path="/profile/editprofile" component={EditProfile}></Route>
           <Route
             path="/profile/changepassword"
@@ -31,12 +33,11 @@ function App() {
           <Route path="/signup" component={Signup}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/explore" component={Explore}></Route>
-          <Route path="/group/create" component={CreateGroup}></Route>
           <Route path="/home" component={Home}></Route>
-          <Route path="/">
+          <Route>
             <Redirect to="/home" />
           </Route>
-        </Switch>
+        </IonRouterOutlet>
       </IonApp>
     </div>
   );

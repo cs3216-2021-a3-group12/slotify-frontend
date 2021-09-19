@@ -4,6 +4,7 @@ import {
   IonCardContent,
   IonCardTitle,
   IonContent,
+  IonList,
 } from "@ionic/react";
 import { useState, useEffect, Fragment } from "react";
 import { StrippedEvent } from "../types/Event";
@@ -30,9 +31,9 @@ function ExploreEvents() {
 
   return (
     <Fragment>
-      <div>
-        <SearchBar onSearch={searchEvents} />
-      </div>
+      <IonList className="p-0">
+        <SearchBar slot="fixed" onSearch={searchEvents} />
+      </IonList>
       <IonContent>
         {displayedEvents.map((event, idx) => {
           return (

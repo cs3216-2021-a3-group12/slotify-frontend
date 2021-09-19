@@ -79,7 +79,7 @@ function CreateGroup() {
   }
 
   return (
-    <IonPage id="main">
+    <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <MenuButton slot="start" />
