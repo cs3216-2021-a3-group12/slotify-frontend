@@ -64,7 +64,7 @@ function Home() {
     ]);
   }, []);
   return (
-    <IonPage>
+    <IonPage id="main">
       <IonHeader className="ion-no-border h-1/5">
         <IonToolbar color="primary" className="h-1/2">
           <MenuButton />

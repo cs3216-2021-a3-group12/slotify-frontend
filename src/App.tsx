@@ -22,7 +22,7 @@ function App() {
     <div id="app">
       <IonApp>
         <SideMenu />
-        <IonRouterOutlet id="main">
+        <IonRouterOutlet id="main" mode="md">
           <Route path="/group/create" component={CreateGroup}></Route>
           <Route path="/profile/editprofile" component={EditProfile}></Route>
           <Route

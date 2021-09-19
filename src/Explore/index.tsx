@@ -5,6 +5,7 @@ import {
   IonPage,
   IonHeader,
   IonSegment,
+  IonList,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 
@@ -34,7 +35,7 @@ function Explore() {
           <IonTitle className="text-2xl">Explore</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <div>
+      <IonList className="p-0">
         <p className="explore-prompt-text">
           Discover new groups and events to make the most of your student life!
         </p>
@@ -51,7 +52,7 @@ function Explore() {
             Groups
           </ExploreSegmentButton>
         </IonSegment>
-      </div>
+      </IonList>
       <SegmentPanel value="events" selected={selectedSegment}>
         <ExploreEvents />
       </SegmentPanel>
