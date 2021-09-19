@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonButton,
   IonCard,
   IonCardHeader,
@@ -9,6 +10,7 @@ import {
 import { paperPlaneOutline, mailOutline } from "ionicons/icons";
 import { Member } from "../types/Member";
 import Tag from "../Components/Tag";
+import { useState } from "react";
 
 function GroupMemberCard({
   isAdmin,
@@ -17,6 +19,7 @@ function GroupMemberCard({
   isAdmin: boolean;
   member: Member;
 }) {
+  const [showAlert, setShowAlert] = useState(false);
   return (
     <IonCard className="rounded-2xl w-5/6 h-1/3 mt-3 flex justify-between">
       <IonCardHeader className="text-left px-2 py-0 truncate">
@@ -41,7 +44,11 @@ function GroupMemberCard({
             <div className="flex flex-col place-self-center">
               <Tag color="primary" label={member.tagName} className="px-5" />
               {isAdmin && (
-                <IonButton size="small" color="danger">
+                <IonButton
+                  size="small"
+                  color="danger"
+                  onClick={() => setShowAlert(true)}
+                >
                   Remove
                 </IonButton>
               )}
@@ -49,6 +56,26 @@ function GroupMemberCard({
           </div>
         </div>
       </IonCardHeader>
+      <IonAlert
+        isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        header={"Warning"}
+        message={"Are you sure you want to remove this member?"}
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Remove",
+            cssClass: "danger",
+            handler: () => {
+              console.log("Delete Member");
+            },
+          },
+        ]}
+      />
     </IonCard>
   );
 }

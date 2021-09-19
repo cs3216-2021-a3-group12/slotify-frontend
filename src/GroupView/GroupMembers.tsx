@@ -7,7 +7,7 @@ function GroupEvents() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [members, setMembers] = useState<Member[]>([]);
   useEffect(() => {
-    setIsAdmin(false);
+    setIsAdmin(true);
     setMembers([
       {
         userId: 1,
@@ -24,7 +24,7 @@ function GroupEvents() {
         isAdmin: false,
       },
       {
-        userId: 1,
+        userId: 3,
         name: "Ariana Grande",
         tagId: 3,
         tagName: "Senior",
