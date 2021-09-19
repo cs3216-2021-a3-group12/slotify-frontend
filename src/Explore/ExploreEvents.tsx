@@ -8,7 +8,7 @@ import {
 } from "@ionic/react";
 import { useState, useEffect, Fragment } from "react";
 import { StrippedEvent } from "../types/Event";
-import SearchBar from "./SearchBar";
+import SearchBar from "../Components/SearchBar";
 
 export interface ExploreEventsProps {
   events: StrippedEvent[];

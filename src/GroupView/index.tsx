@@ -23,6 +23,7 @@ import "./GroupView.css";
 import { StrippedGroup } from "../types/Group";
 import GroupAbout from "./GroupAbout";
 import GroupEvents from "./GroupEvents";
+import GroupMembers from "./GroupMembers";
 
 function GroupView() {
   const [selectedSegment, setSelectedSegment] = useState("about");
@@ -83,7 +84,7 @@ function GroupView() {
         <GroupEvents />
       </SegmentPanel>
       <SegmentPanel value="members" selected={selectedSegment}>
-        {/* <GroupMembers /> */}
+        <GroupMembers />
       </SegmentPanel>
     </IonPage>
   );

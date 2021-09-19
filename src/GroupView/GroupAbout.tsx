@@ -18,7 +18,7 @@ function GroupAbout() {
 
   return (
     <IonContent>
-      <p className="group-about-text p-10">{group.description}</p>
+      <p className="group-about-text">{group.description}</p>
       {isAdmin && (
         <div className="flex flex-col mx-12">
           <IonButton>Edit Group</IonButton>

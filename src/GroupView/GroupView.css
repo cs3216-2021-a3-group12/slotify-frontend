@@ -9,7 +9,7 @@
 } */
 /** Prompt Text */
 .group-about-text {
-  @apply text-center leading-none p-2;
+  @apply text-center leading-none p-10;
 }
 .group-banner-img {
   @apply h-full w-full object-cover;
