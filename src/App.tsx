@@ -12,6 +12,7 @@ import EditProfile from "./Profile/EditProfile";
 import UserProfile from "./Profile/UserProfile";
 import ChangePassword from "./Profile/ChangePassword";
 import Home from "./Home";
+import Event from "./Event";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
 import usePageTracking from "./Components/usePageTracking";
@@ -24,16 +25,17 @@ function App() {
         <SideMenu />
         <IonRouterOutlet id="main" mode="md">
           <Route path="/group/create" component={CreateGroup}></Route>
+          <Route path="/profile" component={UserProfile}></Route>
           <Route path="/profile/editprofile" component={EditProfile}></Route>
           <Route
             path="/profile/changepassword"
             component={ChangePassword}
           ></Route>
-          <Route path="/profile" component={UserProfile}></Route>
           <Route path="/signup" component={Signup}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/explore" component={Explore}></Route>
           <Route path="/home" component={Home}></Route>
+          <Route path="/event" component={Event}></Route>
           <Route>
             <Redirect to="/home" />
           </Route>
