@@ -7,13 +7,27 @@ import {
 } from "@ionic/react";
 import { mailOutline, lockClosedOutline } from "ionicons/icons";
 import { useState } from "react";
+import { useHistory } from "react-router";
 import AuthField from "./AuthField";
+import { useAuthDispatch, loginUser } from "../AuthContext";
+
 const Login: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useAuthDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function loginUser() {
+  function onLogin() {
     console.log(email, password);
+    loginUser(dispatch, {
+      email: email,
+      password: password,
+    }).then((data) => {
+      if (data) {
+        history.push("/home");
+      }
+    });
   }
 
   return (
@@ -42,7 +56,7 @@ const Login: React.FC = () => {
           />
         </IonList>
         <div className="flex flex-col items-center gap-5">
-          <IonButton onClick={loginUser} className="w-2/3">
+          <IonButton onClick={onLogin} className="w-2/3">
             Log in
           </IonButton>
           <IonButton routerLink="/signup" className="w-2/3">

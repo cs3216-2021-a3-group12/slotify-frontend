@@ -16,26 +16,42 @@ import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
 import CreateEvent from "./CreateEvent";
 import usePageTracking from "./Components/usePageTracking";
+import { useAuthState } from "./AuthContext";
+import AuthRoute from "./Components/AuthRoute";
 
 function App() {
   usePageTracking();
+  const userDetails = useAuthState();
+
   return (
     <div id="app">
       <IonApp>
         <SideMenu />
         <IonRouterOutlet id="main">
-          <Route path="/event/create" component={CreateEvent}></Route>
-          <Route path="/group/create" component={CreateGroup}></Route>
-          <Route path="/profile/editprofile" component={EditProfile}></Route>
-          <Route
+          <AuthRoute path="/event/create" component={CreateEvent}></AuthRoute>
+          <AuthRoute path="/group/create" component={CreateGroup}></AuthRoute>
+          <AuthRoute
+            path="/profile/editprofile"
+            component={EditProfile}
+          ></AuthRoute>
+          <AuthRoute
             path="/profile/changepassword"
             component={ChangePassword}
-          ></Route>
-          <Route path="/profile" component={UserProfile}></Route>
+          ></AuthRoute>
+          <AuthRoute path="/profile" component={UserProfile}></AuthRoute>
+          <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <Route path="/signup" component={Signup}></Route>
-          <Route path="/login" component={Login}></Route>
-          <Route path="/explore" component={Explore}></Route>
-          <Route path="/home" component={Home}></Route>
+          <Route
+            path="/login"
+            render={() =>
+              Boolean(userDetails.accessToken) ? (
+                <Redirect to="/home" />
+              ) : (
+                <Login />
+              )
+            }
+          />
+          <AuthRoute path="/home" component={Home}></AuthRoute>
           <Route>
             <Redirect to="/home" />
           </Route>

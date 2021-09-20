@@ -1,25 +1,29 @@
-import React, { useState, useReducer, Reducer } from "react";
 import { Action, ActionType } from "./actions";
 
 export type AuthState = {
-  user: string;
-  token: string;
+  username: string;
+  accessToken: string;
+  refreshToken: string;
   loading: boolean;
-  errorMessage?: any;
+  error?: any;
 };
 
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")!).user
+let username = localStorage.getItem("currentUser")
+  ? JSON.parse(localStorage.getItem("currentUser")!).username
   : "";
-let token = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")!).auth_token
+let accessToken = localStorage.getItem("currentUser")
+  ? JSON.parse(localStorage.getItem("currentUser")!).tokens.access
+  : "";
+let refreshToken = localStorage.getItem("currentUser")
+  ? JSON.parse(localStorage.getItem("currentUser")!).tokens.refresh
   : "";
 
 export const initialState: AuthState = {
-  user: "" || user,
-  token: "" || token,
+  username: "" || username,
+  accessToken: "" || accessToken,
+  refreshToken: "" || refreshToken,
   loading: false,
-  errorMessage: undefined,
+  error: undefined,
 };
 
 export const AuthReducer = (
@@ -36,22 +40,24 @@ export const AuthReducer = (
       if (!action.payload) throw new Error("No payload found");
       return {
         ...initialState,
-        user: action.payload.user,
-        token: action.payload.auth_token,
+        username: action.payload.username,
+        accessToken: action.payload.tokens.access,
+        refreshToken: action.payload.tokens.refresh,
         loading: false,
       };
     case ActionType.LOGOUT:
       return {
         ...initialState,
-        user: "",
-        token: "",
+        username: "",
+        accessToken: "",
+        refreshToken: "",
       };
 
     case ActionType.LOGIN_ERROR:
       return {
         ...initialState,
         loading: false,
-        errorMessage: action.error,
+        error: action.error,
       };
 
     default:

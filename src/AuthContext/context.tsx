@@ -1,4 +1,4 @@
-import React, { ReactChildren, useReducer } from "react";
+import React, { useReducer } from "react";
 import { initialState, AuthReducer, AuthState } from "./reducer";
 import { Action } from "./actions";
 
@@ -25,7 +25,7 @@ export function useAuthDispatch() {
   return context;
 }
 
-export const AuthProvider = ({ children }: { children: ReactChildren }) => {
+export const AuthProvider = ({ children }: { children: any }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
 
   return (
