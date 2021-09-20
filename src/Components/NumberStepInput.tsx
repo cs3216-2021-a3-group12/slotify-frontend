@@ -26,7 +26,7 @@ const NumberStepInput: React.FC<NumberStepInputProps> = ({
     if (min !== undefined && value - (step ?? 1) < min) onValueChange(min);
     if (max !== undefined && value + (step ?? 1) > max) onValueChange(max);
     // eslint-disable-next-line
-  }, [min, max]);
+  }, [min, max, value]);
 
   function onChange(event: CustomEvent<InputChangeEventDetail>) {
     const text = event.detail.value as string;

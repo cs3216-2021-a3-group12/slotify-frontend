@@ -30,10 +30,9 @@ import ImageUploadInput from "../Components/ImageUploadInput";
 import NumberStepInput from "../Components/NumberStepInput";
 
 function CreateEvent() {
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
+  const [title, setTitle] = useState("");
+  const [titleError, setTitleError] = useState("");
   const [description, setDescription] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
   const [startTime, setStartTime] = useState<Date>(new Date());
   const [endTime, setEndTime] = useState<Date>(new Date());
   const [location, setLocation] = useState("");
@@ -58,6 +57,74 @@ function CreateEvent() {
     ).slice(-2)}`;
   }
 
+  async function onCreateClick() {
+    var hasError = false;
+    if (!title) {
+      setTitleError("Please enter an event title");
+      hasError = true;
+    }
+    if (!location) {
+      setLocationError("Please enter a location for the event");
+      hasError = true;
+    }
+
+    if (hasError) return;
+    setTitleError("");
+    setLocationError("");
+
+    // Create form data
+    // TODO: Add group
+    const formData = new FormData();
+    formData.append("title", title);
+    if (description) {
+      formData.append("description", description);
+    }
+    formData.append(
+      "start_date_time",
+      String(Math.floor(startTime.getTime() / 1000.0))
+    );
+    formData.append(
+      "end_date_time",
+      String(Math.floor(endTime.getTime() / 1000.0))
+    );
+    formData.append("location", location);
+    formData.append("is_public", String(isPublic));
+    if (imageSrc) {
+      const blob = await fetch(imageSrc)
+        .then((res) => res.blob())
+        .catch((err) => {
+          console.error(err);
+        });
+      if (blob) {
+        formData.append("image_url", blob, imageFileName ?? "image.jpg");
+      }
+    }
+    // create slots dictionary
+    // TODO: tag id as key
+    var slots: { [tag: string]: number } = {};
+    var remainingSlots = totalSlots;
+    if (reserveSlots) {
+      slots["junior"] = juniorSlots;
+      slots["senior"] = seniorSlots;
+      remainingSlots -= juniorSlots + seniorSlots;
+    }
+    if (isPublic) {
+      slots["public"] = remainingSlots;
+    } else {
+      slots["groupmembers"] = remainingSlots;
+    }
+    formData.append("slots", JSON.stringify(slots));
+
+    createEvent(formData);
+  }
+
+  function createEvent(formData: FormData) {
+    // @ts-ignore
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+  }
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -75,10 +142,10 @@ function CreateEvent() {
             outline={true}
             color="primary"
             icon={bookmarkOutline}
-            value={name}
+            value={title}
             placeholder="Event Title"
-            onValueChange={setName}
-            errorValue={nameError}
+            onValueChange={setTitle}
+            errorValue={titleError}
           />
           <TextArea
             outline={true}
@@ -87,7 +154,6 @@ function CreateEvent() {
             value={description}
             placeholder="Description"
             onValueChange={setDescription}
-            errorValue={descriptionError}
           ></TextArea>
           <DateTimePicker
             outline={true}
@@ -224,7 +290,9 @@ function CreateEvent() {
             />
           )}
         </IonList>
-        <IonButton className="w-5/6 my-8">Create</IonButton>
+        <IonButton className="w-5/6 my-8" onClick={onCreateClick}>
+          Create
+        </IonButton>
       </IonContent>
     </IonPage>
   );
