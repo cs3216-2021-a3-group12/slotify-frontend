@@ -18,8 +18,3 @@ ion-searchbar .searchbar-input-container .searchbar-input {
 ion-searchbar .searchbar-input-container ion-icon {
   --icon-color: theme(colors.indigo.500);
 }
-
-ion-toolbar {
-  --background-color: transparent;
-  --ion-color-base: transparent !important;
-}

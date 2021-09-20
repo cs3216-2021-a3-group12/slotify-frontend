@@ -3,22 +3,12 @@ import {
   IonPage,
   IonLabel,
   IonButton,
-  IonList,
-  IonBackButton,
   IonAlert,
   IonToolbar,
   IonButtons,
   IonHeader,
   IonTitle,
 } from "@ionic/react";
-import {
-  personOutline,
-  mailOutline,
-  lockClosedOutline,
-  idCardOutline,
-  globeOutline,
-  paperPlaneOutline,
-} from "ionicons/icons";
 import { useEffect, useState } from "react";
 import Tag from "../Components/Tag";
 import { Membership } from "../types/Membership";
@@ -32,9 +22,7 @@ const ManageMembership: React.FC<{
   const [showTagAlert, setShowTagAlert] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
-  function updateMembership() {
-    console.log(newMembership);
-  }
+  function updateMembership() {}
 
   function onCirfirm() {
     updateMembership();
@@ -109,7 +97,7 @@ const ManageMembership: React.FC<{
           </div>
 
           <div className="flex flex-col gap-4 mx-12">
-            <IonButton onClick={updateMembership}>Confirm</IonButton>
+            <IonButton onClick={onCirfirm}>Confirm</IonButton>
 
             <IonButton color="danger" onClick={() => setShowDeleteAlert(true)}>
               Remove this Member

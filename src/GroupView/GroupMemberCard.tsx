@@ -1,18 +1,12 @@
 import {
-  IonAlert,
   IonButton,
-  IonButtons,
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonHeader,
   IonIcon,
   IonLabel,
   IonModal,
-  IonPage,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import { paperPlaneOutline, mailOutline, createOutline } from "ionicons/icons";
 import { Member } from "../types/Member";
