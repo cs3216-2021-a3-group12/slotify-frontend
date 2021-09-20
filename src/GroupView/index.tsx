@@ -6,6 +6,8 @@ import {
   IonButtons,
   IonLabel,
   IonButton,
+  IonHeader,
+  IonToolbar,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 
@@ -33,16 +35,19 @@ function GroupView() {
 
   return (
     <IonPage>
-      <div className="h-1/4">
-        <IonButtons slot="start" className="h-10">
-          <IonBackButton color="light" defaultHref="/home" className="pt-4" />
-        </IonButtons>
-        <img
-          className="group-banner-img -mt-10"
-          alt="Group Banner"
-          src={group.banner_url}
-        />
-      </div>
+      <IonHeader mode="ios" translucent={true} className="ion-no-border">
+        <IonToolbar>
+          <IonButtons slot="start" className="h-10">
+            <IonBackButton color="primary" defaultHref="/home" />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <img
+        className="group-banner-img "
+        alt="Group Banner"
+        src={group.banner_url}
+      />
+
       <div className="m-4 text-center">
         <IonLabel className="text-2xl font-bold">{group.name}</IonLabel>
         <div className="flex flex-row justify-around items-center mt-3">
@@ -52,10 +57,10 @@ function GroupView() {
           </IonButton>
         </div>
       </div>
-      <div>
+      <div className="px-3">
         <IonSegment
           mode="ios"
-          className="group-view-segment m"
+          className="group-view-segment"
           value={selectedSegment}
           onIonChange={changeSegment}
         >

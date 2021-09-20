@@ -38,7 +38,7 @@ const testMembers = [
     userId: 1,
     name: "John Major",
     tagId: 1,
-    tagName: "Admin",
+    tagName: "Junior",
     isAdmin: false,
   },
   {
@@ -46,11 +46,11 @@ const testMembers = [
     name: "Ed Sheeran",
     tagId: 2,
     tagName: "Junior",
-    isAdmin: false,
+    isAdmin: true,
   },
   {
     userId: 3,
-    name: "Ariana Grande",
+    name: "Ariana Grande very long name",
     tagId: 3,
     tagName: "Senior",
     isAdmin: false,

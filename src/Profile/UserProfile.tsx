@@ -36,7 +36,7 @@ const UserProfile: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="text-center" scrollY={false}>
+      <IonContent className="text-center">
         <div className="flex flex-col items-center">
           <IonLabel className="text-5xl font-serif">John Wick</IonLabel>
         </div>

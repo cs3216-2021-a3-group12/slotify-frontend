@@ -34,8 +34,7 @@ export default GroupAbout;
 const testGroup = {
   id: 1,
   name: "Group Name 1",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Condimentum amet, enim sit cursus metus, imperdiet tortor volutpat. Turpis donec donec egestas enim, risus at quis ultrices etiam. Fermentum tortor in amet lorem vitae tristique quis sit convallis. Lorem quam cursus dolor, et turpis.",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   category: {
     id: 1,
     name: "Category 1",
