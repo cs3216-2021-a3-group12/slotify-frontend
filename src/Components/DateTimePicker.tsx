@@ -25,7 +25,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   function onChange(event: CustomEvent<DatetimeChangeEventDetail>) {
     const text = event.detail.value as string;
     if (text !== undefined && onValueChange) {
-      console.log(new Date(text));
       onValueChange(new Date(text));
     }
   }
