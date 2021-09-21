@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 
-import SearchBar from "./SearchBar";
+import SearchBar from "../Components/SearchBar";
 import Tag from "../Components/Tag";
 
 import { StrippedGroup } from "../types/Group";

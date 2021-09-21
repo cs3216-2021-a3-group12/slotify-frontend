@@ -1,0 +1,20 @@
+/** Prompt Text */
+.group-about-text {
+  @apply text-center leading-none p-10;
+}
+.group-banner-img {
+  @apply h-1/4 w-full object-cover -mt-10;
+}
+
+/** Search Bar */
+ion-searchbar .searchbar-input-container {
+  @apply border-b border-indigo-500;
+}
+
+ion-searchbar .searchbar-input-container .searchbar-input {
+  @apply bg-transparent;
+}
+
+ion-searchbar .searchbar-input-container ion-icon {
+  --icon-color: theme(colors.indigo.500);
+}
