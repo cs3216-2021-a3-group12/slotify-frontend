@@ -9,7 +9,6 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
-  IonItem,
   IonList,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";

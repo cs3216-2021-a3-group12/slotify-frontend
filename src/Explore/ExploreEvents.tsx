@@ -23,6 +23,7 @@ export interface ExploreEventsProps {
 }
 
 function ExploreEvents() {
+  // eslint-disable-next-line
   const [isLoaded, setIsLoaded] = useState(false);
   const [events, setEvents] = useState<StrippedEvent[]>([]);
   const [displayedEvents, setDisplayedEvents] = useState<StrippedEvent[]>([]);
@@ -78,7 +79,7 @@ function ExploreEvents() {
             <Link to={`/events/${event.id}`}>
               <IonCard
                 key={idx}
-                className="rounded-2xl w-auto h-28 mt-3 flex justify-between"
+                className="rounded-2xl w-auto h-32 mt-3 flex justify-between"
               >
                 <div className="h-full w-1/3">
                   <img
@@ -88,12 +89,12 @@ function ExploreEvents() {
                   />
                 </div>
 
-                <div className="w-2/3 p-3">
-                  <IonCardContent className="text-left p-0">
+                <div className="w-2/3 p-3 flex flex-col justify-center">
+                  <IonCardContent className="text-left p-0 text-base sm:text-xs md:text-sm ">
                     <p className="text-indigo-500">{getTimeDateText(event)}</p>
                   </IonCardContent>
                   <IonCardHeader className="w-full text-left p-0">
-                    <IonCardTitle className="text-lg leading-1 line-clamp-2">
+                    <IonCardTitle className="text-lg sm:text-base leading-1 line-clamp-2">
                       {event.title}
                     </IonCardTitle>
                     <IonCardSubtitle className="flex items-center">
@@ -116,41 +117,3 @@ function ExploreEvents() {
 }
 
 export default ExploreEvents;
-
-const testEvents = [
-  {
-    id: "id-1",
-    name: "Event Name 1",
-    datetime: "Time 1",
-    location: "Location 1",
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: "id-2",
-    name: "Event Name 2",
-    datetime: "Time 2",
-    location: "Location 2",
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: "id-3",
-    name: "Event Name 3",
-    datetime: "Time 3",
-    location: "Location 3",
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: "id-3",
-    name: "Event Name 3",
-    datetime: "Time 3",
-    location: "Location 3",
-    imgUrl: "https://picsum.photos/200",
-  },
-  {
-    id: "id-3",
-    name: "Event Name 3",
-    datetime: "Time 3",
-    location: "Location 3",
-    imgUrl: "https://picsum.photos/200",
-  },
-];

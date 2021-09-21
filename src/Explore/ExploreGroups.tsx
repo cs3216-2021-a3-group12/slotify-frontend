@@ -1,16 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-  IonChip,
-  IonLabel,
-  IonCardTitle,
-  IonContent,
-  IonIcon,
-  IonList,
-} from "@ionic/react";
+import { IonCard, IonChip, IonContent, IonIcon, IonList } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 
 import SearchBar from "../Components/SearchBar";
@@ -111,7 +101,7 @@ function ExploreGroups() {
             return (
               <Link to={`/groups/${group.id}`}>
                 <IonCard
-                  className="rounded-2xl h-28 w-auto mt-3 flex"
+                  className="rounded-2xl h-32 w-auto mt-3 flex"
                   key={idx}
                 >
                   <div className="w-1/3">

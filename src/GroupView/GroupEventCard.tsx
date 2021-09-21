@@ -6,7 +6,7 @@ import {
   IonCardTitle,
   IonIcon,
 } from "@ionic/react";
-import { timeOutline, locationOutline } from "ionicons/icons";
+import { locationOutline } from "ionicons/icons";
 import moment from "moment";
 
 import { StrippedEvent } from "../types/Event";

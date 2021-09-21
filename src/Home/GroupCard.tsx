@@ -1,11 +1,4 @@
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardContent,
-  IonChip,
-  IonLabel,
-} from "@ionic/react";
+import { IonCard } from "@ionic/react";
 import Tag from "../Components/Tag";
 import { StrippedGroup } from "../types/Group";
 
@@ -20,16 +13,6 @@ function GroupCard({ group }: { group: StrippedGroup }) {
         />
       </div>
 
-      {/* <div className="w-2/3 flex flex-col justify-center p-3">
-        <IonCardHeader className="w-full text-left p-0">
-          <IonCardSubtitle className="truncate">{group.name}</IonCardSubtitle>
-        </IonCardHeader>
-        <IonCardContent className="text-left p-0">
-          <IonChip color="primary">
-            <IonLabel color="primary">{group.category.name}</IonLabel>
-          </IonChip>
-        </IonCardContent>
-      </div> */}
       <div className="w-2/3 h-full p-3">
         <div className="h-1/2 flex items-center">
           <p className="font-bold line-clamp-2">{group.name}</p>

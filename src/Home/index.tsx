@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   IonContent,
   IonSlide,
@@ -14,22 +15,23 @@ import {
   IonRouterLink,
   IonLabel,
 } from "@ionic/react";
-import { StrippedEvent } from "../types/Event";
+import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
+import axios from "axios";
+
 import EventCard from "./EventCard";
 import GroupCard from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
-import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
-import { Link, useHistory } from "react-router-dom";
 import AddCard from "../Components/AddCard";
 import { useAuthState } from "../AuthContext";
-import axios from "axios";
 import { StrippedGroup } from "../types/Group";
+import { StrippedEvent } from "../types/Event";
 
 function Home() {
   const userDetails = useAuthState();
   const history = useHistory();
 
   const [name, setName] = useState("");
+  // eslint-disable-next-line
   const [events, setEvents] = useState<StrippedEvent[]>([]);
   const [groups, setGroups] = useState<StrippedGroup[]>([]);
   useEffect(() => {
@@ -47,7 +49,7 @@ function Home() {
       console.log(eventsRes.data);
       setGroups(groupsRes.data.results);
     });
-  }, [userDetails.username]);
+  }, [userDetails.username, userDetails.accessToken]);
   return (
     <IonPage id="main">
       <IonHeader className="ion-no-border h-1/5">

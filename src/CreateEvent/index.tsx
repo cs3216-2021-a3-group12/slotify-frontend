@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { useHistory, useRouteMatch } from "react-router";
 import {
   IonTitle,
   IonToolbar,
@@ -14,24 +15,23 @@ import {
 } from "@ionic/react";
 import {
   lockOpenOutline,
-  peopleOutline,
   reorderFourOutline,
   timeOutline,
   locationOutline,
   bookmarkOutline,
 } from "ionicons/icons";
+import axios from "axios";
 
 import TextArea from "../Components/TextArea";
 import TextInput from "../Components/TextInput";
 import DateTimePicker from "../Components/DateTimePicker";
 import Checkbox from "../Components/Checkbox";
 import ImageUploadInput from "../Components/ImageUploadInput";
-import NumberStepInput from "../Components/NumberStepInput";
-import { useRouteMatch } from "react-router";
 import EventSlots from "./EventSlots";
 import { useAuthState } from "../AuthContext";
 
 function CreateEvent() {
+  const history = useHistory();
   const userDetails = useAuthState();
   const { groupId } = useRouteMatch().params as { groupId: number };
 
@@ -53,11 +53,6 @@ function CreateEvent() {
   function onImageChange(imageSrc: string, fileName: string) {
     setImageSrc(imageSrc);
     setImageFileName(fileName);
-  }
-  function getDateString(date: Date) {
-    return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${(
-      "0" + date.getDate()
-    ).slice(-2)}`;
   }
 
   async function onCreateClick() {
@@ -102,7 +97,6 @@ function CreateEvent() {
       }
     }
     // create slots dictionary
-    // TODO: tag id as key
     var slots: { [tag: string]: number } = {};
     if (isPublic && publicSlots) slots["Public"] = publicSlots;
     if (memberSlots) slots["Members"] = memberSlots;
@@ -119,14 +113,25 @@ function CreateEvent() {
       console.log(pair[0] + ", " + pair[1]);
     }
 
-    fetch(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
-      headers: {
-        Authorization: `Bearer ${userDetails.accessToken}`,
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {});
+    axios
+      .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+        body: formData,
+      })
+      .then((res) => {
+        if (res.data.id) {
+          history.push(`/events/${res.data.id}`);
+        }
+      })
+      .catch((err) => {
+        if (err.response.data) {
+          console.error(err.response.data);
+        } else {
+          console.error(err);
+        }
+      });
   }
 
   return (
@@ -241,7 +246,6 @@ function CreateEvent() {
             value={juniorSlots}
             onValueChange={setJuniorSlots}
             min={0}
-            max={publicSlots - seniorSlots}
           />
 
           <EventSlots
@@ -251,7 +255,6 @@ function CreateEvent() {
             value={seniorSlots}
             onValueChange={setSeniorSlots}
             min={0}
-            max={publicSlots - juniorSlots}
           />
           <IonItem>
             <p>
