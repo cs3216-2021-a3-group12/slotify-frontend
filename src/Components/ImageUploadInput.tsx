@@ -3,6 +3,7 @@ import { imageOutline } from "ionicons/icons";
 import { ChangeEvent, useRef } from "react";
 
 type ImageUploadInputProps = {
+  color?: string;
   imgSrc?: string;
   onImgSrcChange?: (imgSrc: string, fileName: string) => void;
   promptText?: string;

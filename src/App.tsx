@@ -13,6 +13,7 @@ import ChangePassword from "./Profile/ChangePassword";
 import Home from "./Home";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
+import CreateEvent from "./CreateEvent";
 import usePageTracking from "./Components/usePageTracking";
 import GroupView from "./GroupView";
 
@@ -22,7 +23,8 @@ function App() {
     <div id="app">
       <IonApp>
         <SideMenu />
-        <IonRouterOutlet id="main" mode="md">
+        <IonRouterOutlet id="main">
+          <Route path="/event/create" component={CreateEvent}></Route>
           <Route path="/group/create" component={CreateGroup}></Route>
           <Route path="/profile/editprofile" component={EditProfile}></Route>
           <Route

@@ -32,7 +32,7 @@ const UserProfile: React.FC = () => {
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonButtons>
-            <IonBackButton color="primary" />
+            <IonBackButton color="primary" defaultHref="/home" />
           </IonButtons>
         </IonToolbar>
       </IonHeader>

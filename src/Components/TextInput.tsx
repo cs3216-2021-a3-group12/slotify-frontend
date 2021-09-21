@@ -4,6 +4,7 @@ import { IonIcon, IonInput, IonItem } from "@ionic/react";
 type TextInputProps = {
   type?: TextFieldTypes;
   outline?: boolean;
+  color?: string;
   errorValue?: string;
   icon: string;
   value?: string;
@@ -15,6 +16,7 @@ type TextInputProps = {
 const TextInput: React.FC<TextInputProps> = ({
   type = undefined,
   outline = false,
+  color,
   errorValue,
   icon,
   value,
@@ -33,7 +35,7 @@ const TextInput: React.FC<TextInputProps> = ({
       <IonItem
         className={`${outline ? "border-gray-200 border-2 rounded-xl" : ""}`}
       >
-        <IonIcon slot="start" icon={icon} />
+        <IonIcon slot="start" color={color} icon={icon} />
 
         <IonInput
           type={type}
