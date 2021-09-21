@@ -62,7 +62,7 @@ const ManageMembership: React.FC<{
 
         <div>
           <div className="flex flex-col gap-5 p-10 items-center">
-            <div className="flex items-center justify-between">
+            <div className="w-full flex items-center justify-between">
               <IonLabel className="text-xl text-left font-mono font-bold">
                 Admin Status:
               </IonLabel>
@@ -84,7 +84,7 @@ const ManageMembership: React.FC<{
                 ? "Remove Admin Privilege"
                 : "Change to Admin"}
             </IonButton>
-            <div className="flex items-center justify-between">
+            <div className="w-full flex items-center justify-between">
               <IonLabel className="text-xl text-left font-mono font-bold">
                 Current Tag:
               </IonLabel>
