@@ -11,6 +11,7 @@ import EditProfile from "./Profile/EditProfile";
 import UserProfile from "./Profile/UserProfile";
 import ChangePassword from "./Profile/ChangePassword";
 import Home from "./Home";
+import Event from "./Event";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
 import CreateEvent from "./CreateEvent";
@@ -42,6 +43,8 @@ function App() {
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <AuthRoute path="/group1" component={GroupView}></AuthRoute>
           <Route path="/signup" component={Signup}></Route>
+          <AuthRoute path="/explore" component={Explore}></AuthRoute>
+          <AuthRoute path="/events/:id" component={Event}></AuthRoute>
           <Route
             path="/login"
             render={() =>

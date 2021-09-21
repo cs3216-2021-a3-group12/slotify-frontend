@@ -25,7 +25,7 @@ function Home() {
     setName("User Name");
     setEvents([
       {
-        id: "id-1",
+        id: "1",
         name: "Event Name 1",
         datetime: "Time 1",
         location: "Location 1",
@@ -81,8 +81,8 @@ function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} scrollEvents={true}>
-        <div className="h-80 flex flex-col">
-          <div className="p-3 h-12">
+        <div className="flex flex-col">
+          <div className="p-3 h-8">
             <span className="text-xl">Your Events</span>
           </div>
           <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
