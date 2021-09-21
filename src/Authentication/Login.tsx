@@ -19,7 +19,6 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
 
   function onLogin() {
-    console.log(email, password);
     loginUser(dispatch, {
       email: email,
       password: password,

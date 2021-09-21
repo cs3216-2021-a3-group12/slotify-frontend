@@ -5,11 +5,12 @@ import { addOutline } from "ionicons/icons";
 type AddCardProps = {
   label?: string;
   onClick?: MouseEventHandler<HTMLIonChipElement>;
+  [others: string]: any;
 };
 
-const AddCard: React.FC<AddCardProps> = ({ label, onClick }) => {
+const AddCard: React.FC<AddCardProps> = ({ label, onClick, ...others }) => {
   return (
-    <div className="p-2">
+    <div {...others}>
       <IonChip
         onClick={onClick}
         color="primary"
