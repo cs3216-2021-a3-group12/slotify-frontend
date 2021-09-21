@@ -2,7 +2,6 @@ import { Route, Redirect } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 
 import "@ionic/react/css/core.css";
-
 import "./index.css";
 
 import SideMenu from "./Components/SideMenu";
@@ -16,6 +15,7 @@ import Event from "./Event";
 import Explore from "./Explore";
 import CreateGroup from "./CreateGroup";
 import usePageTracking from "./Components/usePageTracking";
+import GroupView from "./GroupView";
 
 function App() {
   usePageTracking();
@@ -25,12 +25,13 @@ function App() {
         <SideMenu />
         <IonRouterOutlet id="main" mode="md">
           <Route path="/group/create" component={CreateGroup}></Route>
-          <Route path="/profile" component={UserProfile}></Route>
           <Route path="/profile/editprofile" component={EditProfile}></Route>
           <Route
             path="/profile/changepassword"
             component={ChangePassword}
           ></Route>
+          <Route path="/group1" component={GroupView}></Route>
+          <Route path="/profile" component={UserProfile}></Route>
           <Route path="/signup" component={Signup}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/explore" component={Explore}></Route>
