@@ -10,14 +10,19 @@ import {
   IonButton,
   IonIcon,
   IonButtons,
+  IonList,
 } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import EventCard from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
 import { personCircleOutline } from "ionicons/icons";
+import { useHistory } from "react-router-dom";
+import AddCard from "../Components/AddCard";
 
 function Home() {
+  const history = useHistory();
+
   const [name, setName] = useState("");
   const [events, setEvents] = useState<StrippedEvent[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
@@ -100,9 +105,15 @@ function Home() {
           <div className="p-3 h-12">
             <span className="text-xl">Your Groups</span>
           </div>
-          {groups.map((group) => {
-            return <GroupCard key={group.id} group={group} />;
-          })}
+          <IonList>
+            {groups.map((group) => {
+              return <GroupCard key={group.id} group={group} />;
+            })}
+            <AddCard
+              label="Create a group"
+              onClick={() => history.push("/group/create")}
+            />
+          </IonList>
         </div>
       </IonContent>
     </IonPage>
