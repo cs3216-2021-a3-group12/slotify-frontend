@@ -1,6 +1,5 @@
 import {
   IonCard,
-  IonContent,
   IonCardHeader,
   IonCardSubtitle,
   IonIcon,
@@ -11,16 +10,16 @@ import { StrippedEvent } from "../types/Event";
 
 function EventCard({ event }: { event: StrippedEvent }) {
   return (
-    <IonCard className="rounded-2xl w-full h-full">
-      <div className="w-full h-3/5 flex flex-col items-stretch">
+    <IonCard
+      className="rounded-2xl w-full h-full"
+      routerLink={`/events/${event.id}`}
+    >
+      <div className="flex flex-col items-stretch">
         <img
           className="p-2 w-auto object-fill rounded-2xl"
           alt="Event"
           src={event.imgUrl}
         />
-      </div>
-
-      <IonContent className="h-2/5" scrollY={false}>
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
             {event.name}
@@ -34,7 +33,7 @@ function EventCard({ event }: { event: StrippedEvent }) {
             <span>{event.location}</span>
           </IonCardSubtitle>
         </IonCardHeader>
-      </IonContent>
+      </div>
     </IonCard>
   );
 }

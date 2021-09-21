@@ -5,6 +5,7 @@ import {
   IonToolbar,
   IonSegment,
   IonTitle,
+  IonButtons,
   IonSegmentButton,
   IonLabel,
   IonContent,
@@ -16,16 +17,21 @@ import {
   IonRow,
   IonIcon,
   IonChip,
+  IonMenuButton,
 } from "@ionic/react";
 
 import { calendarOutline, earthOutline, mapOutline } from "ionicons/icons";
 import { useState } from "react";
 import SegmentPanel from "../Components/SegmentPanel";
-import { MenuButton } from "../Components/SideMenu";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import Slot, { SlotStatus } from "./Slot";
+import { RouteComponentProps } from "react-router";
 
-const Event: React.FC = () => {
+interface UserDetailPageProps
+  extends RouteComponentProps<{
+    id: string;
+  }> {}
+const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [selectedSegment, setSelectedSegment] = useState("signUp");
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
@@ -33,7 +39,7 @@ const Event: React.FC = () => {
     if (value) setSelectedSegment(value);
   }
   const event = {
-    id: "id-1",
+    id: match.params.id,
     name: "Weekly Practice",
     date: "21 September 2021",
     time: "16:00 - 18:30",
@@ -50,78 +56,81 @@ const Event: React.FC = () => {
     {
       tag: "junior",
       remainingSlots: 10,
-      status: SlotStatus.Signup,
     },
     {
       tag: "senior",
-      remainingSlots: 10,
-      status: SlotStatus.Waitlisted,
+      remainingSlots: 0,
     },
   ];
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
-          <MenuButton slot="start" />
-          <IonTitle className="text-2xl">Event Details</IonTitle>
+          <IonButtons>
+            <IonMenuButton />
+            <IonTitle className="text-2xl">Event Details</IonTitle>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <div
         style={{ background: `url(${event.imgUrl})` }}
-        className="h-40"
+        className="h-36 bg-cover"
       ></div>
-      <IonList lines="none">
-        <IonItem>
+      <IonContent>
+        <IonItem lines="none">
           <div className="flex mx-auto">
-            <IonChip outline={true} className="shadow">
-              +10 Going
+            <IonChip outline={true} className="shadow h-10">
+              <IonLabel>+10 Going</IonLabel>
+              <IonButton size="small" shape="round">
+                Admin
+              </IonButton>
             </IonChip>
           </div>
         </IonItem>
-        <IonItem className="text-2xl font-bold">{event.name}</IonItem>
-        <IonItem>
-          <IonThumbnail slot="start">
-            <IonImg
-              src={group.bannerUrl}
-              alt="group banner"
-              className="rounded-md"
-            />
-          </IonThumbnail>
-          <IonGrid>
-            <IonRow>
-              <IonLabel className="font-bold">{group.name}</IonLabel>
-            </IonRow>
-            <IonRow>
-              <IonLabel className="text-xs">Organizing Group</IonLabel>
-            </IonRow>
-          </IonGrid>
-          <IonButton slot="end" color="secondary" fill="outline">
-            View Group
-          </IonButton>
-        </IonItem>
-        <IonItem>
-          <IonIcon icon={calendarOutline} className="pr-3" />
-          <IonGrid>
-            <IonRow>
-              <IonLabel>{event.date}</IonLabel>
-            </IonRow>
-            <IonRow>
-              <IonLabel className="text-sm">{event.time}</IonLabel>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-        <IonItem>
-          <IonIcon icon={mapOutline} className="pr-3" />
-          <IonLabel>{event.location}</IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonIcon icon={earthOutline} className="pr-3" />
-          <IonLabel>
-            {event.isPublic ? "Public Event" : "Private Event"}
-          </IonLabel>
-        </IonItem>
-      </IonList>
-      <IonContent>
+        <IonList lines="none">
+          <IonItem className="text-2xl font-bold">{event.name}</IonItem>
+          <IonItem>
+            <IonThumbnail slot="start">
+              <IonImg
+                src={group.bannerUrl}
+                alt="group banner"
+                className="rounded-md"
+              />
+            </IonThumbnail>
+            <IonGrid>
+              <IonRow>
+                <IonLabel className="font-bold text-sm">{group.name}</IonLabel>
+              </IonRow>
+              <IonRow>
+                <IonLabel className="text-xs">Organizing Group</IonLabel>
+              </IonRow>
+            </IonGrid>
+            <IonButton slot="end" size="small" color="secondary" fill="outline">
+              View
+            </IonButton>
+          </IonItem>
+          <IonItem>
+            <IonIcon icon={calendarOutline} className="pr-3" color="" />
+            <IonGrid>
+              <IonRow>
+                <IonLabel>{event.date}</IonLabel>
+              </IonRow>
+              <IonRow>
+                <IonLabel className="text-sm">{event.time}</IonLabel>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+          <IonItem>
+            <IonIcon icon={mapOutline} className="pr-3" />
+            <IonLabel>{event.location}</IonLabel>
+          </IonItem>
+          <IonItem>
+            <IonIcon icon={earthOutline} className="pr-3" />
+            <IonLabel>
+              {event.isPublic ? "Public Event" : "Private Event"}
+            </IonLabel>
+          </IonItem>
+        </IonList>
         <IonSegment
           mode="ios"
           value={selectedSegment}
@@ -146,7 +155,11 @@ const Event: React.FC = () => {
               <Slot
                 tag={slot.tag}
                 remainingSlots={slot.remainingSlots}
-                status={slot.status}
+                status={
+                  slot.remainingSlots > 0
+                    ? SlotStatus.Signup
+                    : SlotStatus.Waitlist
+                }
                 key={slot.tag}
               />
             ))}

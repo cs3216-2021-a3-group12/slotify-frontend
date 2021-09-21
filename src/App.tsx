@@ -35,7 +35,7 @@ function App() {
           <Route path="/login" component={Login}></Route>
           <Route path="/explore" component={Explore}></Route>
           <Route path="/home" component={Home}></Route>
-          <Route path="/event" component={Event}></Route>
+          <Route path="/events/:id" component={Event}></Route>
           <Route>
             <Redirect to="/home" />
           </Route>
