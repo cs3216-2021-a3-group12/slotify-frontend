@@ -16,13 +16,14 @@ import {
 } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import EventCard from "./EventCard";
-import GroupCard, { Group } from "./GroupCard";
+import GroupCard from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
 import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
 import { Link, useHistory } from "react-router-dom";
 import AddCard from "../Components/AddCard";
 import { useAuthState } from "../AuthContext";
 import axios from "axios";
+import { StrippedGroup } from "../types/Group";
 
 function Home() {
   const userDetails = useAuthState();
@@ -30,7 +31,7 @@ function Home() {
 
   const [name, setName] = useState("");
   const [events, setEvents] = useState<StrippedEvent[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<StrippedGroup[]>([]);
   useEffect(() => {
     setName(userDetails.username);
     const axios_instance = axios.create({
@@ -41,9 +42,10 @@ function Home() {
     });
     Promise.all([
       axios_instance.get("/events/my_events"),
-      axios_instance.get("/events/my_events"),
-    ]).then(([eventsRes]) => {
+      axios_instance.get("/groups/my"),
+    ]).then(([eventsRes, groupsRes]) => {
       console.log(eventsRes.data);
+      setGroups(groupsRes.data.results);
     });
   }, [userDetails.username]);
   return (
@@ -106,7 +108,11 @@ function Home() {
             </Link>
           </div>
           {groups.map((group) => {
-            return <GroupCard key={group.id} group={group} />;
+            return (
+              <Link to={`/groups/${group.id}`} key={group.id}>
+                <GroupCard group={group} />
+              </Link>
+            );
           })}
           <AddCard
             className="m-3"

@@ -1,45 +1,45 @@
 import {
-    IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardContent,
-    IonChip,
-    IonLabel,
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardContent,
+  IonChip,
+  IonLabel,
 } from "@ionic/react";
+import Tag from "../Components/Tag";
+import { StrippedGroup } from "../types/Group";
 
-export interface Group {
-    id: string;
-    name: string;
-    categoryId: string;
-    category: string;
-    imgUrl: string;
-}
+function GroupCard({ group }: { group: StrippedGroup }) {
+  return (
+    <IonCard className="rounded-2xl w-auto h-24 mt-3 flex justify-between">
+      <div className="h-full w-1/3">
+        <img
+          className="h-full w-full p-2 object-fill rounded-2xl"
+          alt="Group"
+          src={group.banner_url}
+        />
+      </div>
 
-function GroupCard({ group }: { group: Group }) {
-    return (
-        <IonCard className="rounded-2xl w-auto h-1/3 mt-3 flex justify-between">
-            <div className="h-full w-1/3">
-                <img
-                    className="h-full w-full p-2 object-fill rounded-2xl"
-                    alt="Group"
-                    src={group.imgUrl}
-                />
-            </div>
-
-            <div className="w-2/3 flex flex-col justify-center p-3">
-                <IonCardHeader className="w-full text-left p-0">
-                    <IonCardSubtitle className="truncate">
-                        {group.name}
-                    </IonCardSubtitle>
-                </IonCardHeader>
-                <IonCardContent className="text-left p-0">
-                    <IonChip color="primary">
-                        <IonLabel color="primary">{group.category}</IonLabel>
-                    </IonChip>
-                </IonCardContent>
-            </div>
-        </IonCard>
-    );
+      {/* <div className="w-2/3 flex flex-col justify-center p-3">
+        <IonCardHeader className="w-full text-left p-0">
+          <IonCardSubtitle className="truncate">{group.name}</IonCardSubtitle>
+        </IonCardHeader>
+        <IonCardContent className="text-left p-0">
+          <IonChip color="primary">
+            <IonLabel color="primary">{group.category.name}</IonLabel>
+          </IonChip>
+        </IonCardContent>
+      </div> */}
+      <div className="w-2/3 h-full p-3">
+        <div className="h-1/2 flex items-center">
+          <p className="font-bold line-clamp-2">{group.name}</p>
+        </div>
+        <div className="h-1/2 p-0 flex items-center">
+          <Tag color="primary" label={group.category.name} className="m-0" />
+        </div>
+      </div>
+    </IonCard>
+  );
 }
 
 export default GroupCard;

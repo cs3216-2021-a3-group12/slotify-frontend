@@ -42,7 +42,11 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
         )}
 
         {events.map((event) => {
-          return <GroupEventCard event={event} />;
+          return (
+            <Link to={`/events/${event.id}`}>
+              <GroupEventCard event={event} />
+            </Link>
+          );
         })}
       </div>
     </IonContent>

@@ -1,3 +1,5 @@
+import { useState, useEffect, Fragment } from "react";
+import { Link } from "react-router-dom";
 import {
   IonCard,
   IonCardHeader,
@@ -5,14 +7,16 @@ import {
   IonCardTitle,
   IonContent,
   IonList,
+  IonCardSubtitle,
+  IonIcon,
 } from "@ionic/react";
-import { useState, useEffect, Fragment } from "react";
+import { locationOutline } from "ionicons/icons";
+import axios from "axios";
+import moment from "moment";
+
 import { StrippedEvent } from "../types/Event";
 import SearchBar from "../Components/SearchBar";
-import axios from "axios";
 import eventPlaceholder from "../resources/event-placeholder.jpg";
-import moment from "moment";
-import { Link } from "react-router-dom";
 
 export interface ExploreEventsProps {
   events: StrippedEvent[];
@@ -89,9 +93,17 @@ function ExploreEvents() {
                     <p className="text-indigo-500">{getTimeDateText(event)}</p>
                   </IonCardContent>
                   <IonCardHeader className="w-full text-left p-0">
-                    <IonCardTitle className="text-lg">
+                    <IonCardTitle className="text-lg leading-1 line-clamp-2">
                       {event.title}
                     </IonCardTitle>
+                    <IonCardSubtitle className="flex items-center">
+                      <IonIcon
+                        icon={locationOutline}
+                        size="small"
+                        className="my-2"
+                      />
+                      {event.location}
+                    </IonCardSubtitle>
                   </IonCardHeader>
                 </div>
               </IonCard>
