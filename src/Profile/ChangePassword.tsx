@@ -5,6 +5,9 @@ import {
   IonButton,
   IonList,
   IonBackButton,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
 } from "@ionic/react";
 import { lockClosedOutline } from "ionicons/icons";
 import { useState } from "react";
@@ -19,11 +22,17 @@ const ChangePassword: React.FC = () => {
 
   return (
     <IonPage className="sm: mx-10 lg:mx-40">
-      <IonBackButton
-        color="primary"
-        defaultHref="/profile"
-        className="mx-4 w-10"
-      />
+      <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <IonButtons>
+            <IonBackButton
+              color="primary"
+              defaultHref="/profile"
+              className="mx-4 w-10"
+            />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
 
       <IonContent className="text-center">
         <IonLabel color="primary" className="text-5xl">
