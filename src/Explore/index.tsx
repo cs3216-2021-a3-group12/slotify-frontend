@@ -45,7 +45,7 @@ function Explore(props: any) {
         </p>
         <IonSegment
           mode="ios"
-          className="explore-segment"
+          className="w-1/2 mx-auto my-2"
           value={selectedSegment}
           onIonChange={changeSegment}
         >

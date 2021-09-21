@@ -112,7 +112,11 @@ function ExploreGroups() {
         {displayedGroups.length ? (
           displayedGroups.map((group, idx) => {
             return (
-              <IonCard className="explore-group-card" key={idx}>
+              <IonCard
+                routerLink={`/group/${group.id}`}
+                className="explore-group-card"
+                key={idx}
+              >
                 <div className="explore-group-card-img-div">
                   <img
                     className="explore-group-card-img"

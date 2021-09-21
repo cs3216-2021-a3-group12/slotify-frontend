@@ -2,43 +2,43 @@ import { useState, useEffect } from "react";
 import { IonContent, IonButton } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import GroupEventCard from "./GroupEventCard";
+import { Link } from "react-router-dom";
 
-function GroupEvents() {
+export interface GroupEventsProps {
+  groupId: number;
+}
+
+const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [events, setEvents] = useState<StrippedEvent[]>([]);
   useEffect(() => {
     setIsAdmin(true);
-    setEvents([
-      {
-        id: "id-1",
-        name: "Event Name 1",
-        datetime: "Time 1",
-        location: "Location 1",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-2",
-        name: "Event Name 2",
-        datetime: "Time 2",
-        location: "Location 2",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-3",
-        name: "Event Name 3",
-        datetime: "Time 3",
-        location: "Location 3",
-        imgUrl: "https://picsum.photos/200",
-      },
-    ]);
-  }, []);
+    fetch(`https://api.slotify.club/api/v1/events/?group=${groupId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.results) {
+          setEvents(data.results);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [groupId]);
   return (
     <IonContent>
       <div className="flex flex-col ">
         {isAdmin && (
-          <IonButton shape="round" className="mx-10 mt-4">
-            Create an Event
-          </IonButton>
+          <Link
+            className="mx-10 mt-4"
+            to={{
+              pathname: `/group/${groupId}/createEvent`,
+              state: { group: groupId },
+            }}
+          >
+            <IonButton shape="round" className="w-full">
+              Create an Event
+            </IonButton>
+          </Link>
         )}
 
         {events.map((event) => {
@@ -47,6 +47,6 @@ function GroupEvents() {
       </div>
     </IonContent>
   );
-}
+};
 
 export default GroupEvents;

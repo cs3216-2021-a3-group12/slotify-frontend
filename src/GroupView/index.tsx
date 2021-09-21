@@ -8,6 +8,7 @@ import {
   IonButton,
   IonHeader,
   IonToolbar,
+  IonContent,
 } from "@ionic/react";
 import { SegmentChangeEventDetail } from "@ionic/core";
 
@@ -15,22 +16,59 @@ import SegmentPanel from "../Components/SegmentPanel";
 import GroupViewSegmentButton from "./GroupViewSegmentButton";
 
 import "./GroupView.css";
-import { StrippedGroup } from "../types/Group";
+import { DetailedGroup } from "../types/Group";
 import GroupAbout from "./GroupAbout";
 import GroupEvents from "./GroupEvents";
 import GroupMembers from "./GroupMembers";
+import { RouteComponentProps } from "react-router-dom";
 
-function GroupView() {
+interface GroupViewProps
+  extends RouteComponentProps<{
+    id: string;
+  }> {}
+
+const GroupView: React.FC<GroupViewProps> = ({ match }) => {
+  const id = Number(match.params.id);
   const [selectedSegment, setSelectedSegment] = useState("about");
-  const [group, setGroup] = useState<StrippedGroup>(testGroup);
+  const [group, setGroup] = useState<DetailedGroup | undefined>(undefined);
 
   useEffect(() => {
-    setGroup(testGroup);
-  }, []);
+    fetch(`https://api.slotify.club/api/v1/groups/${id}/`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.id === id) {
+          setGroup(data);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [id]);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;
     if (value) setSelectedSegment(value);
+  }
+
+  if (!group) {
+    return (
+      <IonPage>
+        <IonHeader mode="ios" translucent={true} className="ion-no-border">
+          <IonToolbar>
+            <IonButtons slot="start" className="h-10">
+              <IonBackButton color="primary" defaultHref="/home" />
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <div className="w-full h-full flex items-center justify-center">
+            <IonLabel className="text-lg text-gray-400">
+              No group found.
+            </IonLabel>
+          </div>
+        </IonContent>
+      </IonPage>
+    );
   }
 
   return (
@@ -60,7 +98,6 @@ function GroupView() {
       <div className="px-3">
         <IonSegment
           mode="ios"
-          className="group-view-segment"
           value={selectedSegment}
           onIonChange={changeSegment}
         >
@@ -76,27 +113,16 @@ function GroupView() {
         </IonSegment>
       </div>
       <SegmentPanel value="about" selected={selectedSegment}>
-        <GroupAbout />
+        <GroupAbout group={group} />
       </SegmentPanel>
       <SegmentPanel value="events" selected={selectedSegment}>
-        <GroupEvents />
+        <GroupEvents groupId={group.id} />
       </SegmentPanel>
       <SegmentPanel value="members" selected={selectedSegment}>
         <GroupMembers />
       </SegmentPanel>
     </IonPage>
   );
-}
+};
 
 export default GroupView;
-
-const testGroup = {
-  id: 1,
-  name: "Group Name 1",
-  description: "This is About",
-  category: {
-    id: 1,
-    name: "Category 1",
-  },
-  banner_url: "https://picsum.photos/200",
-};

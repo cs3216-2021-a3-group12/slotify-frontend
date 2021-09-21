@@ -32,7 +32,7 @@ function Home() {
   const [groups, setGroups] = useState<Group[]>([]);
   useEffect(() => {
     setName(userDetails.username);
-  }, []);
+  }, [userDetails.username]);
   return (
     <IonPage id="main">
       <IonHeader className="ion-no-border h-1/5">

@@ -4,9 +4,9 @@
 }
 
 /** Segment */
-.explore-segment {
+/* .explore-segment {
   @apply w-1/2 rounded-full bg-gray-100 mx-auto my-2;
-}
+} */
 
 /** Segment Button */
 ion-segment-button.rounded-segment-button::part(indicator-background) {

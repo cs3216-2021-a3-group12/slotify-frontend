@@ -18,7 +18,6 @@ import {
   reorderFourOutline,
   timeOutline,
   locationOutline,
-  hourglassOutline,
   bookmarkOutline,
 } from "ionicons/icons";
 
@@ -28,8 +27,11 @@ import DateTimePicker from "../Components/DateTimePicker";
 import Checkbox from "../Components/Checkbox";
 import ImageUploadInput from "../Components/ImageUploadInput";
 import NumberStepInput from "../Components/NumberStepInput";
+import { useRouteMatch } from "react-router";
 
 function CreateEvent() {
+  const { groupId } = useRouteMatch().params as { groupId: number };
+
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState("");
   const [description, setDescription] = useState("");
@@ -44,8 +46,6 @@ function CreateEvent() {
   const [reserveSlots, setReserveSlots] = useState(false);
   const [juniorSlots, setJuniorSlots] = useState(0);
   const [seniorSlots, setSeniorSlots] = useState(0);
-  const [hasSignupDeadline, setHasSignupDeadline] = useState(false);
-  const [signupDeadline, setSignupDeadline] = useState<Date>(new Date());
 
   function onImageChange(imageSrc: string, fileName: string) {
     setImageSrc(imageSrc);
@@ -266,28 +266,6 @@ function CreateEvent() {
                 </p>
               </IonItem>
             </Fragment>
-          )}
-
-          <Checkbox
-            color="primary"
-            icon={hourglassOutline}
-            label="Sign up deadline"
-            checked={hasSignupDeadline}
-            onCheckChange={setHasSignupDeadline}
-            mode="ios"
-          />
-          {hasSignupDeadline && (
-            <DateTimePicker
-              outline={true}
-              color="primary"
-              icon={timeOutline}
-              label="Deadline"
-              value={signupDeadline}
-              onValueChange={setSignupDeadline}
-              displayFormat="YYYY-MM-DD HH:mmA"
-              min={getDateString(startTime)}
-              max="2025"
-            />
           )}
         </IonList>
         <IonButton className="w-5/6 my-8" onClick={onCreateClick}>
