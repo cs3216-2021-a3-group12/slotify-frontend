@@ -5,12 +5,15 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { IonReactRouter } from "@ionic/react-router";
+import { AuthProvider } from "./AuthContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <IonReactRouter>
-      <App />
-    </IonReactRouter>
+    <AuthProvider>
+      <IonReactRouter>
+        <App />
+      </IonReactRouter>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

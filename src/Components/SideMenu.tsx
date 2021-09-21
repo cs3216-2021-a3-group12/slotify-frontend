@@ -18,8 +18,14 @@ import {
   searchOutline,
   logOutOutline,
 } from "ionicons/icons";
+import { logout, useAuthDispatch } from "../AuthContext";
 
 function SideMenu() {
+  const dispatch = useAuthDispatch();
+
+  function onLogout() {
+    logout(dispatch);
+  }
   return (
     <IonMenu menuId="side-menu" contentId="main">
       <IonHeader>
@@ -42,7 +48,7 @@ function SideMenu() {
               <IonIcon icon={personCircleOutline} slot="start" />
               <IonLabel>Profile</IonLabel>
             </IonItem>
-            <IonItem href="/login">
+            <IonItem onClick={onLogout}>
               <IonIcon icon={logOutOutline} slot="start" />
               <IonLabel>Logout</IonLabel>
             </IonItem>
