@@ -18,6 +18,7 @@ import {
   IonIcon,
   IonChip,
   IonMenuButton,
+  IonModal,
 } from "@ionic/react";
 
 import { calendarOutline, earthOutline, mapOutline } from "ionicons/icons";
@@ -26,6 +27,7 @@ import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import Slot, { SlotStatus } from "./Slot";
 import { RouteComponentProps } from "react-router";
+import EventSignUps from "./EventSignUps";
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -33,6 +35,7 @@ interface UserDetailPageProps
   }> {}
 const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [selectedSegment, setSelectedSegment] = useState("signUp");
+  const [showModal, setShowModal] = useState(false);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;
@@ -81,7 +84,11 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
           <div className="flex mx-auto">
             <IonChip outline={true} className="shadow h-10">
               <IonLabel>+10 Going</IonLabel>
-              <IonButton size="small" shape="round">
+              <IonButton
+                size="small"
+                shape="round"
+                onClick={() => setShowModal(true)}
+              >
                 Admin
               </IonButton>
             </IonChip>
@@ -170,9 +177,24 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
             <IonItem>Some event descriptions</IonItem>
           </IonList>
         </SegmentPanel>
+        <IonModal
+          isOpen={showModal}
+          onDidDismiss={() => setShowModal(false)}
+          swipeToClose={true}
+        >
+          <EventSignUps event={testEvent} setShowModal={setShowModal} />
+        </IonModal>
       </IonContent>
     </IonPage>
   );
 };
 
 export default Event;
+
+const testEvent = {
+  id: "id-1",
+  name: "Weekly Practice",
+  datetime: "Time 1",
+  location: "Location 1",
+  imgUrl: "https://picsum.photos/200",
+};

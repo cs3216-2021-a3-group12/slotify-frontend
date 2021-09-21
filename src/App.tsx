@@ -41,7 +41,7 @@ function App() {
           ></AuthRoute>
           <AuthRoute path="/profile" component={UserProfile}></AuthRoute>
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
-          <AuthRoute path="/group1" component={GroupView}></AuthRoute>
+          <AuthRoute path="/groups/:id" component={GroupView}></AuthRoute>
           <Route path="/signup" component={Signup}></Route>
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <AuthRoute path="/events/:id" component={Event}></AuthRoute>
