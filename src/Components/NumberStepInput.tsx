@@ -51,9 +51,9 @@ const NumberStepInput: React.FC<NumberStepInputProps> = ({
     }
   }
   return (
-    <div className="flex w-40 items-stretch h-9" {...others}>
+    <div className="flex w-full items-stretch h-9" {...others}>
       <IonButtons className="bg-indigo-600 rounded-l-3xl w-1/3">
-        <IonButton className="w-full" onClick={onMinus}>
+        <IonButton className="full h-full m-0" onClick={onMinus}>
           <IonIcon icon={removeOutline} color="white" />
         </IonButton>
       </IonButtons>
@@ -64,7 +64,7 @@ const NumberStepInput: React.FC<NumberStepInputProps> = ({
         onIonChange={onChange}
       />
       <IonButtons className=" bg-indigo-600 rounded-r-3xl w-1/3">
-        <IonButton className="w-full" onClick={onAdd} type="button">
+        <IonButton className="w-full h-full m-0" onClick={onAdd} type="button">
           <IonIcon icon={addOutline} color="white" />
         </IonButton>
       </IonButtons>

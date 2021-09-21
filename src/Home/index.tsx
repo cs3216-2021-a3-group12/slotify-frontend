@@ -22,6 +22,7 @@ import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
 import { Link, useHistory } from "react-router-dom";
 import AddCard from "../Components/AddCard";
 import { useAuthState } from "../AuthContext";
+import axios from "axios";
 
 function Home() {
   const userDetails = useAuthState();
@@ -32,6 +33,18 @@ function Home() {
   const [groups, setGroups] = useState<Group[]>([]);
   useEffect(() => {
     setName(userDetails.username);
+    const axios_instance = axios.create({
+      baseURL: "https://api.slotify.club/api/v1",
+      headers: {
+        Authorization: `Bearer ${userDetails.accessToken}`,
+      },
+    });
+    Promise.all([
+      axios_instance.get("/events/my_events"),
+      axios_instance.get("/events/my_events"),
+    ]).then(([eventsRes]) => {
+      console.log(eventsRes.data);
+    });
   }, [userDetails.username]);
   return (
     <IonPage id="main">

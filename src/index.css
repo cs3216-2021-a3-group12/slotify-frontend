@@ -52,3 +52,7 @@ ion-icon {
 ion-segment {
   @apply rounded-full bg-gray-100;
 }
+
+ion-input {
+  --padding-start: 0 !important;
+}
