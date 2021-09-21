@@ -80,48 +80,55 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
             <IonBackButton color="primary" defaultHref="/home" />
           </IonButtons>
         </IonToolbar>
-      </IonHeader>
-      <IonList className=" -mt-10">
-        <div>
-          <div className=" h-40">
-            <img
-              className="h-full w-full object-cover "
-              alt="Group Banner"
-              src={group.banner_url}
-            />
-          </div>
+        <IonList className=" -mt-10">
+          <div>
+            <div className=" h-40">
+              <img
+                className="h-full w-full object-cover "
+                alt="Group Banner"
+                src={group.banner_url}
+              />
+            </div>
 
-          <div className="m-4 text-center">
-            <IonLabel className="text-2xl font-bold">{group.name}</IonLabel>
-            <div className="flex flex-row justify-around items-center mt-3">
-              <IonLabel className="font-bold">{group.category.name}</IonLabel>
-              <IonButton size="small" className="w-1/4">
-                Share
-              </IonButton>
+            <div className="m-4 text-center">
+              <IonLabel className="text-2xl font-bold">{group.name}</IonLabel>
+              <div className="flex flex-row justify-around items-center mt-3">
+                <IonLabel className="font-bold">{group.category.name}</IonLabel>
+                <IonButton size="small" className="w-1/4">
+                  Share
+                </IonButton>
+              </div>
+            </div>
+            <div className="px-3">
+              <IonSegment
+                mode="ios"
+                value={selectedSegment}
+                onIonChange={changeSegment}
+              >
+                <GroupViewSegmentButton
+                  value="about"
+                  selected={selectedSegment}
+                >
+                  ABOUT
+                </GroupViewSegmentButton>
+                <GroupViewSegmentButton
+                  value="events"
+                  selected={selectedSegment}
+                >
+                  EVENTS
+                </GroupViewSegmentButton>
+                <GroupViewSegmentButton
+                  value="members"
+                  selected={selectedSegment}
+                >
+                  MEMBERS
+                </GroupViewSegmentButton>
+              </IonSegment>
             </div>
           </div>
-          <div className="px-3">
-            <IonSegment
-              mode="ios"
-              value={selectedSegment}
-              onIonChange={changeSegment}
-            >
-              <GroupViewSegmentButton value="about" selected={selectedSegment}>
-                ABOUT
-              </GroupViewSegmentButton>
-              <GroupViewSegmentButton value="events" selected={selectedSegment}>
-                EVENTS
-              </GroupViewSegmentButton>
-              <GroupViewSegmentButton
-                value="members"
-                selected={selectedSegment}
-              >
-                MEMBERS
-              </GroupViewSegmentButton>
-            </IonSegment>
-          </div>
-        </div>
-      </IonList>
+        </IonList>
+      </IonHeader>
+
       <SegmentPanel value="about" selected={selectedSegment}>
         <GroupAbout group={group} />
       </SegmentPanel>

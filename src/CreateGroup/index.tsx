@@ -1,81 +1,61 @@
-import { useRef, useState } from "react";
+import { useHistory } from "react-router";
 import {
   IonTitle,
   IonToolbar,
   IonPage,
   IonHeader,
   IonContent,
-  IonSlides,
-  IonSlide,
   IonBackButton,
   IonButtons,
 } from "@ionic/react";
+import axios from "axios";
 
-import GroupForm from "./GroupForm";
-import GroupReview from "./GroupReview";
-import GroupDone from "./GroupDone";
 import { CreateGroupDetails } from "../types/Group";
+import GroupForm from "./GroupForm";
+import { useAuthState } from "../AuthContext";
 
 function CreateGroup() {
-  const slidersRef = useRef<HTMLIonSlidesElement>(null);
-  const [groupDetails, setGroupDetails] = useState<
-    CreateGroupDetails | undefined
-  >(undefined);
-  const [groupId, setGroupId] = useState<number | undefined>(undefined);
+  const userDetails = useAuthState();
+  const history = useHistory();
 
-  function onFormNext(group: CreateGroupDetails) {
-    setGroupDetails(group);
-    slideNext();
-  }
-
-  function slidePrevious() {
-    if (slidersRef.current) slidersRef.current.slidePrev();
-  }
-  function slideNext() {
-    if (slidersRef.current) slidersRef.current.slideNext();
-  }
-
-  async function createGroup() {
-    if (!groupDetails) return;
-
+  async function createGroup(group: CreateGroupDetails) {
     const formData = new FormData();
-    formData.append("name", groupDetails.name);
-    formData.append("description", groupDetails.description ?? "");
-    if (groupDetails.categoryId) {
-      formData.append("category", groupDetails.categoryId.toString());
+    formData.append("name", group.name);
+    formData.append("description", group.description ?? "");
+    if (group.categoryId) {
+      formData.append("category", group.categoryId.toString());
     }
-    if (groupDetails.imgBlob) {
-      const blob = await fetch(groupDetails.imgBlob)
+    if (group.imgBlob) {
+      const blob = await fetch(group.imgBlob)
         .then((res) => res.blob())
         .catch((err) => {
           console.error(err);
         });
       if (blob) {
         console.log(blob);
-        formData.append(
-          "banner_url",
-          blob,
-          groupDetails.imgFileName ?? "banner.jpg"
-        );
+        formData.append("banner_url", blob, group.imgFileName ?? "banner.jpg");
       }
     }
 
-    // TODO: Authorization flow
-    fetch("https://api.slotify.club/api/v1/groups/new", {
-      method: "POST",
-      headers: {
-        Authorization:
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjMyNTA0OTI1LCJqdGkiOiI1MjliMTg0ZjBhYjk0YWZhOTBhODc1YTYxNGI0NzhmNCIsInVzZXJfaWQiOjF9.hRpTrSU8J9b0mETwRrIwJFvHRot_qWbWZCoWKvP8CRo",
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setGroupId(data.id);
-        slideNext();
+    axios
+      .post("https://api.slotify.club/api/v1/groups/new", formData, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.data.id) {
+          console.log(res.data);
+          history.replace(`/groups/${res.data.id}`);
+        }
       })
       .catch((err) => {
-        console.error(err);
+        if (err.response.data) {
+          console.error(err.response.data);
+        } else {
+          console.error(err);
+        }
       });
   }
 
@@ -91,27 +71,7 @@ function CreateGroup() {
       </IonHeader>
 
       <IonContent className="text-center">
-        <IonSlides
-          ref={slidersRef}
-          options={{ allowTouchMove: false, autoHeight: true }}
-          className="w-full h-auto min-h-full"
-        >
-          <IonSlide>
-            <GroupForm submitButtonLabel="Next" onSubmit={onFormNext} />
-          </IonSlide>
-          <IonSlide>
-            {groupDetails && (
-              <GroupReview
-                group={groupDetails}
-                onBack={slidePrevious}
-                onCreate={createGroup}
-              />
-            )}
-          </IonSlide>
-          <IonSlide>
-            <GroupDone groupId={groupId} gotoGroup={slidePrevious} />
-          </IonSlide>
-        </IonSlides>
+        <GroupForm submitButtonLabel="Create" onSubmit={createGroup} />
       </IonContent>
     </IonPage>
   );
