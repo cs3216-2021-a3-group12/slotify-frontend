@@ -31,7 +31,7 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
           <Link
             className="mx-10 mt-4"
             to={{
-              pathname: `/group/${groupId}/createEvent`,
+              pathname: `/groups/${groupId}/createEvent`,
               state: { group: groupId },
             }}
           >

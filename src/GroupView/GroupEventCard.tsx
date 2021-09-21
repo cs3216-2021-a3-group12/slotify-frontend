@@ -15,18 +15,18 @@ function GroupEventCard({ event }: { event: StrippedEvent }) {
         <img
           className="h-full w-full p-2 object-fill rounded-2xl"
           alt="Group"
-          src={event.imgUrl}
+          src={event.image_url}
         />
       </div>
 
       <div className="w-2/3 flex flex-col justify-center p-3">
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
-            {event.name}
+            {event.title}
           </IonCardTitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={timeOutline} className="m-1" />
-            <span>{event.datetime}</span>
+            <span>{event.start_date_time}</span>
           </IonCardSubtitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={locationOutline} className="m-1" />

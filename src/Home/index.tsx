@@ -111,7 +111,7 @@ function Home() {
           <AddCard
             className="m-3"
             label="Create a group"
-            onClick={() => history.push("/group/create")}
+            onClick={() => history.push("/createGroup")}
           />
         </IonList>
       </IonContent>

@@ -18,15 +18,15 @@ function EventCard({ event }: { event: StrippedEvent }) {
         <img
           className="p-2 w-auto object-fill rounded-2xl"
           alt="Event"
-          src={event.imgUrl}
+          src={event.image_url}
         />
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
-            {event.name}
+            {event.title}
           </IonCardTitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={timeOutline} className="m-1" />
-            <span>{event.datetime}</span>
+            <span>{event.end_date_time}</span>
           </IonCardSubtitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={locationOutline} className="m-1" />

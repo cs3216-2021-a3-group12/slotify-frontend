@@ -29,15 +29,18 @@ function App() {
       <IonApp>
         <SideMenu />
         <IonRouterOutlet id="main">
-          <AuthRoute path="/group/create" component={CreateGroup}></AuthRoute>
-
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <AuthRoute
-            path="/group/:groupId/createEvent"
+            path="/groups/:groupId/createEvent"
             component={CreateEvent}
           ></AuthRoute>
-          <AuthRoute exact path="/group/:id" component={GroupView}></AuthRoute>
+          <AuthRoute exact path="/groups/:id" component={GroupView}></AuthRoute>
           <AuthRoute path="/events/:id" component={Event}></AuthRoute>
+          <AuthRoute
+            exact
+            path="/createGroup"
+            component={CreateGroup}
+          ></AuthRoute>
           <AuthRoute
             path="/profile/editprofile"
             component={EditProfile}
