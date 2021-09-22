@@ -50,10 +50,23 @@ ion-icon {
 }
 
 ion-segment {
-  @apply rounded-full bg-gray-100;
+  @apply rounded-full bg-gray-100 !important;
 }
 
 ion-input {
   --padding-start: 0 !important;
   --padding-end: 0 !important;
+}
+
+/** Search Bar */
+ion-searchbar .searchbar-input-container {
+  @apply border-b border-indigo-500 !important;
+}
+
+ion-searchbar .searchbar-input-container .searchbar-input {
+  @apply bg-transparent !important;
+}
+
+ion-searchbar .searchbar-input-container ion-icon {
+  --icon-color: theme(colors.indigo.500) !important;
 }

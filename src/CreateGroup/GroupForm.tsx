@@ -8,36 +8,50 @@ import TextInput from "../Components/TextInput";
 import TextArea from "../Components/TextArea";
 import Tag from "../Components/Tag";
 import React from "react";
-import { CreateGroupDetails } from "../types/Group";
+import { GroupFormDetails } from "../types/Group";
+import axios from "axios";
 
 type GroupFormProps = {
+  group?: {
+    name: string;
+    description: string;
+    selectedCategoryId: string;
+    imageSrc?: string;
+  };
   submitButtonLabel: string;
-  onSubmit: (group: CreateGroupDetails) => void;
+  onSubmit: (group: GroupFormDetails) => void;
   [other: string]: any;
 };
 
 const GroupForm: React.FC<GroupFormProps> = ({
+  group,
   submitButtonLabel,
   onSubmit,
 }) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(group?.name || "");
   const [nameError, setNameError] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(group?.description || "");
   const [descriptionError, setDescriptionError] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    group?.selectedCategoryId ?? -1
+  );
   const [categoryError, setCategoryError] = useState("");
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState(group?.imageSrc || "");
   const [imageFileName, setImageFileName] = useState("");
 
   useEffect(() => {
-    fetch("https://api.slotify.club/api/v1/groups/categories/?format=json")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.results);
-        const defaultCategory = data.results.at(-1);
-        if (defaultCategory) setSelectedCategoryId(defaultCategory.id);
+    axios
+      .get("https://api.slotify.club/api/v1/groups/categories/")
+      .then((res) => {
+        const results = res.data.results;
+        setCategories(results);
+        if (selectedCategoryId === -1) {
+          const defaultCategory = results.at(-1);
+          if (defaultCategory) setSelectedCategoryId(defaultCategory.id);
+        }
       });
+    // eslint-disable-next-line
   }, []);
 
   function onImageChange(imageSrc: string, fileName: string) {

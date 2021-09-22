@@ -1,5 +1,6 @@
 import { IonContent, IonButton } from "@ionic/react";
-import { useState, useEffect } from "react";
+import { Fragment } from "react";
+import { Link } from "react-router-dom";
 import { DetailedGroup } from "../types/Group";
 
 export interface GroupAboutProps {
@@ -7,21 +8,26 @@ export interface GroupAboutProps {
 }
 
 const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    setIsAdmin(true);
-  }, []);
-
   return (
     <IonContent>
-      <p className="group-about-text">{group.description}</p>
-      {isAdmin && (
-        <div className="flex flex-col mx-12">
-          <IonButton>Edit Group</IonButton>
-          <IonButton color="danger">Delete Group</IonButton>
-        </div>
-      )}
+      <p className="h-1/2 text-center leading-none p-10">{group.description}</p>
+      <div className="flex flex-col mx-12 h-1/2">
+        {group.is_admin ? (
+          <Fragment>
+            <Link
+              to={{
+                pathname: `/editGroup/${group.id}`,
+                state: { group: group },
+              }}
+            >
+              <IonButton className="w-full">Edit Group</IonButton>
+            </Link>
+            <IonButton color="danger">Delete Group</IonButton>
+          </Fragment>
+        ) : (
+          <IonButton>Request to Join</IonButton>
+        )}
+      </div>
     </IonContent>
   );
 };

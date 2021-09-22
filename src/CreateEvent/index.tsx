@@ -113,6 +113,7 @@ function CreateEvent() {
       console.log(pair[0] + ", " + pair[1]);
     }
 
+    console.log(userDetails.accessToken);
     axios
       .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
         headers: {
@@ -122,7 +123,7 @@ function CreateEvent() {
       })
       .then((res) => {
         if (res.data.id) {
-          history.push(`/events/${res.data.id}`);
+          history.replace(`/events/${res.data.id}`);
         }
       })
       .catch((err) => {
