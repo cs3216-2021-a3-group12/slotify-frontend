@@ -22,6 +22,7 @@ import axios from "axios";
 import { LoginData } from "../types/Login";
 import { capitalizeFirstLetter } from "../helper/string_helper";
 import { useHistory } from "react-router-dom";
+import { storeUserData } from "../helper/auth_helper";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -83,10 +84,6 @@ const Signup: React.FC = () => {
         console.log(error);
       });
   };
-
-  function storeUserData(loginData: LoginData) {
-    console.log("store user data and redirect", loginData);
-  }
 
   return (
     <IonPage className="sm: my-3 lg:mx-40">

@@ -8,12 +8,30 @@ import {
 import { mailOutline, lockClosedOutline } from "ionicons/icons";
 import { useState } from "react";
 import AuthField from "./AuthField";
+import { LoginData } from "../types/Login";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { storeUserData } from "../helper/auth_helper";
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   function loginUser() {
-    console.log(email, password);
+    axios
+      .post("/auth/login/", {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        const loginData = response.data as LoginData;
+        storeUserData(loginData);
+        history.push("/home");
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }
 
   return (

@@ -11,57 +11,37 @@ import {
   IonIcon,
   IonButtons,
 } from "@ionic/react";
-import { StrippedEvent } from "../types/Event";
+import { StrippedEvent, Event } from "../types/Event";
 import EventCard from "./EventCard";
 import GroupCard, { Group } from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
 import { personCircleOutline } from "ionicons/icons";
+import { axios_with_token_refresh } from "../helper/axios_helper";
+import { ACCESS } from "../types/Login";
 
 function Home() {
   const [name, setName] = useState("");
-  const [events, setEvents] = useState<StrippedEvent[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
+
+  const fetchEvents = () => {
+    axios_with_token_refresh
+      .get("/events/my_events", {
+        headers: { Authorization: `Bearer ${localStorage.getItem(ACCESS)}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setEvents(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
+    fetchEvents();
+
     setName("User Name");
-    setEvents([
-      {
-        id: "id-1",
-        name: "Event Name 1",
-        datetime: "Time 1",
-        location: "Location 1",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-2",
-        name: "Event Name 2",
-        datetime: "Time 2",
-        location: "Location 2",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-3",
-        name: "Event Name 3",
-        datetime: "Time 3",
-        location: "Location 3",
-        imgUrl: "https://picsum.photos/200",
-      },
-    ]);
-    setGroups([
-      {
-        id: "id-1",
-        name: "Group Name 1",
-        categoryId: "cid-1",
-        category: "Category 1",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-2",
-        name: "Group Name 2",
-        categoryId: "cid-2",
-        category: "Category 2",
-        imgUrl: "https://picsum.photos/200",
-      },
-    ]);
   }, []);
   return (
     <IonPage id="main">
