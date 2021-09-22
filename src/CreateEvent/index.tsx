@@ -112,7 +112,6 @@ function CreateEvent() {
     for (var pair of formData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
-
     axios
       .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
         headers: {
