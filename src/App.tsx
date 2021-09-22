@@ -41,12 +41,9 @@ function App() {
             path="/createGroup"
             component={CreateGroup}
           ></AuthRoute>
+          <AuthRoute path="/editprofile" component={EditProfile}></AuthRoute>
           <AuthRoute
-            path="/profile/editprofile"
-            component={EditProfile}
-          ></AuthRoute>
-          <AuthRoute
-            path="/profile/changepassword"
+            path="/changepassword"
             component={ChangePassword}
           ></AuthRoute>
           <AuthRoute path="/profile" component={UserProfile}></AuthRoute>
