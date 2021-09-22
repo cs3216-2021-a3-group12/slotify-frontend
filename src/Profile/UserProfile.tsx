@@ -31,7 +31,7 @@ const UserProfile: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.slotify.club/api/v1/auth/profile", {
+      .get("https://api.slotify.club/api/v1/auth/profile/", {
         headers: { Authorization: `Bearer ${userDetails.accessToken}` },
       })
       .then((profile) => {
@@ -40,7 +40,7 @@ const UserProfile: React.FC = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  });
 
   return (
     <IonPage>

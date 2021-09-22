@@ -3,7 +3,6 @@ import {
   IonPage,
   IonLabel,
   IonButton,
-  IonList,
   IonBackButton,
   IonHeader,
   IonToolbar,
@@ -11,7 +10,6 @@ import {
 } from "@ionic/react";
 import {
   personOutline,
-  mailOutline,
   idCardOutline,
   globeOutline,
   paperPlaneOutline,
@@ -19,9 +17,9 @@ import {
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { useAuthState } from "../AuthContext";
-import AuthField from "../Authentication/AuthField";
 import axios from "axios";
 import TextInput from "../Components/TextInput";
+import { Profile } from "../types/Profile";
 
 const EditProfile: React.FC = () => {
   const history = useHistory();
@@ -52,7 +50,7 @@ const EditProfile: React.FC = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [userDetails.accessToken]);
 
   async function onConfirm() {
     var hasError = false;
@@ -73,33 +71,29 @@ const EditProfile: React.FC = () => {
     setStudentNumError("");
     setNusnetIdError("");
 
-    // Create form data
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("email", email);
-    formData.append("student_number", student_number);
-    formData.append("nusnet_id", nusnet_id);
-    if (telegram_handle) {
-      formData.append("telegram_handle", telegram_handle);
-    }
-    editProfile(formData);
+    editProfile();
   }
 
-  function editProfile(formData: FormData) {
-    // @ts-ignore
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-    axios
-      .put(`https://api.slotify.club/api/v1/auth/profile`, {
-        headers: {
-          Authorization: `Bearer ${userDetails.accessToken}`,
-        },
-        body: formData,
-      })
+  function editProfile() {
+    const profile: Profile = {
+      username: username,
+      email: email,
+      student_number: student_number,
+      nusnet_id: nusnet_id,
+      telegram_handle: telegram_handle,
+    };
+    const requestOptions = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${userDetails.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile),
+    };
+    fetch("https://api.slotify.club/api/v1/auth/profile/", requestOptions)
       .then((res) => {
-        if (res.data) {
-          history.push(`/profile`);
+        if (res.ok) {
+          history.goBack();
         }
       })
       .catch((err) => {
