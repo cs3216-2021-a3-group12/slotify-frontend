@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonButton,
   IonGrid,
   IonIcon,
@@ -27,6 +28,7 @@ function Slot({ tag, remainingSlots, status }: SlotProps): JSX.Element {
   const history = useHistory();
 
   const [profile, setProfile] = useState<Profile>(emptyProfile);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   useEffect(() => {
     axios
@@ -43,7 +45,7 @@ function Slot({ tag, remainingSlots, status }: SlotProps): JSX.Element {
 
   function onClick() {
     if (!Boolean(profile.student_number) || !Boolean(profile.nusnet_id)) {
-      history.push("/profile/editprofile");
+      setShowDeleteAlert(true);
       return;
     }
 
@@ -71,6 +73,25 @@ function Slot({ tag, remainingSlots, status }: SlotProps): JSX.Element {
           icon={status === SlotStatus.Signup ? addOutline : timeOutline}
         />
       </IonButton>
+
+      <IonAlert
+        isOpen={showDeleteAlert}
+        onDidDismiss={() => setShowDeleteAlert(false)}
+        header={"Note"}
+        message={"To proceed, please complete your profile"}
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+          },
+          {
+            text: "OK",
+            handler: () => {
+              history.push("/profile/editprofile");
+            },
+          },
+        ]}
+      />
     </IonItem>
   );
 }
