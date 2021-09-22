@@ -82,20 +82,17 @@ function Home() {
           </div>
           {events.length ? (
             <IonSlides
-              className="w-full"
+              className="w-full h-full"
               scrollbar={true}
               options={{ slidesPerView: "auto" }}
             >
               {events.map((event) => {
                 return (
-                  <Link to={`/events/${event.id}`}>
-                    <IonSlide
-                      key={event.id}
-                      className="w-full h-auto mt-2 mb-4"
-                    >
+                  <IonSlide key={event.id} className=" w-56 h-auto p-3">
+                    <Link to={`/events/${event.id}`} className="w-full h-full">
                       <EventCard event={event} />
-                    </IonSlide>
-                  </Link>
+                    </Link>
+                  </IonSlide>
                 );
               })}
             </IonSlides>
