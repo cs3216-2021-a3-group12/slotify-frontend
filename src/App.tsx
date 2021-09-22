@@ -49,7 +49,11 @@ function App() {
             path="/profile/changepassword"
             component={ChangePassword}
           ></AuthRoute>
-          <AuthRoute path="/profile" component={UserProfile}></AuthRoute>
+          <AuthRoute
+            path="/profile"
+            exact={true}
+            component={UserProfile}
+          ></AuthRoute>
           <Route path="/signup" component={Signup}></Route>
           <Route
             path="/login"
