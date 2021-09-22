@@ -1,16 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-  IonChip,
-  IonLabel,
-  IonCardTitle,
-  IonContent,
-  IonIcon,
-  IonList,
-} from "@ionic/react";
+import { IonCard, IonChip, IonContent, IonIcon, IonList } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 
 import SearchBar from "../Components/SearchBar";
@@ -19,6 +9,7 @@ import Tag from "../Components/Tag";
 import { StrippedGroup } from "../types/Group";
 import { Category } from "../types/Category";
 import groupPlaceholder from "../resources/group-placeholder.jpg";
+import axios from "axios";
 
 function ExploreGroups() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,17 +20,13 @@ function ExploreGroups() {
 
   useEffect(() => {
     Promise.all([
-      fetch(
-        "https://api.slotify.club/api/v1/groups/categories/?format=json"
-      ).then((res) => res.json()),
-      fetch("https://api.slotify.club/api/v1/groups/").then((res) =>
-        res.json()
-      ),
+      axios.get("https://api.slotify.club/api/v1/groups/categories/"),
+      axios.get("https://api.slotify.club/api/v1/groups/"),
     ])
-      .then(([categoriesData, groupsData]) => {
-        setCategories(categoriesData.results);
-        setGroups(groupsData.results);
-        setDisplayedGroups(groupsData.results);
+      .then(([categoriesRes, groupsRes]) => {
+        setCategories(categoriesRes.data.results);
+        setGroups(groupsRes.data.results);
+        setDisplayedGroups(groupsRes.data.results);
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -112,33 +99,40 @@ function ExploreGroups() {
         {displayedGroups.length ? (
           displayedGroups.map((group, idx) => {
             return (
-              <IonCard className="explore-group-card" key={idx}>
-                <div className="explore-group-card-img-div">
-                  <img
-                    className="explore-group-card-img"
-                    alt="Group"
-                    src={group.banner_url ?? groupPlaceholder}
-                  />
-                </div>
+              <Link to={`/groups/${group.id}`}>
+                <IonCard
+                  className="rounded-2xl h-32 w-auto mt-3 flex"
+                  key={idx}
+                >
+                  <div className="w-1/3">
+                    <img
+                      className="h-full w-full p-2 object-fill rounded-2xl"
+                      alt="Group"
+                      src={group.banner_url ?? groupPlaceholder}
+                    />
+                  </div>
 
-                <div className="explore-group-card-text-div">
-                  <IonCardHeader className="explore-group-card-header">
-                    <IonCardTitle className="explore-group-card-name">
-                      {group.name}
-                    </IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className="explore-group-card-content">
-                    <IonChip color="primary">
-                      <IonLabel color="primary">{group.category.name}</IonLabel>
-                    </IonChip>
-                  </IonCardContent>
-                </div>
-              </IonCard>
+                  <div className="w-2/3 h-full p-3">
+                    <div className="h-1/2 flex items-center">
+                      <p className="font-bold text-lg line-clamp-2">
+                        {group.name}
+                      </p>
+                    </div>
+                    <div className="h-1/2 p-0 flex items-center">
+                      <Tag
+                        color="primary"
+                        label={group.category.name}
+                        className="m-0"
+                      />
+                    </div>
+                  </div>
+                </IonCard>
+              </Link>
             );
           })
         ) : (
           <div className="p-2">
-            <Link to="/group/create">
+            <Link to="/createGroup">
               <IonChip
                 color="primary"
                 className="border-2 border-indigo-500 border-dashed h-32 w-full m-auto"

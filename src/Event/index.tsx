@@ -28,6 +28,7 @@ import { SegmentChangeEventDetail } from "@ionic/core";
 import Slot, { SlotStatus } from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
+import { StrippedEvent } from "../types/Event";
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -191,10 +192,11 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 
 export default Event;
 
-const testEvent = {
-  id: "id-1",
-  name: "Weekly Practice",
-  datetime: "Time 1",
+const testEvent: StrippedEvent = {
+  id: 1,
+  title: "Weekly Practice",
+  start_date_time: 1631615400,
+  end_date_time: 1631608200,
   location: "Location 1",
-  imgUrl: "https://picsum.photos/200",
+  image_url: "https://picsum.photos/200",
 };

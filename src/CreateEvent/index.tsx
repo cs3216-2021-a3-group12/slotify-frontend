@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { useHistory, useRouteMatch } from "react-router";
 import {
   IonTitle,
   IonToolbar,
@@ -14,22 +15,26 @@ import {
 } from "@ionic/react";
 import {
   lockOpenOutline,
-  peopleOutline,
   reorderFourOutline,
   timeOutline,
   locationOutline,
-  hourglassOutline,
   bookmarkOutline,
 } from "ionicons/icons";
+import axios from "axios";
 
 import TextArea from "../Components/TextArea";
 import TextInput from "../Components/TextInput";
 import DateTimePicker from "../Components/DateTimePicker";
 import Checkbox from "../Components/Checkbox";
 import ImageUploadInput from "../Components/ImageUploadInput";
-import NumberStepInput from "../Components/NumberStepInput";
+import EventSlots from "./EventSlots";
+import { useAuthState } from "../AuthContext";
 
 function CreateEvent() {
+  const history = useHistory();
+  const userDetails = useAuthState();
+  const { groupId } = useRouteMatch().params as { groupId: number };
+
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState("");
   const [description, setDescription] = useState("");
@@ -40,21 +45,14 @@ function CreateEvent() {
   const [isPublic, setIsPublic] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const [imageFileName, setImageFileName] = useState("");
-  const [totalSlots, setTotalSlots] = useState(0);
-  const [reserveSlots, setReserveSlots] = useState(false);
+  const [publicSlots, setPublicSlots] = useState(0);
+  const [memberSlots, setMemberSlots] = useState(0);
   const [juniorSlots, setJuniorSlots] = useState(0);
   const [seniorSlots, setSeniorSlots] = useState(0);
-  const [hasSignupDeadline, setHasSignupDeadline] = useState(false);
-  const [signupDeadline, setSignupDeadline] = useState<Date>(new Date());
 
   function onImageChange(imageSrc: string, fileName: string) {
     setImageSrc(imageSrc);
     setImageFileName(fileName);
-  }
-  function getDateString(date: Date) {
-    return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${(
-      "0" + date.getDate()
-    ).slice(-2)}`;
   }
 
   async function onCreateClick() {
@@ -73,7 +71,6 @@ function CreateEvent() {
     setLocationError("");
 
     // Create form data
-    // TODO: Add group
     const formData = new FormData();
     formData.append("title", title);
     if (description) {
@@ -100,19 +97,11 @@ function CreateEvent() {
       }
     }
     // create slots dictionary
-    // TODO: tag id as key
     var slots: { [tag: string]: number } = {};
-    var remainingSlots = totalSlots;
-    if (reserveSlots) {
-      slots["junior"] = juniorSlots;
-      slots["senior"] = seniorSlots;
-      remainingSlots -= juniorSlots + seniorSlots;
-    }
-    if (isPublic) {
-      slots["public"] = remainingSlots;
-    } else {
-      slots["groupmembers"] = remainingSlots;
-    }
+    if (isPublic && publicSlots) slots["Public"] = publicSlots;
+    if (memberSlots) slots["Members"] = memberSlots;
+    if (juniorSlots) slots["Junior"] = juniorSlots;
+    if (seniorSlots) slots["Senior"] = seniorSlots;
     formData.append("slots", JSON.stringify(slots));
 
     createEvent(formData);
@@ -123,6 +112,26 @@ function CreateEvent() {
     for (var pair of formData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
+
+    axios
+      .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+        body: formData,
+      })
+      .then((res) => {
+        if (res.data.id) {
+          history.push(`/events/${res.data.id}`);
+        }
+      })
+      .catch((err) => {
+        if (err.response.data) {
+          console.error(err.response.data);
+        } else {
+          console.error(err);
+        }
+      });
   }
 
   return (
@@ -203,92 +212,60 @@ function CreateEvent() {
             promptText="Add Event Photo"
             className="m-3"
           />
+
+          {/* Slots */}
+
           <IonItem>
             <IonLabel className="font-bold text-lg">Participant Slots</IonLabel>
           </IonItem>
           <p className="text-sm mx-4 text-left text-gray-500">
-            Select the maximum number of participants.
+            Select the maximum number of slots for different participants.
           </p>
-
-          <div className="flex justify-center m-4">
-            <NumberStepInput
-              value={totalSlots}
-              onValueChange={setTotalSlots}
+          {isPublic && (
+            <EventSlots
+              slot="end"
+              label="Public"
+              subLabel="Anyone (including non-members)."
+              value={publicSlots}
+              onValueChange={setPublicSlots}
               min={0}
             />
-          </div>
-          <Checkbox
-            color="primary"
-            icon={peopleOutline}
-            label="Reserve slots for members"
-            checked={reserveSlots}
-            onCheckChange={setReserveSlots}
-            mode="ios"
-          />
-          <p className="text-sm mx-4 text-left text-gray-500">
-            Set aside slots for members with specific tags. Remaining slots can
-            be taken by any other members (or non group members if public).
-          </p>
-          {reserveSlots && (
-            <Fragment>
-              <IonItem>
-                <IonLabel slot="start" className="text-indigo-500 font-bold">
-                  Junior
-                </IonLabel>
-                <NumberStepInput
-                  slot="end"
-                  value={juniorSlots}
-                  onValueChange={setJuniorSlots}
-                  min={0}
-                  max={totalSlots - seniorSlots}
-                />
-              </IonItem>
-
-              <IonItem>
-                <IonLabel slot="start" className="text-indigo-500 font-bold">
-                  Senior
-                </IonLabel>
-                <NumberStepInput
-                  slot="end"
-                  value={seniorSlots}
-                  onValueChange={setSeniorSlots}
-                  min={0}
-                  max={totalSlots - juniorSlots}
-                />
-              </IonItem>
-
-              <IonItem>
-                <p>
-                  Remaining slots for others:{" "}
-                  <span className="text-indigo-500">
-                    {totalSlots - juniorSlots - seniorSlots}
-                  </span>
-                </p>
-              </IonItem>
-            </Fragment>
           )}
-
-          <Checkbox
-            color="primary"
-            icon={hourglassOutline}
-            label="Sign up deadline"
-            checked={hasSignupDeadline}
-            onCheckChange={setHasSignupDeadline}
-            mode="ios"
+          <EventSlots
+            slot="end"
+            label="Members"
+            subLabel="Members regardless of tag."
+            value={memberSlots}
+            onValueChange={setMemberSlots}
+            min={0}
           />
-          {hasSignupDeadline && (
-            <DateTimePicker
-              outline={true}
-              color="primary"
-              icon={timeOutline}
-              label="Deadline"
-              value={signupDeadline}
-              onValueChange={setSignupDeadline}
-              displayFormat="YYYY-MM-DD HH:mmA"
-              min={getDateString(startTime)}
-              max="2025"
-            />
-          )}
+          <EventSlots
+            slot="end"
+            label="Junior"
+            subLabel="Members tagged Junior."
+            value={juniorSlots}
+            onValueChange={setJuniorSlots}
+            min={0}
+          />
+
+          <EventSlots
+            slot="end"
+            label="Senior"
+            subLabel="Members tagged Senior."
+            value={seniorSlots}
+            onValueChange={setSeniorSlots}
+            min={0}
+          />
+          <IonItem>
+            <p>
+              Total slots :{" "}
+              <span className="text-indigo-500">
+                {isPublic
+                  ? publicSlots + memberSlots + juniorSlots + seniorSlots
+                  : memberSlots + juniorSlots + seniorSlots}
+              </span>
+            </p>
+          </IonItem>
         </IonList>
         <IonButton className="w-5/6 my-8" onClick={onCreateClick}>
           Create

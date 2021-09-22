@@ -4,10 +4,13 @@ import { useAuthState } from "../AuthContext";
 const AuthRoute = ({
   component: Component,
   path,
+  children,
   ...rest
 }: {
   component: any;
   path: string;
+  children?: any;
+  [rest: string]: any;
 }) => {
   const userDetails = useAuthState();
   return (
@@ -21,7 +24,9 @@ const AuthRoute = ({
         )
       }
       {...rest}
-    />
+    >
+      {children}
+    </Route>
   );
 };
 

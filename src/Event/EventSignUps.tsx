@@ -57,7 +57,7 @@ const EventSignUps: React.FC<{
       <IonContent className="text-left">
         <div className="flex flex-col gap-6">
           <IonLabel className="text-2xl font-bold truncate px-5">
-            {event.name}
+            {event.title}
           </IonLabel>
           <div className="flex justify-between px-6">
             <IonThumbnail slot="start">

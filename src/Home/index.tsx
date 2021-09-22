@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   IonContent,
   IonSlide,
@@ -10,59 +11,45 @@ import {
   IonButton,
   IonIcon,
   IonButtons,
+  IonList,
+  IonRouterLink,
+  IonLabel,
 } from "@ionic/react";
-import { StrippedEvent } from "../types/Event";
+import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
+import axios from "axios";
+
 import EventCard from "./EventCard";
-import GroupCard, { Group } from "./GroupCard";
+import GroupCard from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
-import { personCircleOutline } from "ionicons/icons";
+import AddCard from "../Components/AddCard";
+import { useAuthState } from "../AuthContext";
+import { StrippedGroup } from "../types/Group";
+import { StrippedEvent } from "../types/Event";
 
 function Home() {
+  const userDetails = useAuthState();
+  const history = useHistory();
+
   const [name, setName] = useState("");
+  // eslint-disable-next-line
   const [events, setEvents] = useState<StrippedEvent[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<StrippedGroup[]>([]);
   useEffect(() => {
-    setName("User Name");
-    setEvents([
-      {
-        id: "1",
-        name: "Event Name 1",
-        datetime: "Time 1",
-        location: "Location 1",
-        imgUrl: "https://picsum.photos/200",
+    setName(userDetails.username);
+    const axios_instance = axios.create({
+      baseURL: "https://api.slotify.club/api/v1",
+      headers: {
+        Authorization: `Bearer ${userDetails.accessToken}`,
       },
-      {
-        id: "id-2",
-        name: "Event Name 2",
-        datetime: "Time 2",
-        location: "Location 2",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-3",
-        name: "Event Name 3",
-        datetime: "Time 3",
-        location: "Location 3",
-        imgUrl: "https://picsum.photos/200",
-      },
-    ]);
-    setGroups([
-      {
-        id: "id-1",
-        name: "Group Name 1",
-        categoryId: "cid-1",
-        category: "Category 1",
-        imgUrl: "https://picsum.photos/200",
-      },
-      {
-        id: "id-2",
-        name: "Group Name 2",
-        categoryId: "cid-2",
-        category: "Category 2",
-        imgUrl: "https://picsum.photos/200",
-      },
-    ]);
-  }, []);
+    });
+    Promise.all([
+      axios_instance.get("/events/my_events"),
+      axios_instance.get("/groups/my"),
+    ]).then(([eventsRes, groupsRes]) => {
+      console.log(eventsRes.data);
+      setGroups(groupsRes.data.results);
+    });
+  }, [userDetails.username, userDetails.accessToken]);
   return (
     <IonPage id="main">
       <IonHeader className="ion-no-border h-1/5">
@@ -81,29 +68,60 @@ function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} scrollEvents={true}>
-        <div className="flex flex-col">
-          <div className="p-3 h-8">
+        <div className="h-80 flex flex-col ">
+          <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Events</span>
+            <Link
+              to={{ pathname: "/explore", state: { segment: "events" } }}
+              className="inline-flex items-center"
+            >
+              <IonRouterLink>Explore events</IonRouterLink>
+              <IonIcon color="primary" icon={chevronForwardOutline} />
+            </Link>
           </div>
-          <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
-            {events.map((event) => {
-              return (
-                <IonSlide key={event.id} className="w-2/3 h-auto mt-2 mb-4">
-                  <EventCard event={event} />
-                </IonSlide>
-              );
-            })}
-          </IonSlides>
+          {events.length ? (
+            <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
+              {events.map((event) => {
+                return (
+                  <IonSlide key={event.id} className="w-2/3 h-auto mt-2 mb-4">
+                    <EventCard event={event} />
+                  </IonSlide>
+                );
+              })}
+            </IonSlides>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <IonLabel className="text-lg text-gray-400">
+                No events signed up
+              </IonLabel>
+            </div>
+          )}
         </div>
 
-        <div className="h-80 w-screen flex flex-col">
-          <div className="p-3 h-12">
+        <IonList>
+          <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Groups</span>
+            <Link
+              to={{ pathname: "/explore", state: { segment: "groups" } }}
+              className="inline-flex items-center"
+            >
+              <IonRouterLink>Explore groups</IonRouterLink>
+              <IonIcon color="primary" icon={chevronForwardOutline} />
+            </Link>
           </div>
           {groups.map((group) => {
-            return <GroupCard key={group.id} group={group} />;
+            return (
+              <Link to={`/groups/${group.id}`} key={group.id}>
+                <GroupCard group={group} />
+              </Link>
+            );
           })}
-        </div>
+          <AddCard
+            className="m-3"
+            label="Create a group"
+            onClick={() => history.push("/createGroup")}
+          />
+        </IonList>
       </IonContent>
     </IonPage>
   );
