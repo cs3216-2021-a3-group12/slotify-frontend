@@ -16,6 +16,9 @@ import CreateGroup from "./CreateGroup";
 import CreateEvent from "./CreateEvent";
 import usePageTracking from "./Components/usePageTracking";
 import GroupView from "./GroupView";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1";
 
 function App() {
   usePageTracking();
