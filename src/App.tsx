@@ -20,6 +20,9 @@ import { useAuthState } from "./AuthContext";
 import AuthRoute from "./Components/AuthRoute";
 import GroupView from "./GroupView";
 
+import axios from "axios";
+axios.defaults.baseURL = "https://api.slotify.club/api/v1";
+
 function App() {
   usePageTracking();
   const userDetails = useAuthState();

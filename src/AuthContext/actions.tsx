@@ -1,4 +1,4 @@
-const ROOT_URL = "https://api.slotify.club";
+const ROOT_URL = "https://api.slotify.club/api/v1";
 
 export type Action = {
   type: ActionType;

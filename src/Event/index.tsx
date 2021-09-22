@@ -22,13 +22,28 @@ import {
 } from "@ionic/react";
 
 import { calendarOutline, earthOutline, mapOutline } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import Slot, { SlotStatus } from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
 import { StrippedEvent } from "../types/Event";
+import axios from "axios";
+import eventPlaceholder from "../resources/event-placeholder.jpg";
+import { getTimeDateText } from "./helper";
+
+type RawEvent = {
+  id: number;
+  title: string;
+  description: string;
+  start_date_time: number;
+  end_date_time: number;
+  location: string;
+  image_url: number;
+  is_public: boolean;
+  group_id: number;
+};
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -37,20 +52,39 @@ interface UserDetailPageProps
 const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [selectedSegment, setSelectedSegment] = useState("signUp");
   const [showModal, setShowModal] = useState(false);
+  const [event, setEvent] = useState<RawEvent>();
+
+  const fetchEvent = () => {
+    axios
+      .get(`/events/${match.params.id}`)
+      .then((response) => {
+        console.log(response);
+        const fetchedEvent = response.data as RawEvent;
+        setEvent(fetchedEvent);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
+  useEffect(() => {
+    fetchEvent();
+  }, []);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;
     if (value) setSelectedSegment(value);
   }
-  const event = {
-    id: match.params.id,
-    name: "Weekly Practice",
-    date: "21 September 2021",
-    time: "16:00 - 18:30",
-    location: "UTown Rock Wall",
-    imgUrl: "https://picsum.photos/200",
-    isPublic: true,
-  };
+
+  // const event = {
+  //   id: match.params.id,
+  //   name: "Weekly Practice",
+  //   date: "21 September 2021",
+  //   time: "16:00 - 18:30",
+  //   location: "UTown Rock Wall",
+  //   imgUrl: "https://picsum.photos/200",
+  //   isPublic: true,
+  // };
   const group = {
     name: "NUS Rock Climbing Club",
     bannerUrl:
@@ -77,7 +111,9 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         </IonToolbar>
       </IonHeader>
       <div
-        style={{ background: `url(${event.imgUrl})` }}
+        style={{
+          background: `url(${event?.image_url ?? eventPlaceholder})`,
+        }}
         className="h-36 bg-cover"
       ></div>
       <IonContent>
@@ -96,7 +132,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
           </div>
         </IonItem>
         <IonList lines="none">
-          <IonItem className="text-2xl font-bold">{event.name}</IonItem>
+          <IonItem className="text-2xl font-bold">{event?.title}</IonItem>
           <IonItem>
             <IonThumbnail slot="start">
               <IonImg
@@ -121,21 +157,25 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
             <IonIcon icon={calendarOutline} className="pr-3" color="" />
             <IonGrid>
               <IonRow>
-                <IonLabel>{event.date}</IonLabel>
-              </IonRow>
-              <IonRow>
-                <IonLabel className="text-sm">{event.time}</IonLabel>
+                <IonLabel>
+                  {event
+                    ? getTimeDateText(
+                        event.start_date_time,
+                        event.end_date_time
+                      )
+                    : ""}
+                </IonLabel>
               </IonRow>
             </IonGrid>
           </IonItem>
           <IonItem>
             <IonIcon icon={mapOutline} className="pr-3" />
-            <IonLabel>{event.location}</IonLabel>
+            <IonLabel>{event?.location}</IonLabel>
           </IonItem>
           <IonItem>
             <IonIcon icon={earthOutline} className="pr-3" />
             <IonLabel>
-              {event.isPublic ? "Public Event" : "Private Event"}
+              {event?.is_public ? "Public Event" : "Private Event"}
             </IonLabel>
           </IonItem>
         </IonList>
@@ -175,7 +215,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         </SegmentPanel>
         <SegmentPanel value="about" selected={selectedSegment}>
           <IonList lines="none">
-            <IonItem>Some event descriptions</IonItem>
+            <IonItem>{event?.description}</IonItem>
           </IonList>
         </SegmentPanel>
         <IonModal
