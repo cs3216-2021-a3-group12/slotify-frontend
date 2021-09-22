@@ -41,12 +41,19 @@ function App() {
             path="/createGroup"
             component={CreateGroup}
           ></AuthRoute>
-          <AuthRoute path="/editprofile" component={EditProfile}></AuthRoute>
           <AuthRoute
-            path="/changepassword"
+            path="/profile/editprofile"
+            component={EditProfile}
+          ></AuthRoute>
+          <AuthRoute
+            path="/profile/changepassword"
             component={ChangePassword}
           ></AuthRoute>
-          <AuthRoute path="/profile" component={UserProfile}></AuthRoute>
+          <AuthRoute
+            path="/profile"
+            exact={true}
+            component={UserProfile}
+          ></AuthRoute>
           <Route path="/signup" component={Signup}></Route>
           <Route
             path="/login"

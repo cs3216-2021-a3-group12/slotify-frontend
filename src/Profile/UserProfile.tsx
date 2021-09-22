@@ -60,11 +60,11 @@ const UserProfile: React.FC = () => {
         </IonList>
 
         <div className="flex flex-col items-center gap-5">
-          <IonButton routerLink="/editprofile" className="w-3/5">
+          <IonButton routerLink="/profile/editprofile" className="w-3/5">
             <IonIcon slot="start" icon={createOutline} />
             Edit Profile
           </IonButton>
-          <IonButton routerLink="/changepassword" className="w-3/5">
+          <IonButton routerLink="/profile/changepassword" className="w-3/5">
             <IonIcon slot="start" icon={lockClosedOutline} />
             Change Password
           </IonButton>
