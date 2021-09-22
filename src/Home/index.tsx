@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   IonContent,
   IonSlide,
@@ -10,19 +11,29 @@ import {
   IonButton,
   IonIcon,
   IonButtons,
+  IonList,
+  IonRouterLink,
+  IonLabel,
 } from "@ionic/react";
 import { StrippedEvent, Event } from "../types/Event";
+import { personCircleOutline, chevronForwardOutline } from "ionicons/icons";
+import axios from "axios";
 import EventCard from "./EventCard";
-import GroupCard, { Group } from "./GroupCard";
+import GroupCard from "./GroupCard";
 import { MenuButton } from "../Components/SideMenu";
-import { personCircleOutline } from "ionicons/icons";
 import { axios_with_token_refresh } from "../helper/axios_helper";
 import { ACCESS } from "../types/Login";
+import AddCard from "../Components/AddCard";
+import { useAuthState } from "../AuthContext";
+import { StrippedGroup } from "../types/Group";
 
 function Home() {
+  const userDetails = useAuthState();
+  const history = useHistory();
+
   const [name, setName] = useState("");
   const [events, setEvents] = useState<Event[]>([]);
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<StrippedGroup[]>([]);
 
   const fetchEvents = () => {
     axios_with_token_refresh
@@ -61,29 +72,60 @@ function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} scrollEvents={true}>
-        <div className="h-80 flex flex-col">
-          <div className="p-3 h-12">
+        <div className="h-80 flex flex-col ">
+          <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Events</span>
+            <Link
+              to={{ pathname: "/explore", state: { segment: "events" } }}
+              className="inline-flex items-center"
+            >
+              <IonRouterLink>Explore events</IonRouterLink>
+              <IonIcon color="primary" icon={chevronForwardOutline} />
+            </Link>
           </div>
-          <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
-            {events.map((event) => {
-              return (
-                <IonSlide key={event.id} className="w-2/3 h-auto mt-2 mb-4">
-                  <EventCard event={event} />
-                </IonSlide>
-              );
-            })}
-          </IonSlides>
+          {events.length ? (
+            <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
+              {events.map((event) => {
+                return (
+                  <IonSlide key={event.id} className="w-2/3 h-auto mt-2 mb-4">
+                    <EventCard event={event} />
+                  </IonSlide>
+                );
+              })}
+            </IonSlides>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <IonLabel className="text-lg text-gray-400">
+                No events signed up
+              </IonLabel>
+            </div>
+          )}
         </div>
 
-        <div className="h-80 w-screen flex flex-col">
-          <div className="p-3 h-12">
+        <IonList>
+          <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Groups</span>
+            <Link
+              to={{ pathname: "/explore", state: { segment: "groups" } }}
+              className="inline-flex items-center"
+            >
+              <IonRouterLink>Explore groups</IonRouterLink>
+              <IonIcon color="primary" icon={chevronForwardOutline} />
+            </Link>
           </div>
           {groups.map((group) => {
-            return <GroupCard key={group.id} group={group} />;
+            return (
+              <Link to={`/groups/${group.id}`} key={group.id}>
+                <GroupCard group={group} />
+              </Link>
+            );
           })}
-        </div>
+          <AddCard
+            className="m-3"
+            label="Create a group"
+            onClick={() => history.push("/createGroup")}
+          />
+        </IonList>
       </IonContent>
     </IonPage>
   );

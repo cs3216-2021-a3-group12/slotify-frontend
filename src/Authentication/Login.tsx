@@ -12,26 +12,40 @@ import { LoginData } from "../types/Login";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { storeUserData } from "../helper/auth_helper";
+import { useAuthDispatch, loginUser } from "../AuthContext";
 
 const Login: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useAuthDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
 
-  function loginUser() {
-    axios
-      .post("/auth/login/", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        const loginData = response.data as LoginData;
-        storeUserData(loginData);
+  // function loginUser() {
+  //   axios
+  //     .post("/auth/login/", {
+  //       email: email,
+  //       password: password,
+  //     })
+  //     .then((response) => {
+  //       const loginData = response.data as LoginData;
+  //       storeUserData(loginData);
+  //       history.push("/home");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response);
+  //     });
+  // }
+
+  function onLogin() {
+    loginUser(dispatch, {
+      email: email,
+      password: password,
+    }).then((data) => {
+      if (data) {
         history.push("/home");
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
+      }
+    });
   }
 
   return (
@@ -60,7 +74,7 @@ const Login: React.FC = () => {
           />
         </IonList>
         <div className="flex flex-col items-center gap-5">
-          <IonButton onClick={loginUser} className="w-2/3">
+          <IonButton onClick={onLogin} className="w-2/3">
             Log in
           </IonButton>
           <IonButton routerLink="/signup" className="w-2/3">

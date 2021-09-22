@@ -125,7 +125,7 @@ const GroupForm: React.FC<GroupFormProps> = ({
         promptText="Upload Banner"
         className="m-3"
       />
-      <IonButton onClick={onSubmitButtonClick} className="w-5/6">
+      <IonButton onClick={onSubmitButtonClick} className="w-5/6 my-5">
         {submitButtonLabel}
       </IonButton>
     </IonList>

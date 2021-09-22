@@ -50,9 +50,10 @@ export type Slot = {
 };
 
 export interface StrippedEvent {
-  id: string;
-  name: string;
-  datetime: string;
+  id: number;
+  title: string;
+  start_date_time: number;
+  end_date_time: number;
   location: string;
-  imgUrl: string;
+  image_url: string;
 }

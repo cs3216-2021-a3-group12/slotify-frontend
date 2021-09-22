@@ -1,19 +1,16 @@
 import { IonContent, IonButton } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { StrippedEvent } from "../types/Event";
-import { StrippedGroup } from "../types/Group";
+import { DetailedGroup } from "../types/Group";
 
-export interface ExploreEventsProps {
-  events: StrippedEvent[];
+export interface GroupAboutProps {
+  group: DetailedGroup;
 }
 
-function GroupAbout() {
+const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [group, setGroup] = useState<StrippedGroup>(testGroup);
 
   useEffect(() => {
     setIsAdmin(true);
-    setGroup(testGroup);
   }, []);
 
   return (
@@ -27,17 +24,6 @@ function GroupAbout() {
       )}
     </IonContent>
   );
-}
+};
 
 export default GroupAbout;
-
-const testGroup = {
-  id: 1,
-  name: "Group Name 1",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  category: {
-    id: 1,
-    name: "Category 1",
-  },
-  banner_url: "https://picsum.photos/200",
-};

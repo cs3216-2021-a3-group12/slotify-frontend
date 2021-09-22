@@ -10,6 +10,8 @@ export const axios_with_token_refresh = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1",
 });
 
+// https://api.slotify.club/api/v1
+
 const refreshAuthLogic = (failedRequest: any) =>
   axios
     .post("/auth/token-refresh", {

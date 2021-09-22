@@ -4,6 +4,11 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      screens: {
+        lg: { max: "411px" },
+        md: { max: "375px" },
+        sm: { max: "320px" },
+      },
       boxShadow: {
         behind: "0px 5px 20px 0px rgba(0,0,0,0.1)",
       },

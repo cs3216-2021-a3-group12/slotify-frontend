@@ -17,10 +17,14 @@ import ExploreGroups from "./ExploreGroups";
 
 import "./Explore.css";
 
-function Explore() {
+function Explore(props: any) {
   const [selectedSegment, setSelectedSegment] = useState("events");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (props.location.state) {
+      setSelectedSegment(props.location.state.segment);
+    }
+  }, [props.location.state]);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;
@@ -41,7 +45,7 @@ function Explore() {
         </p>
         <IonSegment
           mode="ios"
-          className="explore-segment"
+          className="w-1/2 mx-auto my-2"
           value={selectedSegment}
           onIonChange={changeSegment}
         >

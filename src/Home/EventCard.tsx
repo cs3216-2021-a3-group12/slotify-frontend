@@ -7,7 +7,7 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 import { timeOutline, locationOutline } from "ionicons/icons";
-import { StrippedEvent, Event, TITLE, START_DATE_TIME } from "../types/Event";
+import { StrippedEvent, Event } from "../types/Event";
 
 function EventCard({ event }: { event: Event }) {
   return (
@@ -23,11 +23,12 @@ function EventCard({ event }: { event: Event }) {
       <IonContent className="h-2/5" scrollY={false}>
         <IonCardHeader className="text-left px-2 py-0 truncate">
           <IonCardTitle className="truncate text-base">
-            {event[TITLE]}
+            {event.title}
           </IonCardTitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={timeOutline} className="m-1" />
-            <span>{event[START_DATE_TIME]}</span>
+            {/**TODO: parse using a time management library */}
+            <span>{event.start_date_time}</span>
           </IonCardSubtitle>
           <IonCardSubtitle className="flex items-center">
             <IonIcon icon={locationOutline} className="m-1" />
