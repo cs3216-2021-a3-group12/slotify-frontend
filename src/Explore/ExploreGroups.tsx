@@ -99,11 +99,8 @@ function ExploreGroups() {
         {displayedGroups.length ? (
           displayedGroups.map((group, idx) => {
             return (
-              <Link to={`/groups/${group.id}`}>
-                <IonCard
-                  className="rounded-2xl h-32 w-auto mt-3 flex"
-                  key={idx}
-                >
+              <Link to={`/groups/${group.id}`} key={idx}>
+                <IonCard className="rounded-2xl h-32 w-auto mt-3 flex">
                   <div className="w-1/3">
                     <img
                       className="h-full w-full p-2 object-fill rounded-2xl"

@@ -136,7 +136,7 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
         <GroupEvents groupId={group.id} />
       </SegmentPanel>
       <SegmentPanel value="members" selected={selectedSegment}>
-        <GroupMembers />
+        <GroupMembers group={group} />
       </SegmentPanel>
     </IonPage>
   );
