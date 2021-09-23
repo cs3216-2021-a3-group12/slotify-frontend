@@ -30,7 +30,7 @@ const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
         setStatus("requested");
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }
   function deleteGroup() {
@@ -42,7 +42,6 @@ const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
         },
       })
       .then((res) => {
-        console.log(res);
         history.push("/home");
       })
       .catch((err) => {

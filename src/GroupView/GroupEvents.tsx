@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IonContent, IonButton } from "@ionic/react";
+import { IonContent, IonButton, IonLabel } from "@ionic/react";
 import { StrippedEvent } from "../types/Event";
 import GroupEventCard from "./GroupEventCard";
 import { Link } from "react-router-dom";
@@ -25,7 +25,7 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId, isAdmin }) => {
   }, [groupId]);
   return (
     <IonContent>
-      <div className="flex flex-col ">
+      <div className="flex flex-col h-full">
         {isAdmin && (
           <Link
             className="mx-10 mt-4"
@@ -40,13 +40,19 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId, isAdmin }) => {
           </Link>
         )}
 
-        {events.map((event) => {
-          return (
-            <Link to={`/events/${event.id}`} key={event.id}>
-              <GroupEventCard event={event} />
-            </Link>
-          );
-        })}
+        {events.length > 0 ? (
+          events.map((event) => {
+            return (
+              <Link to={`/events/${event.id}`} key={event.id}>
+                <GroupEventCard event={event} />
+              </Link>
+            );
+          })
+        ) : (
+          <div className="w-full h-full flex justify-center items-center">
+            <IonLabel className="text-gray-400">No events.</IonLabel>
+          </div>
+        )}
       </div>
     </IonContent>
   );
