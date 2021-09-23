@@ -19,6 +19,7 @@ import usePageTracking from "./Components/usePageTracking";
 import { useAuthState } from "./AuthContext";
 import AuthRoute from "./Components/AuthRoute";
 import GroupView from "./GroupView";
+import EditGroup from "./EditGroup";
 
 function App() {
   usePageTracking();
@@ -36,7 +37,7 @@ function App() {
             path="/createEvent/:groupId"
             component={CreateEvent}
           ></AuthRoute>
-
+          <AuthRoute path="/editGroup/:id" component={EditGroup}></AuthRoute>
           <AuthRoute
             exact
             path="/createGroup"

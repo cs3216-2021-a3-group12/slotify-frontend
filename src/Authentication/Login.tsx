@@ -30,7 +30,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <IonPage className="sm:mx-2 lg:mx-40">
+    <IonPage>
       <IonContent className="text-center">
         <div className="mt-10 mb-5">
           <IonLabel color="primary" className="text-5xl">

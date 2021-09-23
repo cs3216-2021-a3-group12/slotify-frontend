@@ -16,12 +16,13 @@ import { SegmentChangeEventDetail } from "@ionic/core";
 import SegmentPanel from "../Components/SegmentPanel";
 import GroupViewSegmentButton from "./GroupViewSegmentButton";
 
-import "./GroupView.css";
 import { DetailedGroup } from "../types/Group";
 import GroupAbout from "./GroupAbout";
 import GroupEvents from "./GroupEvents";
 import GroupMembers from "./GroupMembers";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useAuthState } from "../AuthContext";
 
 interface GroupViewProps
   extends RouteComponentProps<{
@@ -29,22 +30,29 @@ interface GroupViewProps
   }> {}
 
 const GroupView: React.FC<GroupViewProps> = ({ match }) => {
+  const location = useLocation<{ groupId?: string }>();
+  const userDetails = useAuthState();
   const id = Number(match.params.id);
   const [selectedSegment, setSelectedSegment] = useState("about");
   const [group, setGroup] = useState<DetailedGroup | undefined>(undefined);
 
   useEffect(() => {
-    fetch(`https://api.slotify.club/api/v1/groups/${id}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.id === id) {
-          setGroup(data);
+    axios
+      .get(`https://api.slotify.club/api/v1/groups/${id}`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.id === id) {
+          setGroup(res.data);
         }
       })
       .catch((err) => {
         console.error(err);
       });
-  }, [id]);
+    // eslint-disable-next-line
+  }, [id, location.state]);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;

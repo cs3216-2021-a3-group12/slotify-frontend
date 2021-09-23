@@ -23,7 +23,7 @@ export interface DetailedGroup {
   is_admin: boolean;
 }
 
-export type CreateGroupDetails = {
+export type GroupFormDetails = {
   name: string;
   description: string;
   categoryId: number;
