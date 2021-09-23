@@ -6,38 +6,70 @@ import {
   IonLabel,
   IonRow,
 } from "@ionic/react";
-import { addOutline, timeOutline } from "ionicons/icons";
+import {
+  addOutline,
+  timeOutline,
+  banOutline,
+  checkmarkCircleOutline,
+} from "ionicons/icons";
+import { useState } from "react";
+import { SlotDetails } from "../types/Event";
 export enum SlotStatus {
   Waitlist = "Waitlist",
   Signup = "Signup",
 }
+import axios from "axios";
 
 interface SlotProps {
-  tag: string;
-  remainingSlots: number;
-  status: SlotStatus;
+  // tag: number;
+  // remainingSlots: number;
+  // status: SlotStatus;
+  slotDetails: SlotDetails;
 }
-function Slot({ tag, remainingSlots, status }: SlotProps): JSX.Element {
+
+function Slot(slotProps: SlotProps): JSX.Element {
+  const [slot, setSlot] = useState<SlotDetails>(slotProps.slotDetails);
+
+  const toggleSignUp = () => {};
+
   return (
     <IonItem
-      color={`${status === SlotStatus.Waitlist ? "light" : "success"}`}
+      color={
+        slot.is_signed_up
+          ? slot.is_confirmed
+            ? "success"
+            : "warning"
+          : "light"
+      }
       className="rounded-lg m-2"
     >
       <IonGrid>
         <IonRow>
-          <IonLabel className="font-bold capitalize">{tag}</IonLabel>
+          <IonLabel className="font-bold capitalize">
+            {slot.tag.tag_name}
+          </IonLabel>
         </IonRow>
         <IonRow>
           <IonLabel className="text-xs">
-            Remaining slots: {remainingSlots}
+            Remaining slots: {slot.available_slot_count}
+          </IonLabel>
+          <IonLabel className="text-xs">
+            Waitlisted: {slot.pending_signup_count}
           </IonLabel>
         </IonRow>
       </IonGrid>
-      <IonButton slot="end" className="w-32">
-        {status}
+      <IonButton slot="end" className="w-32" disabled={!slot.is_eligible}>
         <IonIcon
           slot="start"
-          icon={status === SlotStatus.Signup ? addOutline : timeOutline}
+          icon={
+            slot.is_signed_up
+              ? slot.is_confirmed
+                ? checkmarkCircleOutline
+                : timeOutline
+              : slot.is_eligible
+              ? addOutline
+              : banOutline
+          }
         />
       </IonButton>
     </IonItem>

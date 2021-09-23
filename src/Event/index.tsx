@@ -33,24 +33,42 @@ import { StrippedEvent } from "../types/Event";
 import eventPlaceholder from "../resources/event-placeholder.jpg";
 import groupPlaceholder from "../resources/group-placeholder.jpg";
 import { getTimeDateText } from "./helper";
+import { useAuthState } from "../AuthContext";
+import { RawEvent, EventGroupDetails, SlotDetails, Tag } from "../types/Event";
 
-type RawEvent = {
-  id: number;
-  title: string;
-  description: string;
-  start_date_time: number;
-  end_date_time: number;
-  location: string;
-  image_url: number;
-  is_public: boolean;
-  group: EventGroupDetails;
-};
+// type RawEvent = {
+//   id: number;
+//   title: string;
+//   description: string;
+//   start_date_time: number;
+//   end_date_time: number;
+//   location: string;
+//   image_url: number;
+//   is_public: boolean;
+//   group: EventGroupDetails;
+// };
 
-type EventGroupDetails = {
-  id: number;
-  name: string;
-  banner_url: string;
-};
+// type EventGroupDetails = {
+//   id: number;
+//   name: string;
+//   banner_url: string;
+// };
+
+// type Slot = {
+//   available_slot_count: number;
+//   confirmed_signup_count: number;
+//   is_confirmed: boolean;
+//   is_eligible: boolean;
+//   is_signed_up: boolean;
+//   pending_signup_count: number;
+//   slot_id: number;
+//   tag: Tag;
+// };
+
+// type Tag = {
+//   tag_name: string;
+//   tag_id: number;
+// };
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -61,6 +79,8 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState<RawEvent>();
   const [group, setGroup] = useState<EventGroupDetails>();
+  const [slots, setSlots] = useState<[SlotDetails]>();
+  const userDetails = useAuthState();
 
   const fetchEvent = () => {
     axios
@@ -76,8 +96,23 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
       });
   };
 
+  const fetchSlots = () => {
+    axios
+      .get(`/events/${match.params.id}/slots`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const fetchedSlots = response.data as [SlotDetails];
+        setSlots(fetchedSlots);
+      });
+  };
+
   useEffect(() => {
     fetchEvent();
+    fetchSlots();
   }, []);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
@@ -89,16 +124,6 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
     history.push(`/groups/${match.params.id}`);
   };
 
-  const slots = [
-    {
-      tag: "junior",
-      remainingSlots: 10,
-    },
-    {
-      tag: "senior",
-      remainingSlots: 0,
-    },
-  ];
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -204,18 +229,23 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
               you can join the waitlist, and will be automatically registered if
               a slot becomes available.
             </IonItem>
-            {slots.map((slot) => (
-              <Slot
-                tag={slot.tag}
-                remainingSlots={slot.remainingSlots}
-                status={
-                  slot.remainingSlots > 0
-                    ? SlotStatus.Signup
-                    : SlotStatus.Waitlist
-                }
-                key={slot.tag}
-              />
-            ))}
+            {slots ? (
+              slots.map((slot) => (
+                <Slot
+                  slotDetails={slot}
+                  // tag={slot.tag.tag_id}
+                  // remainingSlots={slot.available_slot_count}
+                  // status={
+                  //   slot.available_slot_count > 0
+                  //     ? SlotStatus.Signup
+                  //     : SlotStatus.Waitlist
+                  // }
+                  key={slot.slot_id}
+                />
+              ))
+            ) : (
+              <IonLabel></IonLabel>
+            )}
           </IonList>
         </SegmentPanel>
         <SegmentPanel value="about" selected={selectedSegment}>
