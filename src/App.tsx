@@ -68,9 +68,9 @@ function App() {
             }
           />
           <AuthRoute path="/home" component={Home}></AuthRoute>
-          {/* <Route>
+          <Route>
             <Redirect to="/home" />
-          </Route> */}
+          </Route>
         </IonRouterOutlet>
       </IonApp>
     </div>
