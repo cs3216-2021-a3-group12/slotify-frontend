@@ -55,13 +55,12 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         },
       })
       .then((response) => {
-        console.log(response);
         const fetchedEvent = response.data as RawEvent;
         setEvent(fetchedEvent);
         setGroup(fetchedEvent.group);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.error(error.response.data);
       });
   };
 
@@ -73,9 +72,11 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const fetchedSlots = response.data as [SlotDetails];
         setSlots(fetchedSlots);
+      })
+      .catch((error) => {
+        console.error(error.response.data);
       });
   };
 

@@ -19,21 +19,29 @@ function SignUpCard({ slot }: SignUpCardProps) {
         {slot.signups.confirmed_signups.length > 0 && (
           <div>
             <p className="px-5 text-lg font-bold">Signed up</p>
-            {slot.signups.confirmed_signups
-              .filter((signUp) => {
-                return signUp.is_confirmed;
-              })
-              .map((signUp) => {
-                return <SignUpPersonCard signUp={signUp} user={signUp.user} />;
-              })}
+            {slot.signups.confirmed_signups.map((signUp, idx) => {
+              return (
+                <SignUpPersonCard
+                  key={idx}
+                  signUp={signUp}
+                  user={signUp.user}
+                />
+              );
+            })}
           </div>
         )}
 
         {slot.signups.pending_signups.length > 0 && (
           <div>
             <IonCardSubtitle className="px-5">Waiting list</IonCardSubtitle>
-            {slot.signups.pending_signups.map((signUp) => {
-              return <SignUpPersonCard signUp={signUp} user={signUp.user} />;
+            {slot.signups.pending_signups.map((signUp, idx) => {
+              return (
+                <SignUpPersonCard
+                  key={idx}
+                  signUp={signUp}
+                  user={signUp.user}
+                />
+              );
             })}
           </div>
         )}

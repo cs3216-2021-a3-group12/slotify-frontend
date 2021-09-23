@@ -8,8 +8,8 @@ import {
 import { useState } from "react";
 import { SignupErrorResponse, SlotDetails } from "../types/Event";
 import { useAuthState } from "../AuthContext";
-import axios from "axios";
 import { useHistory } from "react-router";
+import axios from "axios";
 
 export enum SlotStatus {
   Waitlist = "Waitlist",
@@ -42,14 +42,12 @@ function Slot(slotProps: SlotProps): JSX.Element {
       },
     })
       .then((response) => {
-        console.log("TOGGLE SIGNUP", response.data);
-      })
-      .then(() => {
         fetchUpdatedSlot();
       })
       .catch((error) => {
-        const status = error.response.status;
         console.error(error.response.data);
+
+        const status = error.response.status;
         switch (status) {
           case NO_PROFILE_STATUS:
             setShowProfileRedirect(true);
@@ -62,7 +60,6 @@ function Slot(slotProps: SlotProps): JSX.Element {
               `Existing slot: <strong>${errorData.signup.slot?.tag.tag_name}</strong>`
             );
         }
-        console.error(error.response);
       });
   };
 
@@ -84,7 +81,7 @@ function Slot(slotProps: SlotProps): JSX.Element {
         setSlot(updatedSlot);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.error(error.response.data);
       });
   };
 

@@ -89,8 +89,8 @@ const EventSignUps: React.FC<{
             </IonGrid>
           </div>
 
-          {slots.map((slot) => {
-            return <SignUpCard slot={slot} />;
+          {slots.map((slot, idx) => {
+            return <SignUpCard key={idx} slot={slot} />;
           })}
         </div>
       </IonContent>
