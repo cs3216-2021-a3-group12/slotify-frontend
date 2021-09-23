@@ -109,12 +109,15 @@ function CreateEvent() {
 
   function createEvent(formData: FormData) {
     axios
-      .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
-        headers: {
-          Authorization: `Bearer ${userDetails.accessToken}`,
-        },
-        body: formData,
-      })
+      .post(
+        `https://api.slotify.club/api/v1/groups/${groupId}/events/new`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userDetails.accessToken}`,
+          },
+        }
+      )
       .then((res) => {
         if (res.data.id) {
           history.replace(`/events/${res.data.id}`);
