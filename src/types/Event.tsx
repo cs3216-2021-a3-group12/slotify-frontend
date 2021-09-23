@@ -37,6 +37,22 @@ export type SlotDetails = {
   tag: Tag;
 };
 
+export type SignupErrorResponse = {
+  message: string;
+  signup: Signup;
+};
+
+export type Signup = {
+  has_attended: boolean;
+  is_confirmed: boolean;
+  signup_date: number;
+  signup_id: number;
+  slot: {
+    slot_id: number;
+    tag: Tag;
+  };
+};
+
 export type Tag = {
   tag_name: string;
   tag_id: number;
