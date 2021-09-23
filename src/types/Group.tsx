@@ -1,3 +1,4 @@
+import { Member } from "./Member";
 export interface StrippedGroup {
   id: number;
   name: string;
@@ -18,13 +19,11 @@ export interface DetailedGroup {
     name: string;
   };
   banner_url: string;
-  members: {
-    id: number;
-    username: string;
-  }[];
+  members: Member[];
+  is_admin: boolean;
 }
 
-export type CreateGroupDetails = {
+export type GroupFormDetails = {
   name: string;
   description: string;
   categoryId: number;

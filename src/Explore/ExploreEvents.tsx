@@ -78,8 +78,8 @@ function ExploreEvents() {
           return (
             <Link to={`/events/${event.id}`}>
               <IonCard
-                key={idx}
                 className="rounded-2xl w-auto h-32 mt-3 flex justify-between"
+                key={idx}
               >
                 <div className="h-full w-1/3">
                   <img

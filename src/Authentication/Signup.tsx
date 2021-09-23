@@ -8,32 +8,99 @@ import {
   IonHeader,
   IonToolbar,
   IonButtons,
+  IonModal,
 } from "@ionic/react";
-import {
-  personOutline,
-  mailOutline,
-  lockClosedOutline,
-  idCardOutline,
-  globeOutline,
-  paperPlaneOutline,
-} from "ionicons/icons";
+import { personOutline, mailOutline, lockClosedOutline } from "ionicons/icons";
 import { useState } from "react";
+import axios from "axios";
+
 import AuthField from "./AuthField";
+import GoogleLogin, {
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
+import { useHistory } from "react-router";
+import { googleLoginUser, useAuthDispatch } from "../AuthContext";
+import { capitalizeFirstLetter } from "../helper/stringHelper";
+
 const Signup: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useAuthDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [studentNum, setStudentNum] = useState("");
-  const [nusnetId, setNusnetId] = useState("");
-  const [telegramHandle, setTelegramHandle] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  function signUpUser() {
-    console.log(name);
+  function signUpUserWithEmail() {
+    if (!name || !email || !password) {
+      setErrorMessage("Please fill in all the blanks.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Your passwords do not match.");
+      return;
+    }
+
+    setErrorMessage("");
+
+    axios
+      .post("https://api.slotify.club/api/v1/auth/register/", {
+        username: name,
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        const userData = res.data;
+        if (userData && userData.username && userData.email) {
+          setShowModal(true);
+        }
+      })
+      .catch((error) => {
+        const errorData = error.response.data;
+        var errorMessages: [string?] = [];
+        Object.keys(errorData).forEach(function (key) {
+          const message = capitalizeFirstLetter(errorData[key]);
+          errorMessages.push(message);
+        });
+        setErrorMessage(errorMessages.join("\r\n"));
+      });
   }
+
+  const responseGoogle = (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    googleLoginUser(dispatch, response).then((data) => {
+      if (data) {
+        history.push("/home");
+      }
+    });
+  };
 
   return (
     <IonPage>
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
+      <meta
+        name="google-signin-client_id"
+        content="468369724687-cjd8anth41lip4o1hambrnfr09qunbcj.apps.googleusercontent.com"
+      />
+      <IonModal isOpen={showModal} cssClass="my-custom-class">
+        <p>
+          Successfully registered! We have sent you an email to verify your
+          account. You may log in after verifying it.
+        </p>
+        <IonButton
+          onClick={() => {
+            setShowModal(false);
+            history.push("/login");
+          }}
+        >
+          Return to Login
+        </IonButton>
+      </IonModal>
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonButtons>
@@ -78,28 +145,19 @@ const Signup: React.FC = () => {
             placeholder="Confirm Password"
             setValue={setConfirmPassword}
           />
-          <AuthField
-            icon={idCardOutline}
-            value={studentNum}
-            placeholder="Student Number"
-            setValue={setStudentNum}
-          />
-          <AuthField
-            icon={globeOutline}
-            value={nusnetId}
-            placeholder="NUSNET ID"
-            setValue={setNusnetId}
-          />
-          <AuthField
-            icon={paperPlaneOutline}
-            value={telegramHandle}
-            placeholder="Telegram Handle (optional)"
-            setValue={setTelegramHandle}
-          />
         </IonList>
-        <IonButton onClick={signUpUser} className="w-5/6">
+        {/* {TODO: make this nicer} */}
+        <p>{errorMessage}</p>
+        <IonButton onClick={signUpUserWithEmail} className="w-5/6">
           Sign up
         </IonButton>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
+          buttonText="Login with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
       </IonContent>
     </IonPage>
   );
