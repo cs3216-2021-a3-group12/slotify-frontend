@@ -2,7 +2,7 @@ import { Route, Redirect } from "react-router-dom";
 import { IonApp, IonRouterOutlet, createAnimation } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import "./index.css";
-
+import { Switch } from "react-router";
 import SideMenu from "./Components/SideMenu";
 import Login from "./Authentication/Login";
 import Signup from "./Authentication/Signup";
@@ -51,47 +51,49 @@ function App() {
       <IonApp>
         <SideMenu />
         <IonRouterOutlet id="main" animation={animationBuilder}>
-          <AuthRoute path="/explore" component={Explore}></AuthRoute>
-          <AuthRoute path="/events/:id" component={Event}></AuthRoute>
-          <AuthRoute path="/groups/:id" component={GroupView}></AuthRoute>
-          <AuthRoute
-            path="/createEvent/:groupId"
-            component={CreateEvent}
-          ></AuthRoute>
-          <AuthRoute path="/editGroup/:id" component={EditGroup}></AuthRoute>
-          <AuthRoute
-            exact
-            path="/createGroup"
-            component={CreateGroup}
-          ></AuthRoute>
-          <AuthRoute
-            path="/profile/editprofile"
-            component={EditProfile}
-          ></AuthRoute>
-          <AuthRoute
-            path="/profile/changepassword"
-            component={ChangePassword}
-          ></AuthRoute>
-          <AuthRoute
-            path="/profile"
-            exact={true}
-            component={UserProfile}
-          ></AuthRoute>
-          <Route path="/signup" component={Signup}></Route>
-          <Route
-            path="/login"
-            render={() =>
-              Boolean(userDetails.accessToken) ? (
-                <Redirect to="/home" />
-              ) : (
-                <Login />
-              )
-            }
-          />
-          <AuthRoute path="/home" component={Home}></AuthRoute>
-          <Route>
-            <Redirect to="/home" />
-          </Route>
+          <Switch>
+            <AuthRoute path="/explore" component={Explore}></AuthRoute>
+            <AuthRoute path="/events/:id" component={Event}></AuthRoute>
+            <AuthRoute path="/groups/:id" component={GroupView}></AuthRoute>
+            <AuthRoute
+              path="/createEvent/:groupId"
+              component={CreateEvent}
+            ></AuthRoute>
+            <AuthRoute path="/editGroup/:id" component={EditGroup}></AuthRoute>
+            <AuthRoute
+              exact
+              path="/createGroup"
+              component={CreateGroup}
+            ></AuthRoute>
+            <AuthRoute
+              path="/profile/editprofile"
+              component={EditProfile}
+            ></AuthRoute>
+            <AuthRoute
+              path="/profile/changepassword"
+              component={ChangePassword}
+            ></AuthRoute>
+            <AuthRoute
+              path="/profile"
+              exact={true}
+              component={UserProfile}
+            ></AuthRoute>
+            <Route path="/signup" component={Signup}></Route>
+            <Route
+              path="/login"
+              render={() =>
+                Boolean(userDetails.accessToken) ? (
+                  <Redirect to="/home" />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+            <AuthRoute path="/home" component={Home}></AuthRoute>
+            <Route>
+              <Redirect to="/home" />
+            </Route>
+          </Switch>
         </IonRouterOutlet>
       </IonApp>
     </div>
