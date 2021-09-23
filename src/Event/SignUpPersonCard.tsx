@@ -9,7 +9,7 @@ import {
 } from "@ionic/react";
 import { paperPlaneOutline, mailOutline } from "ionicons/icons";
 import Tag from "../Components/Tag";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AdminSignup } from "../types/EventSignUp";
 import { User } from "../types/User";
 import axios from "axios";

@@ -1,8 +1,6 @@
 import { IonCard, IonCardSubtitle, IonCardTitle } from "@ionic/react";
-import { useEffect, useState } from "react";
 import SignUpPersonCard from "./SignUpPersonCard";
-import { EventSignUp } from "../types/EventSignUp";
-import { AdminSignup, AdminSlot } from "../types/EventSignUp";
+import { AdminSlot } from "../types/EventSignUp";
 
 interface SignUpCardProps {
   slot: AdminSlot;
@@ -11,11 +9,6 @@ interface SignUpCardProps {
 
 function SignUpCard(props: SignUpCardProps) {
   const { isAdmin, slot } = props;
-
-  // const [remainingSlots, setRemainingSlots] = useState(0);
-  // useEffect(() => {
-  //   setRemainingSlots(0);
-  // }, []);
 
   return (
     <IonCard className="rounded-2xl text-left my-0">
@@ -35,7 +28,7 @@ function SignUpCard(props: SignUpCardProps) {
             .map((signUp) => {
               return (
                 <SignUpPersonCard
-                  isAdmin={props.isAdmin}
+                  isAdmin={isAdmin}
                   signUp={signUp}
                   user={signUp.user}
                 />
@@ -51,7 +44,7 @@ function SignUpCard(props: SignUpCardProps) {
             .map((signUp) => {
               return (
                 <SignUpPersonCard
-                  isAdmin={props.isAdmin}
+                  isAdmin={isAdmin}
                   signUp={signUp}
                   user={signUp.user}
                 />

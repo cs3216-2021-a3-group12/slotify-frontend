@@ -26,15 +26,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
-import Slot, { SlotStatus } from "./Slot";
+import Slot from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
-import { StrippedEvent } from "../types/Event";
 import eventPlaceholder from "../resources/event-placeholder.jpg";
 import groupPlaceholder from "../resources/group-placeholder.jpg";
 import { getTimeDateText } from "./helper";
 import { useAuthState } from "../AuthContext";
-import { RawEvent, EventGroupDetails, SlotDetails, Tag } from "../types/Event";
+import { RawEvent, EventGroupDetails, SlotDetails } from "../types/Event";
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -238,15 +237,3 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 };
 
 export default Event;
-
-const testEvent: StrippedEvent = {
-  id: 3,
-  title: "Public climbing session",
-  description: "we climb rocks today",
-  start_date_time: 1631608200,
-  end_date_time: 1631615400,
-  location: "Utown rock wall",
-  is_public: true,
-  group: 1,
-  image_url: "https://picsum.photos/200",
-};

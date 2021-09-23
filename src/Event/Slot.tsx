@@ -16,8 +16,8 @@ import {
 import { useState } from "react";
 import { SignupErrorResponse, SlotDetails } from "../types/Event";
 import { useAuthState } from "../AuthContext";
-import axios from "axios";
 import { useHistory } from "react-router";
+import axios from "axios";
 
 export enum SlotStatus {
   Waitlist = "Waitlist",
