@@ -22,13 +22,18 @@ import {
 } from "@ionic/react";
 
 import { calendarOutline, earthOutline, mapOutline } from "ionicons/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
-import Slot, { SlotStatus } from "./Slot";
+import Slot from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
-import { StrippedEvent } from "../types/Event";
+import eventPlaceholder from "../resources/event-placeholder.jpg";
+import groupPlaceholder from "../resources/group-placeholder.jpg";
+import { getTimeDateText } from "./helper";
+import { useAuthState } from "../AuthContext";
+import { RawEvent, EventGroupDetails, SlotDetails } from "../types/Event";
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -37,105 +42,152 @@ interface UserDetailPageProps
 const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [selectedSegment, setSelectedSegment] = useState("signUp");
   const [showModal, setShowModal] = useState(false);
+  const [event, setEvent] = useState<RawEvent>();
+  const [group, setGroup] = useState<EventGroupDetails>();
+  const [slots, setSlots] = useState<[SlotDetails]>();
+  const userDetails = useAuthState();
+
+  const fetchEvent = () => {
+    axios
+      .get(`/events/${match.params.id}/`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((response) => {
+        const fetchedEvent = response.data as RawEvent;
+        setEvent(fetchedEvent);
+        setGroup(fetchedEvent.group);
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+      });
+  };
+
+  const fetchSlots = () => {
+    axios
+      .get(`/events/${match.params.id}/slots`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((response) => {
+        const fetchedSlots = response.data as [SlotDetails];
+        setSlots(fetchedSlots);
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+      });
+  };
+
+  useEffect(() => {
+    fetchEvent();
+    fetchSlots();
+    // eslint-disable-next-line
+  }, []);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;
     if (value) setSelectedSegment(value);
   }
-  const event = {
-    id: match.params.id,
-    name: "Weekly Practice",
-    date: "21 September 2021",
-    time: "16:00 - 18:30",
-    location: "UTown Rock Wall",
-    imgUrl: "https://picsum.photos/200",
-    isPublic: true,
+
+  const redirectToGroup = () => {
+    history.push(`/groups/${match.params.id}`);
   };
-  const group = {
-    name: "NUS Rock Climbing Club",
-    bannerUrl:
-      "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y",
-  };
-  const slots = [
-    {
-      tag: "junior",
-      remainingSlots: 10,
-    },
-    {
-      tag: "senior",
-      remainingSlots: 0,
-    },
-  ];
+
+  function getSignupCount(): number {
+    if (!slots) {
+      return 0;
+    }
+    const total = slots.reduce((sum, slot) => {
+      return sum + slot.confirmed_signup_count;
+    }, 0);
+    return total;
+  }
+
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border h-40">
         <IonToolbar>
           <IonButtons>
             <IonMenuButton />
             <IonTitle className="text-2xl">Event Details</IonTitle>
           </IonButtons>
         </IonToolbar>
-      </IonHeader>
-      <div
-        style={{ background: `url(${event.imgUrl})` }}
-        className="h-36 bg-cover"
-      ></div>
-      <IonContent>
-        <IonItem lines="none">
-          <div className="flex mx-auto">
-            <IonChip outline={true} className="shadow h-10">
-              <IonLabel>+10 Going</IonLabel>
+        <img
+          alt="Event Banner"
+          src={event?.image_url ?? eventPlaceholder}
+          className="h-28 w-full object-cover"
+        ></img>
+        <div className="flex justify-center mx-auto transform -translate-y-1/2 z-50 bg-transparent">
+          <IonChip outline={true} className="shadow h-10 bg-white">
+            <p className="leading-2">+{getSignupCount()} Going</p>
+            {event?.is_admin && (
               <IonButton
                 size="small"
                 shape="round"
                 onClick={() => setShowModal(true)}
+                className="pl-2"
               >
-                Admin
+                View Signups
               </IonButton>
-            </IonChip>
-          </div>
-        </IonItem>
+            )}
+          </IonChip>
+        </div>
+      </IonHeader>
+      <IonContent>
         <IonList lines="none">
-          <IonItem className="text-2xl font-bold">{event.name}</IonItem>
+          <IonItem className="text-2xl font-bold pt-10">{event?.title}</IonItem>
           <IonItem>
             <IonThumbnail slot="start">
               <IonImg
-                src={group.bannerUrl}
+                src={group?.banner_url ?? groupPlaceholder}
                 alt="group banner"
                 className="rounded-md"
               />
             </IonThumbnail>
             <IonGrid>
               <IonRow>
-                <IonLabel className="font-bold text-sm">{group.name}</IonLabel>
+                <IonLabel className="font-bold text-sm">{group?.name}</IonLabel>
               </IonRow>
               <IonRow>
                 <IonLabel className="text-xs">Organizing Group</IonLabel>
               </IonRow>
             </IonGrid>
-            <IonButton slot="end" size="small" color="secondary" fill="outline">
-              View
+            <IonButton
+              slot="end"
+              size="small"
+              color="primary"
+              fill="outline"
+              shape="round"
+              onClick={redirectToGroup}
+            >
+              View Group
             </IonButton>
           </IonItem>
           <IonItem>
             <IonIcon icon={calendarOutline} className="pr-3" color="" />
             <IonGrid>
               <IonRow>
-                <IonLabel>{event.date}</IonLabel>
-              </IonRow>
-              <IonRow>
-                <IonLabel className="text-sm">{event.time}</IonLabel>
+                <IonLabel>
+                  {event
+                    ? getTimeDateText(
+                        event.start_date_time,
+                        event.end_date_time
+                      )
+                    : ""}
+                </IonLabel>
               </IonRow>
             </IonGrid>
           </IonItem>
           <IonItem>
             <IonIcon icon={mapOutline} className="pr-3" />
-            <IonLabel>{event.location}</IonLabel>
+            <IonLabel>{event?.location}</IonLabel>
           </IonItem>
           <IonItem>
             <IonIcon icon={earthOutline} className="pr-3" />
             <IonLabel>
-              {event.isPublic ? "Public Event" : "Private Event"}
+              {event?.is_public ? "Public Event" : "Private Event"}
             </IonLabel>
           </IonItem>
         </IonList>
@@ -155,27 +207,24 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         <SegmentPanel value="signUp" selected={selectedSegment}>
           <IonList lines="none">
             <IonItem>
-              Note that you can only join one slot. If there are no slots left,
-              you can join the waitlist, and will be automatically registered if
-              a slot becomes available.
+              <p className="text-sm text-gray-500 italic">
+                Note that you can only join one slot. If there are no slots
+                left, you can join the waitlist, and will be automatically
+                registered if a slot becomes available.
+              </p>
             </IonItem>
-            {slots.map((slot) => (
-              <Slot
-                tag={slot.tag}
-                remainingSlots={slot.remainingSlots}
-                status={
-                  slot.remainingSlots > 0
-                    ? SlotStatus.Signup
-                    : SlotStatus.Waitlist
-                }
-                key={slot.tag}
-              />
-            ))}
+            {slots ? (
+              slots.map((slot) => (
+                <Slot slotDetails={slot} key={slot.slot_id} />
+              ))
+            ) : (
+              <IonLabel></IonLabel>
+            )}
           </IonList>
         </SegmentPanel>
         <SegmentPanel value="about" selected={selectedSegment}>
           <IonList lines="none">
-            <IonItem>Some event descriptions</IonItem>
+            <IonItem>{event?.description}</IonItem>
           </IonList>
         </SegmentPanel>
         <IonModal
@@ -183,7 +232,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
           onDidDismiss={() => setShowModal(false)}
           swipeToClose={true}
         >
-          <EventSignUps event={testEvent} setShowModal={setShowModal} />
+          <EventSignUps event={event} setShowModal={setShowModal} />
         </IonModal>
       </IonContent>
     </IonPage>
@@ -191,15 +240,3 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 };
 
 export default Event;
-
-const testEvent: StrippedEvent = {
-  id: 3,
-  title: "Public climbing session",
-  description: "we climb rocks today",
-  start_date_time: 1631608200,
-  end_date_time: 1631615400,
-  location: "Utown rock wall",
-  is_public: true,
-  group: 1,
-  image_url: "https://picsum.photos/200",
-};

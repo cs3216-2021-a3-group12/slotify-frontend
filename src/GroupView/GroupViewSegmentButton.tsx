@@ -13,9 +13,7 @@ function GroupViewSegmentButton({
 }: GroupViewSegmentProps) {
   return (
     <IonSegmentButton
-      className={`rounded-segment-button ${
-        selected === value && "text-indigo-500"
-      }`}
+      className={`${selected === value && "text-indigo-500"}`}
       value={value}
     >
       <IonLabel>{children}</IonLabel>

@@ -19,6 +19,7 @@ import { useAuthState } from "./AuthContext";
 import AuthRoute from "./Components/AuthRoute";
 import GroupView from "./GroupView";
 import EditGroup from "./EditGroup";
+import axios from "axios";
 
 // https://medium.com/nerd-for-tech/ionic-react-implementing-custom-page-transition-animation-48aa3086e9da
 const animationBuilder = (baseEl: any, opts: any) => {
@@ -38,6 +39,8 @@ const animationBuilder = (baseEl: any, opts: any) => {
 
   return animation;
 };
+
+axios.defaults.baseURL = "https://api.slotify.club/api/v1";
 
 function App() {
   usePageTracking();

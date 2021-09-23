@@ -1,96 +1,163 @@
+import { IonAlert, IonButton, IonIcon, IonItem } from "@ionic/react";
 import {
-  IonAlert,
-  IonButton,
-  IonGrid,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonRow,
-} from "@ionic/react";
-import { addOutline, timeOutline } from "ionicons/icons";
-import { emptyProfile, Profile } from "../types/Profile";
-import axios from "axios";
+  addOutline,
+  timeOutline,
+  banOutline,
+  checkmarkCircleOutline,
+} from "ionicons/icons";
+import { useState } from "react";
+import { SignupErrorResponse, SlotDetails } from "../types/Event";
 import { useAuthState } from "../AuthContext";
-import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import axios from "axios";
+
 export enum SlotStatus {
   Waitlist = "Waitlist",
   Signup = "Signup",
 }
 
 interface SlotProps {
-  tag: string;
-  remainingSlots: number;
-  status: SlotStatus;
+  slotDetails: SlotDetails;
 }
-function Slot({ tag, remainingSlots, status }: SlotProps): JSX.Element {
+
+const NO_PROFILE_STATUS = 452;
+const BAD_REQUEST_STATUS = 400;
+
+function Slot(slotProps: SlotProps): JSX.Element {
+  const [slot, setSlot] = useState<SlotDetails>(slotProps.slotDetails);
+  const [showProfileRedirect, setShowProfileRedirect] = useState(false);
+  const [showSignupError, setShowSignupError] = useState(false);
+  const [popupMessage, setErrorMessage] = useState("");
+  const [popupDetails, setErrorDetails] = useState("");
   const userDetails = useAuthState();
   const history = useHistory();
 
-  const [profile, setProfile] = useState<Profile>(emptyProfile);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const toggleSignUp = () => {
+    const method = slot.is_signed_up ? "delete" : "post";
+    axios({
+      method: method,
+      url: `/events/slots/${slot.slot_id}/signups`,
+      headers: {
+        Authorization: `Bearer ${userDetails.accessToken}`,
+      },
+    })
+      .then((response) => {
+        fetchUpdatedSlot();
+      })
+      .catch((error) => {
+        console.error(error.response.data);
 
-  useEffect(() => {
-    axios
-      .get("https://api.slotify.club/api/v1/auth/profile/", {
-        headers: { Authorization: `Bearer ${userDetails.accessToken}` },
-      })
-      .then((profile) => {
-        setProfile(profile.data);
-      })
-      .catch((err) => {
-        console.error(err);
+        const status = error.response.status;
+        switch (status) {
+          case NO_PROFILE_STATUS:
+            setShowProfileRedirect(true);
+            break;
+          case BAD_REQUEST_STATUS:
+            const errorData = error.response.data as SignupErrorResponse;
+            showPopupMessage(
+              "You have already signed up for another slot for this event." +
+                "\nPlease withdraw the other signup if you wish to sign up for this slot instead.",
+              `Existing slot: <strong>${errorData.signup.slot?.tag.tag_name}</strong>`
+            );
+        }
       });
-  });
+  };
 
-  function onClick() {
-    if (!Boolean(profile.student_number) || !Boolean(profile.nusnet_id)) {
-      setShowDeleteAlert(true);
-      return;
-    }
+  const showPopupMessage = (message: string, details: string) => {
+    setErrorMessage(message);
+    setErrorDetails(details);
+    setShowSignupError(true);
+  };
 
-    // MSS
-  }
+  const fetchUpdatedSlot = () => {
+    axios
+      .get(`/events/slots/${slot.slot_id}`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((response) => {
+        const updatedSlot = response.data as SlotDetails;
+        setSlot(updatedSlot);
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+      });
+  };
+
   return (
     <IonItem
-      color={`${status === SlotStatus.Waitlist ? "light" : "success"}`}
+      color={
+        slot.is_signed_up
+          ? slot.is_confirmed
+            ? "success"
+            : "warning"
+          : "light"
+      }
       className="rounded-lg m-2"
     >
-      <IonGrid>
-        <IonRow>
-          <IonLabel className="font-bold capitalize">{tag}</IonLabel>
-        </IonRow>
-        <IonRow>
-          <IonLabel className="text-xs">
-            Remaining slots: {remainingSlots}
-          </IonLabel>
-        </IonRow>
-      </IonGrid>
-      <IonButton slot="end" className="w-32" onClick={onClick}>
-        {status}
+      <div className="my-2 w-3/4 h-24 flex flex-col justify-center">
+        <p className="font-bold capitalize">{slot.tag.tag_name}</p>
+        <p className="text-xs">Remaining slots: {slot.available_slot_count}</p>
+        <p className="text-xs">
+          People in waitlist: {slot.pending_signup_count}
+        </p>
+        {slot.is_signed_up && !slot.is_confirmed && (
+          <p className="text-xs line-clamp-2">
+            You are waitlisted and will be emailed when a slot is available.
+          </p>
+        )}
+      </div>
+      <IonButton
+        shape="round"
+        slot="end"
+        className="h-1/3 w-1/4 m-0"
+        disabled={!slot.is_eligible}
+        onClick={toggleSignUp}
+      >
         <IonIcon
-          slot="start"
-          icon={status === SlotStatus.Signup ? addOutline : timeOutline}
+          slot="icon-only"
+          icon={
+            slot.is_signed_up
+              ? slot.is_confirmed
+                ? checkmarkCircleOutline
+                : timeOutline
+              : slot.is_eligible
+              ? addOutline
+              : banOutline
+          }
         />
       </IonButton>
 
       <IonAlert
-        isOpen={showDeleteAlert}
-        onDidDismiss={() => setShowDeleteAlert(false)}
-        header={"Note"}
-        message={"To proceed, please complete your profile"}
+        isOpen={showProfileRedirect}
+        onDidDismiss={() => setShowProfileRedirect(false)}
+        header={"User Profile required"}
+        message={
+          "Please fill in your profile before signing up for an event. You only need to do this once!"
+        }
         buttons={[
           {
             text: "Cancel",
             role: "cancel",
+            cssClass: "secondary",
           },
           {
-            text: "OK",
+            text: "Go to Profile",
             handler: () => {
-              history.push("/profile/editprofile");
+              setShowProfileRedirect(false);
+              history.push("/profile");
             },
           },
         ]}
+      />
+      <IonAlert
+        isOpen={showSignupError}
+        onDidDismiss={() => setShowSignupError(false)}
+        header={`Sign up error for ${slot?.tag.tag_name} slot`}
+        subHeader={popupMessage}
+        message={popupDetails}
+        buttons={["OK"]}
       />
     </IonItem>
   );
