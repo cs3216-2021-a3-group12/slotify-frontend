@@ -44,9 +44,10 @@ function Home() {
     });
     Promise.all([
       axios_instance.get("/events/my_events"),
-      axios_instance.get("/groups/my"),
+      axios_instance.get("/groups/my_groups"),
     ]).then(([eventsRes, groupsRes]) => {
       console.log(eventsRes.data);
+      console.log(groupsRes.data);
       setGroups(groupsRes.data.results);
     });
   }, [userDetails.username, userDetails.accessToken]);

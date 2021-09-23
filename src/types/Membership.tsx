@@ -1,6 +1,7 @@
 export interface Membership {
-  userId: number;
-  groupId: number;
-  tagId: number;
-  isAdmin: boolean;
+  id: number;
+  user: number;
+  group: number;
+  tag: string;
+  is_admin: boolean;
 }
