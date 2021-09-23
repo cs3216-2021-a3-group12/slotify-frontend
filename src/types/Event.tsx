@@ -18,7 +18,7 @@ export type RawEvent = {
   start_date_time: number;
   end_date_time: number;
   location: string;
-  image_url: number;
+  image_url: string;
   is_public: boolean;
   group: EventGroupDetails;
   is_admin: boolean;

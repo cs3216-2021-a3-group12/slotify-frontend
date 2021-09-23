@@ -53,6 +53,10 @@ ion-segment {
   @apply rounded-full bg-gray-100 !important;
 }
 
+ion-segment-button::part(indicator-background) {
+  @apply rounded-full shadow-behind !important;
+}
+
 ion-input {
   --padding-start: 0 !important;
   --padding-end: 0 !important;

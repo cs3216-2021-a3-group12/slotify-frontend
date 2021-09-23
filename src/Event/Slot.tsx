@@ -1,12 +1,4 @@
-import {
-  IonAlert,
-  IonButton,
-  IonGrid,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonRow,
-} from "@ionic/react";
+import { IonAlert, IonButton, IonIcon, IonItem } from "@ionic/react";
 import {
   addOutline,
   timeOutline,
@@ -57,7 +49,7 @@ function Slot(slotProps: SlotProps): JSX.Element {
       })
       .catch((error) => {
         const status = error.response.status;
-        console.log(error.response.data);
+        console.error(error.response.data);
         switch (status) {
           case NO_PROFILE_STATUS:
             setShowProfileRedirect(true);
@@ -70,7 +62,7 @@ function Slot(slotProps: SlotProps): JSX.Element {
               `Existing slot: <strong>${errorData.signup.slot?.tag.tag_name}</strong>`
             );
         }
-        console.log(error.response);
+        console.error(error.response);
       });
   };
 
@@ -107,6 +99,39 @@ function Slot(slotProps: SlotProps): JSX.Element {
       }
       className="rounded-lg m-2"
     >
+      <div className="my-2 w-3/4 h-24 flex flex-col justify-center">
+        <p className="font-bold capitalize">{slot.tag.tag_name}</p>
+        <p className="text-xs">Remaining slots: {slot.available_slot_count}</p>
+        <p className="text-xs">
+          People in waitlist: {slot.pending_signup_count}
+        </p>
+        {slot.is_signed_up && !slot.is_confirmed && (
+          <p className="text-xs line-clamp-2">
+            You are waitlisted and will be emailed when a slot is available.
+          </p>
+        )}
+      </div>
+      <IonButton
+        shape="round"
+        slot="end"
+        className="h-1/3 w-1/4 m-0"
+        disabled={!slot.is_eligible}
+        onClick={toggleSignUp}
+      >
+        <IonIcon
+          slot="icon-only"
+          icon={
+            slot.is_signed_up
+              ? slot.is_confirmed
+                ? checkmarkCircleOutline
+                : timeOutline
+              : slot.is_eligible
+              ? addOutline
+              : banOutline
+          }
+        />
+      </IonButton>
+
       <IonAlert
         isOpen={showProfileRedirect}
         onDidDismiss={() => setShowProfileRedirect(false)}
@@ -137,64 +162,6 @@ function Slot(slotProps: SlotProps): JSX.Element {
         message={popupDetails}
         buttons={["OK"]}
       />
-      <IonGrid>
-        <IonRow>
-          <IonLabel className="font-bold capitalize">
-            {slot.tag.tag_name}
-          </IonLabel>
-        </IonRow>
-        <IonRow>
-          <IonLabel className="text-xs">
-            Remaining slots: {slot.available_slot_count}
-          </IonLabel>
-          <IonLabel className="text-xs">
-            People in waitlist: {slot.pending_signup_count}
-          </IonLabel>
-          {slot.is_signed_up && !slot.is_confirmed && (
-            <IonLabel className="text-xs">
-              You are waitlisted and will be emailed when a slot is available.
-            </IonLabel>
-          )}
-        </IonRow>
-      </IonGrid>
-      <IonButton
-        slot="end"
-        className="w-32"
-        disabled={!slot.is_eligible}
-        onClick={toggleSignUp}
-      >
-        <IonIcon
-          slot="start"
-          icon={
-            slot.is_signed_up
-              ? slot.is_confirmed
-                ? checkmarkCircleOutline
-                : timeOutline
-              : slot.is_eligible
-              ? addOutline
-              : banOutline
-          }
-        />
-      </IonButton>
-
-      {/* <IonAlert
-        isOpen={showDeleteAlert}
-        onDidDismiss={() => setShowDeleteAlert(false)}
-        header={"Note"}
-        message={"To proceed, please complete your profile"}
-        buttons={[
-          {
-            text: "Cancel",
-            role: "cancel",
-          },
-          {
-            text: "OK",
-            handler: () => {
-              history.push("/profile/editprofile");
-            },
-          },
-        ]}
-      /> */}
     </IonItem>
   );
 }

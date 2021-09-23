@@ -26,15 +26,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
-import Slot, { SlotStatus } from "./Slot";
+import Slot from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
-import { StrippedEvent } from "../types/Event";
 import eventPlaceholder from "../resources/event-placeholder.jpg";
 import groupPlaceholder from "../resources/group-placeholder.jpg";
 import { getTimeDateText } from "./helper";
 import { useAuthState } from "../AuthContext";
-import { RawEvent, EventGroupDetails, SlotDetails, Tag } from "../types/Event";
+import { RawEvent, EventGroupDetails, SlotDetails } from "../types/Event";
 
 interface UserDetailPageProps
   extends RouteComponentProps<{
@@ -83,6 +82,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   useEffect(() => {
     fetchEvent();
     fetchSlots();
+    // eslint-disable-next-line
   }, []);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
@@ -106,39 +106,37 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border h-40">
         <IonToolbar>
           <IonButtons>
             <IonMenuButton />
             <IonTitle className="text-2xl">Event Details</IonTitle>
           </IonButtons>
         </IonToolbar>
+        <img
+          alt="Event Banner"
+          src={event?.image_url ?? eventPlaceholder}
+          className="h-28 w-full object-cover"
+        ></img>
+        <div className="flex justify-center mx-auto transform -translate-y-1/2 z-50 bg-transparent">
+          <IonChip outline={true} className="shadow h-10 bg-white">
+            <p className="leading-2">+{getSignupCount()} Going</p>
+            {event?.is_admin && (
+              <IonButton
+                size="small"
+                shape="round"
+                onClick={() => setShowModal(true)}
+                className="pl-2"
+              >
+                View Signups
+              </IonButton>
+            )}
+          </IonChip>
+        </div>
       </IonHeader>
-      <div
-        style={{
-          background: `url(${event?.image_url ?? eventPlaceholder})`,
-        }}
-        className="h-36 bg-cover"
-      ></div>
       <IonContent>
-        <IonItem lines="none">
-          <div className="flex mx-auto">
-            <IonChip outline={true} className="shadow h-10">
-              <IonLabel>+{getSignupCount()} Going</IonLabel>
-              {event?.is_admin && (
-                <IonButton
-                  size="small"
-                  shape="round"
-                  onClick={() => setShowModal(true)}
-                >
-                  View Signups (Admin)
-                </IonButton>
-              )}
-            </IonChip>
-          </div>
-        </IonItem>
         <IonList lines="none">
-          <IonItem className="text-2xl font-bold">{event?.title}</IonItem>
+          <IonItem className="text-2xl font-bold pt-10">{event?.title}</IonItem>
           <IonItem>
             <IonThumbnail slot="start">
               <IonImg
@@ -158,8 +156,9 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
             <IonButton
               slot="end"
               size="small"
-              color="secondary"
+              color="primary"
               fill="outline"
+              shape="round"
               onClick={redirectToGroup}
             >
               View Group
@@ -207,9 +206,11 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         <SegmentPanel value="signUp" selected={selectedSegment}>
           <IonList lines="none">
             <IonItem>
-              Note that you can only join one slot. If there are no slots left,
-              you can join the waitlist, and will be automatically registered if
-              a slot becomes available.
+              <p className="text-sm text-gray-500 italic">
+                Note that you can only join one slot. If there are no slots
+                left, you can join the waitlist, and will be automatically
+                registered if a slot becomes available.
+              </p>
             </IonItem>
             {slots ? (
               slots.map((slot) => (
@@ -238,15 +239,3 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 };
 
 export default Event;
-
-const testEvent: StrippedEvent = {
-  id: 3,
-  title: "Public climbing session",
-  description: "we climb rocks today",
-  start_date_time: 1631608200,
-  end_date_time: 1631615400,
-  location: "Utown rock wall",
-  is_public: true,
-  group: 1,
-  image_url: "https://picsum.photos/200",
-};

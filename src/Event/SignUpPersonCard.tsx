@@ -9,18 +9,16 @@ import {
 } from "@ionic/react";
 import { paperPlaneOutline, mailOutline } from "ionicons/icons";
 import Tag from "../Components/Tag";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AdminSignup } from "../types/EventSignUp";
 import { User } from "../types/User";
 import axios from "axios";
 import { useAuthState } from "../AuthContext";
 
 function SignUpPersonCard({
-  isAdmin,
   signUp,
   user,
 }: {
-  isAdmin: boolean;
   signUp: AdminSignup;
   user: User;
 }) {
@@ -63,7 +61,6 @@ function SignUpPersonCard({
           <div className="flex items-center">
             <IonCardSubtitle className="flex flex-col -ml-3">
               <IonButton size="small" fill="clear">
-                {/* TODO: disable the button if the user doesn't have telegram handle */}
                 <IonIcon icon={paperPlaneOutline} />
               </IonButton>
               <IonButton size="small" fill="clear">
@@ -71,17 +68,15 @@ function SignUpPersonCard({
               </IonButton>
             </IonCardSubtitle>
             <Tag color="primary" label="Junior" />
-            {isAdmin && (
-              <div className="flex flex-col items-center m-1">
-                <p>Attended</p>
-                <IonCheckbox
-                  slot="end"
-                  className="m-0"
-                  checked={signup.has_attended}
-                  onIonChange={toggleAttendance}
-                ></IonCheckbox>
-              </div>
-            )}
+            <div className="flex flex-col items-center m-1">
+              <p>Attended</p>
+              <IonCheckbox
+                slot="end"
+                className="m-0"
+                checked={signup.has_attended}
+                onIonChange={toggleAttendance}
+              ></IonCheckbox>
+            </div>
           </div>
         </div>
       </IonCardHeader>
