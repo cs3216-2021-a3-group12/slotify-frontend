@@ -2782,6 +2782,30 @@
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.2.2"
 
+"babel-plugin-polyfill-corejs2@^0.2.2":
+  "integrity" "sha512-kISrENsJ0z5dNPq5eRvcctITNHYXWOA4DUZRFYCz3jYCcvTb/A546LIddmoGNMVYg2U38OyFeNosQwI9ENTqIQ=="
+  "resolved" "https://registry.npmjs.org/babel-plugin-polyfill-corejs2/-/babel-plugin-polyfill-corejs2-0.2.2.tgz"
+  "version" "0.2.2"
+  dependencies:
+    "@babel/compat-data" "^7.13.11"
+    "@babel/helper-define-polyfill-provider" "^0.2.2"
+    "semver" "^6.1.1"
+
+"babel-plugin-polyfill-corejs3@^0.2.2":
+  "integrity" "sha512-z3HnJE5TY/j4EFEa/qpQMSbcUJZ5JQi+3UFjXzn6pQCmIKc5Ug5j98SuYyH+m4xQnvKlMDIW4plLfgyVnd0IcQ=="
+  "resolved" "https://registry.npmjs.org/babel-plugin-polyfill-corejs3/-/babel-plugin-polyfill-corejs3-0.2.4.tgz"
+  "version" "0.2.4"
+  dependencies:
+    "@babel/helper-define-polyfill-provider" "^0.2.2"
+    "core-js-compat" "^3.14.0"
+
+"babel-plugin-polyfill-regenerator@^0.2.2":
+  "integrity" "sha512-Goy5ghsc21HgPDFtzRkSirpZVW35meGoTmTOb2bxqdl60ghub4xOidgNTHaZfQ2FaxQsKmwvXtOAkcIS4SMBWg=="
+  "resolved" "https://registry.npmjs.org/babel-plugin-polyfill-regenerator/-/babel-plugin-polyfill-regenerator-0.2.2.tgz"
+  "version" "0.2.2"
+  dependencies:
+    "@babel/helper-define-polyfill-provider" "^0.2.2"
+
 "babel-plugin-syntax-object-rest-spread@^6.8.0":
   "integrity" "sha1-/WU28rzhODb/o6VFjEkDpZe7O/U="
   "resolved" "https://registry.npmjs.org/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz"

@@ -81,7 +81,7 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <IonPage className="">
+    <IonPage>
       <script src="https://apis.google.com/js/platform.js" async defer></script>
       <meta
         name="google-signin-client_id"
