@@ -124,6 +124,8 @@ function GroupMemberCard({
               <IonButton
                 size="small"
                 fill="clear"
+                href={`https://t.me/${member.profile.telegram_handle}`}
+                target="_blank"
                 disabled={member.profile.telegram_handle === ""}
               >
                 <IonIcon icon={paperPlaneOutline} />
