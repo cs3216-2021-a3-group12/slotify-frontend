@@ -23,14 +23,15 @@ import {
 
 import { calendarOutline, earthOutline, mapOutline } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import SegmentPanel from "../Components/SegmentPanel";
 import { SegmentChangeEventDetail } from "@ionic/core";
 import Slot, { SlotStatus } from "./Slot";
 import { RouteComponentProps } from "react-router";
 import EventSignUps from "./EventSignUps";
 import { StrippedEvent } from "../types/Event";
-import axios from "axios";
 import eventPlaceholder from "../resources/event-placeholder.jpg";
+import groupPlaceholder from "../resources/group-placeholder.jpg";
 import { getTimeDateText } from "./helper";
 
 type RawEvent = {
@@ -42,7 +43,13 @@ type RawEvent = {
   location: string;
   image_url: number;
   is_public: boolean;
-  group_id: number;
+  group: EventGroupDetails;
+};
+
+type EventGroupDetails = {
+  id: number;
+  name: string;
+  banner_url: string;
 };
 
 interface UserDetailPageProps
@@ -53,6 +60,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   const [selectedSegment, setSelectedSegment] = useState("signUp");
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState<RawEvent>();
+  const [group, setGroup] = useState<EventGroupDetails>();
 
   const fetchEvent = () => {
     axios
@@ -61,6 +69,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         console.log(response);
         const fetchedEvent = response.data as RawEvent;
         setEvent(fetchedEvent);
+        setGroup(fetchedEvent.group);
       })
       .catch((error) => {
         console.log(error.response);
@@ -76,20 +85,10 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
     if (value) setSelectedSegment(value);
   }
 
-  // const event = {
-  //   id: match.params.id,
-  //   name: "Weekly Practice",
-  //   date: "21 September 2021",
-  //   time: "16:00 - 18:30",
-  //   location: "UTown Rock Wall",
-  //   imgUrl: "https://picsum.photos/200",
-  //   isPublic: true,
-  // };
-  const group = {
-    name: "NUS Rock Climbing Club",
-    bannerUrl:
-      "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y",
+  const redirectToGroup = () => {
+    history.push(`/groups/${match.params.id}`);
   };
+
   const slots = [
     {
       tag: "junior",
@@ -136,21 +135,27 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
           <IonItem>
             <IonThumbnail slot="start">
               <IonImg
-                src={group.bannerUrl}
+                src={group?.banner_url ?? groupPlaceholder}
                 alt="group banner"
                 className="rounded-md"
               />
             </IonThumbnail>
             <IonGrid>
               <IonRow>
-                <IonLabel className="font-bold text-sm">{group.name}</IonLabel>
+                <IonLabel className="font-bold text-sm">{group?.name}</IonLabel>
               </IonRow>
               <IonRow>
                 <IonLabel className="text-xs">Organizing Group</IonLabel>
               </IonRow>
             </IonGrid>
-            <IonButton slot="end" size="small" color="secondary" fill="outline">
-              View
+            <IonButton
+              slot="end"
+              size="small"
+              color="secondary"
+              fill="outline"
+              onClick={redirectToGroup}
+            >
+              View Group
             </IonButton>
           </IonItem>
           <IonItem>
