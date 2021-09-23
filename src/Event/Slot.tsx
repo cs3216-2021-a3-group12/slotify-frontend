@@ -150,6 +150,11 @@ function Slot(slotProps: SlotProps): JSX.Element {
           <IonLabel className="text-xs">
             Waitlisted: {slot.pending_signup_count}
           </IonLabel>
+          {slot.is_signed_up && !slot.is_confirmed && (
+            <IonLabel className="text-xs">
+              You are waitlisted and will be emailed when a slot is available.
+            </IonLabel>
+          )}
         </IonRow>
       </IonGrid>
       <IonButton
