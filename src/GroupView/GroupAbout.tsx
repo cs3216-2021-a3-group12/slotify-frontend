@@ -12,9 +12,27 @@ export interface GroupAboutProps {
 const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
   const history = useHistory();
   const userDetails = useAuthState();
-
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-
+  const [status, setStatus] = useState(group.status);
+  function requestJoin() {
+    axios({
+      method: "post",
+      url: "https://api.slotify.club/api/v1/groups/memberships/new",
+      headers: {
+        Authorization: `Bearer ${userDetails.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        group: group.id,
+      }),
+    })
+      .then((res) => {
+        setStatus("requested");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   function deleteGroup() {
     axios
       .delete(`https://api.slotify.club/api/v1/groups/${group.id}`, {
@@ -50,8 +68,10 @@ const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
               Delete Group
             </IonButton>
           </Fragment>
+        ) : status === "public" ? (
+          <IonButton onClick={() => requestJoin()}> Request to Join</IonButton>
         ) : (
-          <IonButton>Request to Join</IonButton>
+          status === "requested" && <IonButton disabled>Requested</IonButton>
         )}
       </div>
       <IonAlert

@@ -21,6 +21,7 @@ export interface DetailedGroup {
   banner_url: string;
   members: Member[];
   is_admin: boolean;
+  status: string;
 }
 
 export type GroupFormDetails = {

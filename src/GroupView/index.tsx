@@ -148,7 +148,7 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
             <GroupAbout group={group} />
           </SegmentPanel>
           <SegmentPanel value="events" selected={selectedSegment}>
-            <GroupEvents groupId={group.id} />
+            <GroupEvents isAdmin={group.is_admin} groupId={group.id} />
           </SegmentPanel>
           <SegmentPanel value="members" selected={selectedSegment}>
             <GroupMembers group={group} />

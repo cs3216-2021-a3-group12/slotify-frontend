@@ -6,13 +6,12 @@ import { Link } from "react-router-dom";
 
 export interface GroupEventsProps {
   groupId: number;
+  isAdmin: boolean;
 }
 
-const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
+const GroupEvents: React.FC<GroupEventsProps> = ({ groupId, isAdmin }) => {
   const [events, setEvents] = useState<StrippedEvent[]>([]);
   useEffect(() => {
-    setIsAdmin(true);
     fetch(`https://api.slotify.club/api/v1/events/?group=${groupId}`)
       .then((res) => res.json())
       .then((data) => {
