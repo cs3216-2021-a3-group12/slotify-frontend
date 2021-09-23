@@ -108,20 +108,19 @@ function CreateEvent() {
   }
 
   function createEvent(formData: FormData) {
-    // @ts-ignore
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     axios
-      .post(`https://api.slotify.club/api/v1/groups/${groupId}/events/new`, {
-        headers: {
-          Authorization: `Bearer ${userDetails.accessToken}`,
-        },
-        body: formData,
-      })
+      .post(
+        `https://api.slotify.club/api/v1/groups/${groupId}/events/new`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userDetails.accessToken}`,
+          },
+        }
+      )
       .then((res) => {
         if (res.data.id) {
-          history.push(`/events/${res.data.id}`);
+          history.replace(`/events/${res.data.id}`);
         }
       })
       .catch((err) => {

@@ -19,6 +19,7 @@ import usePageTracking from "./Components/usePageTracking";
 import { useAuthState } from "./AuthContext";
 import AuthRoute from "./Components/AuthRoute";
 import GroupView from "./GroupView";
+import EditGroup from "./EditGroup";
 
 function App() {
   usePageTracking();
@@ -31,11 +32,12 @@ function App() {
         <IonRouterOutlet id="main">
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <AuthRoute path="/events/:id" component={Event}></AuthRoute>
+          <AuthRoute path="/groups/:id" component={GroupView}></AuthRoute>
           <AuthRoute
-            path="/groups/:groupId/createEvent"
+            path="/createEvent/:groupId"
             component={CreateEvent}
           ></AuthRoute>
-          <AuthRoute exact path="/groups/:id" component={GroupView}></AuthRoute>
+          <AuthRoute path="/editGroup/:id" component={EditGroup}></AuthRoute>
           <AuthRoute
             exact
             path="/createGroup"

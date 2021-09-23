@@ -9,32 +9,24 @@ import {
   IonHeader,
   IonTitle,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tag from "../Components/Tag";
+import { Member } from "../types/Member";
 import { Membership } from "../types/Membership";
 
 const ManageMembership: React.FC<{
+  member: Member;
   membership: Membership;
+  updateMembership: (membership: Membership) => void;
+  removeMember: () => void;
   setShowModal: (value: React.SetStateAction<boolean>) => void;
-}> = ({ membership, setShowModal }) => {
-  const [newMembership, setNewMembership] = useState(membership);
-
+}> = ({ member, membership, setShowModal, removeMember, updateMembership }) => {
+  const [newMembership, setNewMembership] = useState<Membership>(membership);
   const [showTagAlert, setShowTagAlert] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-
-  function updateMembership() {}
-
-  function onCirfirm() {
-    updateMembership();
-    setShowModal(false);
+  function OnConfirm() {
+    updateMembership(newMembership);
   }
-  function removeMember() {
-    console.log(newMembership);
-    setShowModal(false);
-  }
-  useEffect(() => {
-    updateMembership();
-  }, [newMembership]);
 
   return (
     <IonPage>
@@ -57,9 +49,8 @@ const ManageMembership: React.FC<{
           color="primary"
           className="text-4xl text-center truncate font-serif"
         >
-          Ariana Grande
+          {member.username}
         </IonLabel>
-
         <div>
           <div className="flex flex-col gap-5 p-10 items-center">
             <div className="w-full flex items-center justify-between">
@@ -68,19 +59,21 @@ const ManageMembership: React.FC<{
               </IonLabel>
               <Tag
                 color="primary"
-                label={newMembership.isAdmin ? "Admin" : "not Admin"}
+                label={newMembership.is_admin ? "Admin" : "not Admin"}
               ></Tag>
             </div>
             <IonButton
               shape="round"
-              onClick={() =>
-                setNewMembership({
-                  ...newMembership,
-                  isAdmin: !newMembership.isAdmin,
-                })
-              }
+              onClick={() => {
+                if (newMembership) {
+                  setNewMembership({
+                    ...newMembership,
+                    is_admin: !newMembership.is_admin,
+                  });
+                }
+              }}
             >
-              {newMembership.isAdmin
+              {membership.is_admin
                 ? "Remove Admin Privilege"
                 : "Change to Admin"}
             </IonButton>
@@ -88,7 +81,10 @@ const ManageMembership: React.FC<{
               <IonLabel className="text-xl text-left font-mono font-bold">
                 Current Tag:
               </IonLabel>
-              <Tag color="primary" label="Senior"></Tag>
+              <Tag
+                color="primary"
+                label={newMembership.tag ? newMembership.tag : "No Tag"}
+              ></Tag>
             </div>
 
             <IonButton shape="round" onClick={() => setShowTagAlert(true)}>
@@ -97,8 +93,7 @@ const ManageMembership: React.FC<{
           </div>
 
           <div className="flex flex-col gap-4 mx-12">
-            <IonButton onClick={onCirfirm}>Confirm</IonButton>
-
+            <IonButton onClick={OnConfirm}>Confirm</IonButton>
             <IonButton color="danger" onClick={() => setShowDeleteAlert(true)}>
               Remove this Member
             </IonButton>
@@ -118,7 +113,7 @@ const ManageMembership: React.FC<{
               text: "Remove",
               cssClass: "text-red-500",
               handler: () => {
-                console.log("Delete Member");
+                removeMember();
               },
             },
           ]}
@@ -127,35 +122,42 @@ const ManageMembership: React.FC<{
           isOpen={showTagAlert}
           onDidDismiss={() => setShowTagAlert(false)}
           header={"Choose a tag for this member"}
-          // TODO: get all the tag categories and checked the current tag
           inputs={[
             {
               name: "noTag",
               type: "radio",
               label: "No Tag",
-              value: "value1",
+              value: "noTag",
               handler: () => {
-                console.log("Radio 1 selected");
+                setNewMembership((newMembership) => {
+                  return { ...newMembership, tag: "" };
+                });
               },
-              checked: true,
+              checked: newMembership.tag === null || newMembership.tag === "",
             },
             {
               name: "junior",
               type: "radio",
-              label: "junior",
-              value: "value2",
+              label: "Junior",
+              value: "1",
               handler: () => {
-                console.log("Radio 2 selected");
+                setNewMembership((newMembership) => {
+                  return { ...newMembership, tag: "Junior" };
+                });
               },
+              checked: newMembership.tag === "Junior",
             },
             {
               name: "senior",
               type: "radio",
-              label: "senior",
-              value: "value3",
+              label: "Senior",
+              value: "2",
               handler: () => {
-                console.log("Radio 2 selected");
+                setNewMembership((newMembership) => {
+                  return { ...newMembership, tag: "Senior" };
+                });
               },
+              checked: newMembership.tag === "Senior",
             },
           ]}
           buttons={[
@@ -165,12 +167,6 @@ const ManageMembership: React.FC<{
               cssClass: "secondary",
               handler: () => {
                 console.log("Confirm Cancel");
-              },
-            },
-            {
-              text: "Ok",
-              handler: () => {
-                removeMember();
               },
             },
           ]}
