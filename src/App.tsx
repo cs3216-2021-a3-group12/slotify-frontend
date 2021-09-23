@@ -1,6 +1,5 @@
 import { Route, Redirect } from "react-router-dom";
-import { IonApp, IonRouterOutlet } from "@ionic/react";
-
+import { IonApp, IonRouterOutlet, createAnimation } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import "./index.css";
 
@@ -21,6 +20,25 @@ import AuthRoute from "./Components/AuthRoute";
 import GroupView from "./GroupView";
 import EditGroup from "./EditGroup";
 
+// https://medium.com/nerd-for-tech/ionic-react-implementing-custom-page-transition-animation-48aa3086e9da
+const animationBuilder = (baseEl: any, opts: any) => {
+  const enteringAnimation = createAnimation()
+    .addElement(opts.enteringEl)
+    .fromTo("opacity", 0, 1)
+    .duration(250);
+
+  const leavingAnimation = createAnimation()
+    .addElement(opts.leavingEl)
+    .fromTo("opacity", 1, 0)
+    .duration(250);
+
+  const animation = createAnimation()
+    .addAnimation(enteringAnimation)
+    .addAnimation(leavingAnimation);
+
+  return animation;
+};
+
 function App() {
   usePageTracking();
   const userDetails = useAuthState();
@@ -29,7 +47,7 @@ function App() {
     <div id="app">
       <IonApp>
         <SideMenu />
-        <IonRouterOutlet id="main">
+        <IonRouterOutlet id="main" animation={animationBuilder}>
           <AuthRoute path="/explore" component={Explore}></AuthRoute>
           <AuthRoute path="/events/:id" component={Event}></AuthRoute>
           <AuthRoute path="/groups/:id" component={GroupView}></AuthRoute>
