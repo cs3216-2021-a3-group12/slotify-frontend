@@ -36,40 +36,6 @@ import { getTimeDateText } from "./helper";
 import { useAuthState } from "../AuthContext";
 import { RawEvent, EventGroupDetails, SlotDetails, Tag } from "../types/Event";
 
-// type RawEvent = {
-//   id: number;
-//   title: string;
-//   description: string;
-//   start_date_time: number;
-//   end_date_time: number;
-//   location: string;
-//   image_url: number;
-//   is_public: boolean;
-//   group: EventGroupDetails;
-// };
-
-// type EventGroupDetails = {
-//   id: number;
-//   name: string;
-//   banner_url: string;
-// };
-
-// type Slot = {
-//   available_slot_count: number;
-//   confirmed_signup_count: number;
-//   is_confirmed: boolean;
-//   is_eligible: boolean;
-//   is_signed_up: boolean;
-//   pending_signup_count: number;
-//   slot_id: number;
-//   tag: Tag;
-// };
-
-// type Tag = {
-//   tag_name: string;
-//   tag_id: number;
-// };
-
 interface UserDetailPageProps
   extends RouteComponentProps<{
     id: string;
@@ -84,7 +50,11 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 
   const fetchEvent = () => {
     axios
-      .get(`/events/${match.params.id}`)
+      .get(`/events/${match.params.id}/`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
       .then((response) => {
         console.log(response);
         const fetchedEvent = response.data as RawEvent;
@@ -124,6 +94,16 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
     history.push(`/groups/${match.params.id}`);
   };
 
+  function getSignupCount(): number {
+    if (!slots) {
+      return 0;
+    }
+    const total = slots.reduce((sum, slot) => {
+      return sum + slot.confirmed_signup_count;
+    }, 0);
+    return total;
+  }
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -144,14 +124,16 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         <IonItem lines="none">
           <div className="flex mx-auto">
             <IonChip outline={true} className="shadow h-10">
-              <IonLabel>+10 Going</IonLabel>
-              <IonButton
-                size="small"
-                shape="round"
-                onClick={() => setShowModal(true)}
-              >
-                Admin
-              </IonButton>
+              <IonLabel>+{getSignupCount()} Going</IonLabel>
+              {event?.is_admin && (
+                <IonButton
+                  size="small"
+                  shape="round"
+                  onClick={() => setShowModal(true)}
+                >
+                  View Signups (Admin)
+                </IonButton>
+              )}
             </IonChip>
           </div>
         </IonItem>
@@ -231,17 +213,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
             </IonItem>
             {slots ? (
               slots.map((slot) => (
-                <Slot
-                  slotDetails={slot}
-                  // tag={slot.tag.tag_id}
-                  // remainingSlots={slot.available_slot_count}
-                  // status={
-                  //   slot.available_slot_count > 0
-                  //     ? SlotStatus.Signup
-                  //     : SlotStatus.Waitlist
-                  // }
-                  key={slot.slot_id}
-                />
+                <Slot slotDetails={slot} key={slot.slot_id} />
               ))
             ) : (
               <IonLabel></IonLabel>
@@ -258,7 +230,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
           onDidDismiss={() => setShowModal(false)}
           swipeToClose={true}
         >
-          <EventSignUps event={testEvent} setShowModal={setShowModal} />
+          <EventSignUps event={event} setShowModal={setShowModal} />
         </IonModal>
       </IonContent>
     </IonPage>

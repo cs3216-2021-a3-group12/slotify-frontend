@@ -18,6 +18,7 @@ export type RawEvent = {
   image_url: number;
   is_public: boolean;
   group: EventGroupDetails;
+  is_admin: boolean;
 };
 
 export type EventGroupDetails = {

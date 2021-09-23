@@ -148,7 +148,7 @@ function Slot(slotProps: SlotProps): JSX.Element {
             Remaining slots: {slot.available_slot_count}
           </IonLabel>
           <IonLabel className="text-xs">
-            Waitlisted: {slot.pending_signup_count}
+            People in waitlist: {slot.pending_signup_count}
           </IonLabel>
           {slot.is_signed_up && !slot.is_confirmed && (
             <IonLabel className="text-xs">

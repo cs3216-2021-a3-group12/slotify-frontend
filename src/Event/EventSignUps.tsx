@@ -16,27 +16,47 @@ import { useEffect, useState } from "react";
 import { Tag } from "../types/Tag";
 import { EventSignUp } from "../types/EventSignUp";
 import SignUpCard from "./SignUpCard";
-import { StrippedEvent } from "../types/Event";
+import { StrippedEvent, RawEvent } from "../types/Event";
+import groupPlaceholder from "../resources/group-placeholder.jpg";
+import { useAuthState } from "../AuthContext";
+import { useHistory } from "react-router";
+import { AdminSlot } from "../types/EventSignUp";
+import axios from "axios";
 
 const EventSignUps: React.FC<{
-  event: StrippedEvent;
+  event?: RawEvent;
   setShowModal: (value: React.SetStateAction<boolean>) => void;
 }> = ({ event, setShowModal }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [signUps, setSignUps] = useState<EventSignUp[]>([]);
-
-  const group = {
-    name: "NUS Rock Climbing Club",
-    bannerUrl:
-      "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y",
-  };
+  const [slots, setSlots] = useState<AdminSlot[]>([]);
+  const userDetails = useAuthState();
+  const history = useHistory();
 
   useEffect(() => {
     setIsAdmin(true);
     setTags(testTags);
-    setSignUps(testSignUps);
+    fetchEventSlotSignups();
+    // setSignUps(testSignUps);
   }, []);
+
+  const fetchEventSlotSignups = () => {
+    axios
+      .get(`/events/${event?.id}/admin/signups`, {
+        headers: {
+          Authorization: `Bearer ${userDetails.accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        const slots = response.data as [AdminSlot];
+        setSlots(slots);
+      })
+      .catch((error) => {});
+  };
+  // const redirectToGroup = () => {
+  //   history.push(`/groups/${event?.group.id}`);
+  // };
 
   return (
     <IonPage>
@@ -57,37 +77,46 @@ const EventSignUps: React.FC<{
       <IonContent className="text-left">
         <div className="flex flex-col gap-6">
           <IonLabel className="text-2xl font-bold truncate px-5">
-            {event.title}
+            {event?.title}
           </IonLabel>
           <div className="flex justify-between px-6">
             <IonThumbnail slot="start">
               <IonImg
-                src={group.bannerUrl}
+                src={event?.group.banner_url ?? groupPlaceholder}
                 alt="group banner"
                 className="rounded-md"
               />
             </IonThumbnail>
             <IonGrid>
               <IonRow>
-                <IonLabel className="font-bold text-sm">{group.name}</IonLabel>
+                <IonLabel className="font-bold text-sm">
+                  {event?.group.name}
+                </IonLabel>
               </IonRow>
               <IonRow>
                 <IonLabel className="text-xs">Organizing Group</IonLabel>
               </IonRow>
             </IonGrid>
-            <IonButton slot="end" size="small" color="secondary" fill="outline">
+            {/* <IonButton
+              slot="end"
+              size="small"
+              color="secondary"
+              fill="outline"
+              onClick={redirectToGroup}
+            >
               View
-            </IonButton>
+            </IonButton> */}
           </div>
 
-          {tags.map((tag) => {
+          {slots.map((slot) => {
             return (
               <SignUpCard
                 isAdmin={isAdmin}
-                tagName={tag.tag_name}
-                signUps={signUps.filter((signUp) => {
-                  return signUp.tag === tag;
-                })}
+                slot={slot}
+                // tagName={slot.tag.tag_name}
+                // signUps={slot.filter((signUp) => {
+                //   return signUp.tag === tag;
+                // })}
               />
             );
           })}
