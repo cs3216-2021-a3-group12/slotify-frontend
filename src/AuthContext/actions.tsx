@@ -1,15 +1,21 @@
+
+import axios from "axios";
+import { GoogleLoginResponse } from "react-google-login";
+
 const ROOT_URL = "https://api.slotify.club/api/v1";
+
+export type UserData = {
+  email: string;
+  username: string;
+  tokens: {
+    refresh: string;
+    access: string;
+  };
+};
 
 export type Action = {
   type: ActionType;
-  payload?: {
-    email: string;
-    username: string;
-    tokens: {
-      refresh: string;
-      access: string;
-    };
-  };
+  payload?: UserData;
   error?: any;
 };
 
@@ -52,6 +58,29 @@ export async function loginUser(
     dispatch({ type: ActionType.LOGIN_ERROR, error: error });
     console.error(error);
   }
+}
+
+export async function googleLoginUser(
+  dispatch: React.Dispatch<Action>,
+  loginPayload: Object
+) {
+  const { tokenId } = loginPayload as GoogleLoginResponse;
+  return axios
+    .post(`${ROOT_URL}/social_auth/google/`, {
+      auth_token: tokenId,
+    })
+    .then((response) => {
+      const loginData = response.data as UserData;
+      if (loginData && loginData.username) {
+        dispatch({ type: ActionType.LOGIN_SUCCESS, payload: loginData });
+        localStorage.setItem("currentUser", JSON.stringify(loginData));
+        return loginData;
+      }
+    })
+    .catch((error) => {
+      console.error(error.response.data);
+      dispatch({ type: ActionType.LOGIN_ERROR, error: error });
+    });
 }
 
 export async function logout(dispatch: React.Dispatch<Action>) {
