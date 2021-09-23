@@ -33,7 +33,7 @@ const Signup: React.FC = () => {
   }
 
   return (
-    <IonPage className="sm: my-3 lg:mx-40">
+    <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonButtons>
