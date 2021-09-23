@@ -15,8 +15,6 @@ import ExploreSegmentButton from "./ExploreSegmentButton";
 import ExploreEvents from "./ExploreEvents";
 import ExploreGroups from "./ExploreGroups";
 
-import "./Explore.css";
-
 function Explore(props: any) {
   const [selectedSegment, setSelectedSegment] = useState("events");
 
@@ -40,7 +38,7 @@ function Explore(props: any) {
         </IonToolbar>
       </IonHeader>
       <IonList className="p-0">
-        <p className="explore-prompt-text">
+        <p className="text-center leading-none p-2">
           Discover new groups and events to make the most of your student life!
         </p>
         <IonSegment

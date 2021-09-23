@@ -31,7 +31,7 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
           <Link
             className="mx-10 mt-4"
             to={{
-              pathname: `/groups/${groupId}/createEvent`,
+              pathname: `/createEvent/${groupId}`,
               state: { group: groupId },
             }}
           >
@@ -43,7 +43,7 @@ const GroupEvents: React.FC<GroupEventsProps> = ({ groupId }) => {
 
         {events.map((event) => {
           return (
-            <Link to={`/events/${event.id}`}>
+            <Link to={`/events/${event.id}`} key={event.id}>
               <GroupEventCard event={event} />
             </Link>
           );

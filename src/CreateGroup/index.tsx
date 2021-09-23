@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import axios from "axios";
 
-import { CreateGroupDetails } from "../types/Group";
+import { GroupFormDetails } from "../types/Group";
 import GroupForm from "./GroupForm";
 import { useAuthState } from "../AuthContext";
 
@@ -18,7 +18,7 @@ function CreateGroup() {
   const userDetails = useAuthState();
   const history = useHistory();
 
-  async function createGroup(group: CreateGroupDetails) {
+  async function createGroup(group: GroupFormDetails) {
     const formData = new FormData();
     formData.append("name", group.name);
     formData.append("description", group.description ?? "");
@@ -32,7 +32,6 @@ function CreateGroup() {
           console.error(err);
         });
       if (blob) {
-        console.log(blob);
         formData.append("banner_url", blob, group.imgFileName ?? "banner.jpg");
       }
     }
@@ -46,8 +45,7 @@ function CreateGroup() {
       })
       .then((res) => {
         if (res.data.id) {
-          console.log(res.data);
-          history.replace(`/groups/${res.data.id}`);
+          history.push(`/groups/${res.data.id}`);
         }
       })
       .catch((err) => {

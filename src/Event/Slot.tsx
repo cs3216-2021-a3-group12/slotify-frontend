@@ -1,11 +1,11 @@
 import {
+  IonAlert,
   IonButton,
   IonGrid,
   IonIcon,
   IonItem,
   IonLabel,
   IonRow,
-  IonAlert,
 } from "@ionic/react";
 import {
   addOutline,
@@ -176,6 +176,25 @@ function Slot(slotProps: SlotProps): JSX.Element {
           }
         />
       </IonButton>
+
+      {/* <IonAlert
+        isOpen={showDeleteAlert}
+        onDidDismiss={() => setShowDeleteAlert(false)}
+        header={"Note"}
+        message={"To proceed, please complete your profile"}
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+          },
+          {
+            text: "OK",
+            handler: () => {
+              history.push("/profile/editprofile");
+            },
+          },
+        ]}
+      /> */}
     </IonItem>
   );
 }

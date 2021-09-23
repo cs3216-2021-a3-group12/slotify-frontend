@@ -44,9 +44,10 @@ function Home() {
     });
     Promise.all([
       axios_instance.get("/events/my_events"),
-      axios_instance.get("/groups/my"),
+      axios_instance.get("/groups/my_groups"),
     ]).then(([eventsRes, groupsRes]) => {
       console.log(eventsRes.data);
+      setEvents(testEvents);
       setGroups(groupsRes.data.results);
     });
   }, [userDetails.username, userDetails.accessToken]);
@@ -80,11 +81,17 @@ function Home() {
             </Link>
           </div>
           {events.length ? (
-            <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
+            <IonSlides
+              className="w-full h-full"
+              scrollbar={true}
+              options={{ slidesPerView: "auto" }}
+            >
               {events.map((event) => {
                 return (
-                  <IonSlide key={event.id} className="w-2/3 h-auto mt-2 mb-4">
-                    <EventCard event={event} />
+                  <IonSlide key={event.id} className=" w-56 h-auto p-3">
+                    <Link to={`/events/${event.id}`} className="w-full h-full">
+                      <EventCard event={event} />
+                    </Link>
                   </IonSlide>
                 );
               })}
@@ -128,3 +135,39 @@ function Home() {
 }
 
 export default Home;
+
+const testEvents: StrippedEvent[] = [
+  {
+    id: 3,
+    title: "Public climbing session",
+    description: "we climb rocks today",
+    start_date_time: 1631608200,
+    end_date_time: 1631615400,
+    location: "Utown rock wall",
+    is_public: true,
+    group: 1,
+    image_url: null,
+  },
+  {
+    id: 2,
+    title: "Public climbing session",
+    description: "we climb rocks today",
+    start_date_time: 1631608200,
+    end_date_time: 1631615400,
+    location: "Utown rock wall",
+    is_public: true,
+    group: 1,
+    image_url: null,
+  },
+  {
+    id: 1,
+    title: "Public climbing session",
+    description: "we climb rocks today",
+    start_date_time: 1631608200,
+    end_date_time: 1631615400,
+    location: "Utown rock wall",
+    is_public: true,
+    group: 1,
+    image_url: null,
+  },
+];

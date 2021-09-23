@@ -19,43 +19,68 @@ import {
   lockClosedOutline,
 } from "ionicons/icons";
 import ProfileField from "./ProfileField";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useAuthState } from "../AuthContext";
+import { emptyProfile, Profile } from "../types/Profile";
 
 const UserProfile: React.FC = () => {
-  // fetch profile
-  const email = "john@gmail.com";
-  const studentNum = "A0123456X";
-  const nusnetId = "E0123456";
-  const telegramHandle = "@johnwick";
+  const userDetails = useAuthState();
+
+  const [profile, setProfile] = useState<Profile>(emptyProfile);
+
+  useEffect(() => {
+    axios
+      .get("https://api.slotify.club/api/v1/auth/profile/", {
+        headers: { Authorization: `Bearer ${userDetails.accessToken}` },
+      })
+      .then((profile) => {
+        setProfile(profile.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
 
   return (
-    <IonPage className="sm: m-0 lg:mx-40">
+    <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar>
           <IonButtons>
-            <IonBackButton color="primary" defaultHref="/home" />
+            <IonBackButton
+              color="primary"
+              defaultHref="/home"
+              className="m-5"
+            />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent className="text-center">
         <div className="flex flex-col items-center">
-          <IonLabel className="text-5xl font-serif">John Wick</IonLabel>
+          <IonLabel className="text-5xl font-serif m-2">
+            {profile.username}
+          </IonLabel>
         </div>
         <IonList lines="none">
-          <ProfileField icon={mailOutline} title="Email" value={email} />
+          <ProfileField
+            icon={mailOutline}
+            title="Email"
+            value={profile.email}
+          />
           <ProfileField
             icon={idCardOutline}
             title="Student Number"
-            value={studentNum}
+            value={profile.student_number}
           />
           <ProfileField
             icon={globeOutline}
             title="NUSNET ID"
-            value={nusnetId}
+            value={profile.nusnet_id}
           />
           <ProfileField
             icon={paperPlaneOutline}
             title="Telgram Handle (optional)"
-            value={telegramHandle}
+            value={profile.telegram_handle}
           />
         </IonList>
 

@@ -240,10 +240,13 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
 export default Event;
 
 const testEvent: StrippedEvent = {
-  id: 1,
-  title: "Weekly Practice",
-  start_date_time: 1631615400,
-  end_date_time: 1631608200,
-  location: "Location 1",
+  id: 3,
+  title: "Public climbing session",
+  description: "we climb rocks today",
+  start_date_time: 1631608200,
+  end_date_time: 1631615400,
+  location: "Utown rock wall",
+  is_public: true,
+  group: 1,
   image_url: "https://picsum.photos/200",
 };

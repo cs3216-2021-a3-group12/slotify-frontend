@@ -1,7 +1,14 @@
 export interface Member {
-  userId: number;
-  name: string;
-  tagId: number;
-  tagName: string;
-  isAdmin: boolean;
+  id: number;
+  username: string;
+  email: string;
+  tag: string;
+  is_admin: boolean;
+  profile: Profile;
+}
+
+export interface Profile {
+  student_number: string;
+  nusnet_id: string;
+  telegram_handle: string;
 }
