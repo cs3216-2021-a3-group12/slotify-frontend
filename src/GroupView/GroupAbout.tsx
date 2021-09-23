@@ -17,7 +17,7 @@ const GroupAbout: React.FC<GroupAboutProps> = ({ group }) => {
 
   function deleteGroup() {
     axios
-      .delete(`https://api.slotify.club/api/v1/groups/${group.id}/`, {
+      .delete(`https://api.slotify.club/api/v1/groups/${group.id}`, {
         headers: {
           Authorization: `Bearer ${userDetails.accessToken}`,
           "Content-Type": "multipart/form-data",

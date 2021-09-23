@@ -38,7 +38,7 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
 
   useEffect(() => {
     axios
-      .get(`https://api.slotify.club/api/v1/groups/${id}/`, {
+      .get(`https://api.slotify.club/api/v1/groups/${id}`, {
         headers: {
           Authorization: `Bearer ${userDetails.accessToken}`,
         },

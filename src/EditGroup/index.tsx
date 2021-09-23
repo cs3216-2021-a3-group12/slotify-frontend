@@ -29,7 +29,7 @@ function EditGroup() {
     if (match.params.id) {
       setGroupId(match.params.id);
     }
-    if (location.state.group) {
+    if (location.state && location.state.group) {
       setGroup({
         name: location.state.group.name,
         description: location.state.group.description,
@@ -41,7 +41,7 @@ function EditGroup() {
       history.goBack();
     }
     // eslint-disable-next-line
-  }, [location.state.group]);
+  }, [location.state]);
 
   async function editGroup(group: GroupFormDetails) {
     const formData = new FormData();
