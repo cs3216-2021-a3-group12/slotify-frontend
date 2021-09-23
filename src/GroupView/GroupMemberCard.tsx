@@ -42,6 +42,19 @@ function GroupMemberCard({
       .then((res) => res.json())
       .then((data) => data.results)
       .then((data) => {
+        const tagId = data[0].tag;
+        if (tagId !== undefined) {
+          switch (tagId) {
+            case 1:
+              data[0].tag = "Junior";
+              break;
+            case 2:
+              data[0].tag = "Senior";
+              break;
+            default:
+              data[0].tag = "No Tag";
+          }
+        }
         setMembership({ ...data[0] });
       })
       .catch((err) => {
@@ -60,8 +73,10 @@ function GroupMemberCard({
           },
         }
       )
-        .then((res) => res.json())
-        .then(() => setShowModal(false))
+        .then(() => {
+          setShowModal(false);
+          window.location.reload();
+        })
         .catch((err) => {
           console.error(err);
         });
@@ -80,14 +95,13 @@ function GroupMemberCard({
     } else if (newMembership.tag === "Senior") {
       tag = 2;
     } else {
-      tag = undefined;
+      tag = null;
     }
+
     const requestBody: { is_admin: boolean; tag?: number } = {
       is_admin: newMembership.is_admin,
+      tag: tag,
     };
-    if (tag) {
-      requestBody.tag = tag;
-    }
 
     if (membership) {
       fetch(
@@ -102,12 +116,56 @@ function GroupMemberCard({
         }
       )
         .then((res) => res.json())
-        .then(() => setShowModal(false))
+        .then(() => {
+          setShowModal(false);
+          window.location.reload();
+        })
         .catch((err) => {
           console.error(err);
         });
     }
   }
+
+  function handleRequest(is_approved: boolean) {
+    if (is_approved) {
+      fetch(
+        `https://api.slotify.club/api/v1/groups/memberships/${membership.id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${userDetails.accessToken}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ is_approved: is_approved }),
+        }
+      )
+        .then((res) => res.json())
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      // delete the join request to reject
+      fetch(
+        `https://api.slotify.club/api/v1/groups/memberships/${membership.id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${userDetails.accessToken}`,
+          },
+        }
+      )
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }
+
   return (
     <IonCard className="rounded-2xl w-5/6 h-1/3 mt-3">
       <IonCardHeader className="text-left px-1 py-0 truncate">
@@ -116,34 +174,68 @@ function GroupMemberCard({
             <IonCardTitle className="truncate text-base">
               {member.username}
             </IonCardTitle>
-            <IonCardSubtitle>{member.profile.student_number}</IonCardSubtitle>
-            <IonCardSubtitle>{member.profile.nusnet_id}</IonCardSubtitle>
+            {isAdmin && member.profile && (
+              <>
+                <IonCardSubtitle>
+                  {member.profile.student_number}
+                </IonCardSubtitle>
+                <IonCardSubtitle>{member.profile.nusnet_id}</IonCardSubtitle>
+              </>
+            )}
           </div>
+
           <div className="flex items-center">
-            <IonCardSubtitle className="flex flex-col -ml-3">
-              <IonButton
-                size="small"
-                fill="clear"
-                href={`https://t.me/${member.profile.telegram_handle}`}
-                target="_blank"
-                disabled={member.profile.telegram_handle === ""}
-              >
-                <IonIcon icon={paperPlaneOutline} />
-              </IonButton>
-              <IonButton
-                size="small"
-                fill="clear"
-                href={`mailto:${member.email}`}
-                disabled={member.email === ""}
-              >
-                <IonIcon icon={mailOutline} />
-              </IonButton>
-            </IonCardSubtitle>
-            <IonCardSubtitle className="flex flex-col text-center">
-              <IonLabel>{member.is_admin ? "Admin" : "Member"}</IonLabel>
+            {isAdmin && member.profile && (
+              <IonCardSubtitle className="flex flex-col -ml-3">
+                <IonButton
+                  size="small"
+                  fill="clear"
+                  href={`https://t.me/${member.profile.telegram_handle}`}
+                  target="_blank"
+                  disabled={member.profile.telegram_handle === ""}
+                >
+                  <IonIcon icon={paperPlaneOutline} />
+                </IonButton>
+                <IonButton
+                  size="small"
+                  fill="clear"
+                  href={`mailto:${member.email}`}
+                  target="_blank"
+                  disabled={member.email === ""}
+                >
+                  <IonIcon icon={mailOutline} />
+                </IonButton>
+              </IonCardSubtitle>
+            )}
+            <IonCardSubtitle className="flex flex-col text-center m-2">
+              <IonLabel>
+                {member.is_admin
+                  ? "Admin"
+                  : member.is_approved
+                  ? "Member"
+                  : "Requested"}
+              </IonLabel>
               {member.tag ? <Tag color="primary" label={member.tag} /> : null}
             </IonCardSubtitle>
-            {isAdmin && (
+            {isAdmin && !member.is_approved && (
+              <>
+                <IonButton
+                  size="small"
+                  color="success"
+                  onClick={() => handleRequest(true)}
+                >
+                  Approve
+                </IonButton>
+                <IonButton
+                  size="small"
+                  color="danger"
+                  onClick={() => handleRequest(false)}
+                >
+                  Reject
+                </IonButton>
+              </>
+            )}
+            {isAdmin && member.is_approved && (
               <IonButton
                 fill="clear"
                 size="large"
@@ -156,7 +248,7 @@ function GroupMemberCard({
           </div>
         </div>
       </IonCardHeader>
-      {membership && (
+      {membership && isAdmin && (
         <IonModal
           isOpen={showModal}
           onDidDismiss={() => setShowModal(false)}

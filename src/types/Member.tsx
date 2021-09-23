@@ -4,6 +4,7 @@ export interface Member {
   email: string;
   tag: string;
   is_admin: boolean;
+  is_approved: boolean;
   profile: Profile;
 }
 

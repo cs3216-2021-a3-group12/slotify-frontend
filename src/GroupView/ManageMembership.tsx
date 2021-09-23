@@ -27,7 +27,7 @@ const ManageMembership: React.FC<{
   function OnConfirm() {
     updateMembership(newMembership);
   }
-
+  
   return (
     <IonPage>
       <IonHeader className="ion-no-border mb-5">
@@ -59,7 +59,7 @@ const ManageMembership: React.FC<{
               </IonLabel>
               <Tag
                 color="primary"
-                label={newMembership.is_admin ? "Admin" : "not Admin"}
+                label={newMembership.is_admin ? "Admin" : "Not Admin"}
               ></Tag>
             </div>
             <IonButton
@@ -81,10 +81,7 @@ const ManageMembership: React.FC<{
               <IonLabel className="text-xl text-left font-mono font-bold">
                 Current Tag:
               </IonLabel>
-              <Tag
-                color="primary"
-                label={newMembership.tag ? newMembership.tag : "No Tag"}
-              ></Tag>
+              <Tag color="primary" label={newMembership.tag}></Tag>
             </div>
 
             <IonButton shape="round" onClick={() => setShowTagAlert(true)}>
@@ -127,19 +124,22 @@ const ManageMembership: React.FC<{
               name: "noTag",
               type: "radio",
               label: "No Tag",
-              value: "noTag",
+              value: "No Tag",
               handler: () => {
                 setNewMembership((newMembership) => {
-                  return { ...newMembership, tag: "" };
+                  return { ...newMembership, tag: "No Tag" };
                 });
               },
-              checked: newMembership.tag === null || newMembership.tag === "",
+              checked:
+                newMembership.tag === null ||
+                newMembership.tag === undefined ||
+                newMembership.tag === "No Tag",
             },
             {
               name: "junior",
               type: "radio",
               label: "Junior",
-              value: "1",
+              value: "Junior",
               handler: () => {
                 setNewMembership((newMembership) => {
                   return { ...newMembership, tag: "Junior" };
@@ -151,7 +151,7 @@ const ManageMembership: React.FC<{
               name: "senior",
               type: "radio",
               label: "Senior",
-              value: "2",
+              value: "Senior",
               handler: () => {
                 setNewMembership((newMembership) => {
                   return { ...newMembership, tag: "Senior" };
@@ -162,12 +162,9 @@ const ManageMembership: React.FC<{
           ]}
           buttons={[
             {
-              text: "Cancel",
-              role: "cancel",
+              text: "ok",
+              role: "ok",
               cssClass: "secondary",
-              handler: () => {
-                console.log("Confirm Cancel");
-              },
             },
           ]}
         />
