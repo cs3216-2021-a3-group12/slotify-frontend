@@ -109,7 +109,12 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
                     <IonLabel className="font-bold">
                       {group.category.name}
                     </IonLabel>
-                    <IonButton size="small" className="w-1/4">
+                    <IonButton
+                      size="small"
+                      className="w-1/4"
+                      href={`https://telegram.me/share/url?url=${window.location.href}&text=Join%20Group!`}
+                      target="_blank"
+                    >
                       Share
                     </IonButton>
                   </div>

@@ -190,6 +190,8 @@ function GroupMemberCard({
                 <IonButton
                   size="small"
                   fill="clear"
+                  href={`https://t.me/${member.profile.telegram_handle}`}
+                  target="_blank"
                   disabled={member.profile.telegram_handle === ""}
                 >
                   <IonIcon icon={paperPlaneOutline} />
@@ -198,6 +200,7 @@ function GroupMemberCard({
                   size="small"
                   fill="clear"
                   href={`mailto:${member.email}`}
+                  target="_blank"
                   disabled={member.email === ""}
                 >
                   <IonIcon icon={mailOutline} />
@@ -212,7 +215,6 @@ function GroupMemberCard({
                   ? "Member"
                   : "Requested"}
               </IonLabel>
-
               {member.tag ? <Tag color="primary" label={member.tag} /> : null}
             </IonCardSubtitle>
             {isAdmin && !member.is_approved && (
