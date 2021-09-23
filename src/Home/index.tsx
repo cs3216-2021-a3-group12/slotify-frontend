@@ -46,11 +46,12 @@ function Home() {
       axios_instance.get("/events/my_events"),
       axios_instance.get("/groups/my_groups"),
     ]).then(([eventsRes, groupsRes]) => {
-      console.log(eventsRes.data);
-      setEvents(testEvents);
+      const events = eventsRes.data.map((_data: any) => _data.event);
+      setEvents(events);
       setGroups(groupsRes.data.results);
     });
   }, [userDetails.username, userDetails.accessToken]);
+
   return (
     <IonPage id="main">
       <IonHeader className="ion-no-border h-1/5">
@@ -135,39 +136,3 @@ function Home() {
 }
 
 export default Home;
-
-const testEvents: StrippedEvent[] = [
-  {
-    id: 3,
-    title: "Public climbing session",
-    description: "we climb rocks today",
-    start_date_time: 1631608200,
-    end_date_time: 1631615400,
-    location: "Utown rock wall",
-    is_public: true,
-    group: 1,
-    image_url: null,
-  },
-  {
-    id: 2,
-    title: "Public climbing session",
-    description: "we climb rocks today",
-    start_date_time: 1631608200,
-    end_date_time: 1631615400,
-    location: "Utown rock wall",
-    is_public: true,
-    group: 1,
-    image_url: null,
-  },
-  {
-    id: 1,
-    title: "Public climbing session",
-    description: "we climb rocks today",
-    start_date_time: 1631608200,
-    end_date_time: 1631615400,
-    location: "Utown rock wall",
-    is_public: true,
-    group: 1,
-    image_url: null,
-  },
-];
