@@ -10,8 +10,9 @@ function GroupCard({ group }: { group: StrippedGroup }) {
           className="h-full w-full p-2 object-cover rounded-2xl"
           alt="Group"
           src={
-            group.banner_url ||
-            "https://api.slotify.club/media/groups/group-default.jpg"
+            group.banner_url
+              ? group.banner_url
+              : "https://api.slotify.club/media/groups/group-default.jpg"
           }
         />
       </div>
