@@ -10,6 +10,11 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import AuthField from "./AuthField";
 import { useAuthDispatch, loginUser } from "../AuthContext";
+import GoogleLogin, {
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
+import { googleLoginUser } from "../AuthContext";
 
 const Login: React.FC = () => {
   const history = useHistory();
@@ -28,6 +33,16 @@ const Login: React.FC = () => {
       }
     });
   }
+
+  const responseGoogle = (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
+    googleLoginUser(dispatch, response).then((data) => {
+      if (data) {
+        history.push("/home");
+      }
+    });
+  };
 
   return (
     <IonPage>
@@ -61,6 +76,13 @@ const Login: React.FC = () => {
           <IonButton routerLink="/signup" className="w-2/3">
             Sign up
           </IonButton>
+          <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}
+            buttonText="Login with Google"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
         </div>
       </IonContent>
     </IonPage>
