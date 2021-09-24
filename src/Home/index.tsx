@@ -70,7 +70,7 @@ function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} scrollEvents={true}>
-        <div className="h-auto flex flex-col ">
+        <div className="h-80 flex flex-col ">
           <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Events</span>
             <Link
@@ -83,13 +83,13 @@ function Home() {
           </div>
           {events.length ? (
             <IonSlides
-              className="w-full h-80"
+              className="w-full h-full"
               scrollbar={true}
               options={{ slidesPerView: "auto" }}
             >
               {events.map((event) => {
                 return (
-                  <IonSlide key={event.id} className="w-56 h-60 p-3">
+                  <IonSlide key={event.id} className="w-56 h-auto p-3">
                     <Link to={`/events/${event.id}`} className="w-full">
                       <EventCard event={event} />
                     </Link>
