@@ -56,11 +56,8 @@ function ExploreEvents() {
       <IonContent>
         {displayedEvents.map((event, idx) => {
           return (
-            <Link to={`/events/${event.id}`}>
-              <IonCard
-                className="rounded-2xl w-auto h-32 mt-3 flex justify-between"
-                key={idx}
-              >
+            <Link to={`/events/${event.id}`} key={idx}>
+              <IonCard className="rounded-2xl w-auto h-32 mt-3 flex justify-between">
                 <div className="h-full w-1/3">
                   <img
                     className="h-full w-full p-2 object-fill rounded-2xl"
