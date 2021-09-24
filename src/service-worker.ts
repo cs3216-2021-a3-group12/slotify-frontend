@@ -13,7 +13,7 @@ import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { NetworkFirst } from "workbox-strategies";
+import { NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -64,27 +64,30 @@ self.addEventListener("message", (event) => {
 
 // Any other custom service worker logic can go here.
 
-registerRoute(({ url }) => {
-  return url.host === "api.slotify.club";
-}, new NetworkFirst());
-
 registerRoute(
   ({ url }) => {
     return (
       url.pathname.endsWith(".png") ||
       url.pathname.endsWith(".jpg") ||
-      url.pathname.endsWith(".jpeg")
+      url.pathname.endsWith(".jpeg") ||
+      url.pathname.endsWith(".css") ||
+      url.pathname.endsWith(".js") ||
+      url.pathname.endsWith(".json")
     );
   },
-  new NetworkFirst({
+  new StaleWhileRevalidate({
     cacheName: "images",
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
+      new ExpirationPlugin({ maxEntries: 200 }),
       new CacheableResponsePlugin({
         statuses: [200],
       }),
     ],
   })
 );
+
+registerRoute(({ url }) => {
+  return url.host === "api.slotify.club";
+}, new NetworkFirst());

@@ -103,7 +103,7 @@ function ExploreGroups() {
                 <IonCard className="rounded-2xl h-32 w-auto mt-3 flex">
                   <div className="w-1/3">
                     <img
-                      className="h-full w-full p-2 object-fill rounded-2xl"
+                      className="h-full w-full p-2 object-cover rounded-2xl"
                       alt="Group"
                       src={group.banner_url ?? groupPlaceholder}
                     />

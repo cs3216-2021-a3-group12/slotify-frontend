@@ -45,11 +45,15 @@ function Home() {
     Promise.all([
       axios_instance.get("/events/my_events"),
       axios_instance.get("/groups/my_groups"),
-    ]).then(([eventsRes, groupsRes]) => {
-      const events = eventsRes.data.map((_data: any) => _data.event);
-      setEvents(events);
-      setGroups(groupsRes.data.results);
-    });
+    ])
+      .then(([eventsRes, groupsRes]) => {
+        const events = eventsRes.data.map((_data: any) => _data.event);
+        setEvents(events);
+        setGroups(groupsRes.data.results);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [userDetails.username, userDetails.accessToken]);
 
   return (
