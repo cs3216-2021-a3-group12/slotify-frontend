@@ -86,7 +86,7 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
         </Fragment>
       ) : (
         <Fragment>
-          <IonHeader mode="ios" className="ion-no-border" translucent={true}>
+          <IonHeader mode="ios" className="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start" className="h-10">
                 <IonBackButton color="primary" defaultHref="/home" />
@@ -95,7 +95,7 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
             <IonList className="-mt-12">
               <div>
                 <img
-                  className="w-full object-cover"
+                  className="h-56 w-full object-cover"
                   alt="Group Banner"
                   src={
                     group.banner_url
