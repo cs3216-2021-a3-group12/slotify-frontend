@@ -48,7 +48,9 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error.response.data);
+        if (error.response.data) console.error(error.response.data);
+        else console.error(error);
+
         setLoading(false);
       });
   };

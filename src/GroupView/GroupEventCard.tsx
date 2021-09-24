@@ -17,7 +17,7 @@ function GroupEventCard({ event }: { event: StrippedEvent }) {
     <IonCard className="rounded-2xl w-auto h-32 m-3 flex justify-between">
       <div className="h-full w-1/3">
         <img
-          className="h-full w-full p-2 object-fill rounded-2xl"
+          className="h-full w-full p-2 object-cover rounded-2xl"
           alt="Group"
           src={event.image_url ?? eventPlaceholder}
         />
