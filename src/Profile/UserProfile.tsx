@@ -16,7 +16,6 @@ import {
   idCardOutline,
   globeOutline,
   paperPlaneOutline,
-  lockClosedOutline,
 } from "ionicons/icons";
 import ProfileField from "./ProfileField";
 import axios from "axios";
@@ -88,10 +87,6 @@ const UserProfile: React.FC = () => {
           <IonButton routerLink="/profile/editprofile" className="w-3/5">
             <IonIcon slot="start" icon={createOutline} />
             Edit Profile
-          </IonButton>
-          <IonButton routerLink="/profile/changepassword" className="w-3/5">
-            <IonIcon slot="start" icon={lockClosedOutline} />
-            Change Password
           </IonButton>
         </div>
       </IonContent>
