@@ -32,30 +32,31 @@ interface GroupViewProps
 const GroupView: React.FC<GroupViewProps> = ({ match }) => {
   const location = useLocation<{ groupId?: string }>();
   const userDetails = useAuthState();
-  const id = Number(match.params.id);
   const [selectedSegment, setSelectedSegment] = useState("about");
   const [group, setGroup] = useState<DetailedGroup | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchGroup = () => {
     axios
-      .get(`https://api.slotify.club/api/v1/groups/${id}`, {
+      .get(`https://api.slotify.club/api/v1/groups/${match.params.id}/`, {
         headers: {
           Authorization: `Bearer ${userDetails.accessToken}`,
         },
       })
-      .then((res) => {
-        if (res.data.id === id) {
-          setGroup(res.data);
-          setLoading(false);
-        }
+      .then((response) => {
+        setGroup(response.data);
+        setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        console.error(error.response.data);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchGroup();
     // eslint-disable-next-line
-  }, [id, location.state]);
+  }, [location.state]);
 
   function changeSegment(e: CustomEvent<SegmentChangeEventDetail>) {
     let value = e.detail.value as string;

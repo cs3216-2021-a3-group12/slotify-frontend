@@ -1,7 +1,6 @@
 import { IonCard } from "@ionic/react";
 import Tag from "../Components/Tag";
 import { StrippedGroup } from "../types/Group";
-import groupPlaceholder from "../resources/group-placeholder.jpg";
 
 function GroupCard({ group }: { group: StrippedGroup }) {
   return (
@@ -10,7 +9,10 @@ function GroupCard({ group }: { group: StrippedGroup }) {
         <img
           className="h-full w-full p-2 object-fill rounded-2xl"
           alt="Group"
-          src={group.banner_url ?? groupPlaceholder}
+          src={
+            group.banner_url ||
+            "https://api.slotify.club/media/groups/group-default.jpg"
+          }
         />
       </div>
 

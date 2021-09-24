@@ -148,7 +148,7 @@ const Signup: React.FC = () => {
         </IonList>
         {/* {TODO: make this nicer} */}
         <p>{errorMessage}</p>
-        <IonButton onClick={signUpUserWithEmail} className="w-5/6">
+        <IonButton onClick={signUpUserWithEmail} className="w-5/6 mb-4">
           Sign up
         </IonButton>
         <GoogleLogin
