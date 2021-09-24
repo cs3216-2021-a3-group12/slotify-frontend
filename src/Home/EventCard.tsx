@@ -10,7 +10,7 @@ function EventCard({ event }: { event: StrippedEvent }) {
       <div className="flex flex-col">
         <div className="h-2/3 w-full">
           <img
-            className="p-2 w-auto h-full object-fill rounded-2xl"
+            className="p-2 w-auto h-auto object-fill rounded-2xl"
             alt="Event"
             src={event.image_url || eventPlaceholder}
           />

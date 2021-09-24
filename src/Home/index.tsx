@@ -70,7 +70,7 @@ function Home() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} scrollEvents={true}>
-        <div className="h-80 flex flex-col ">
+        <div className="h-auto flex flex-col ">
           <div className="p-3 h-12 flex justify-between">
             <span className="text-xl">Your Events</span>
             <Link
