@@ -50,7 +50,7 @@ function EditGroup() {
     if (group.categoryId) {
       formData.append("category", group.categoryId.toString());
     }
-    if (group.imgBlob) {
+    if (group.imgFileName && group.imgBlob) {
       const blob = await fetch(group.imgBlob)
         .then((res) => res.blob())
         .catch((err) => {

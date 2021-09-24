@@ -34,8 +34,6 @@ export async function loginUser(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(loginPayload),
   };
-  console.log(requestOptions);
-
   try {
     dispatch({ type: ActionType.REQUEST_LOGIN });
     let data = await fetch(`${ROOT_URL}/auth/login/`, requestOptions)

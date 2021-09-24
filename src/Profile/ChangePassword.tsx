@@ -16,9 +16,7 @@ const ChangePassword: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function changePassword() {
-    console.log(password);
-  }
+  function changePassword() {}
 
   return (
     <IonPage className="sm: mx-10 lg:mx-40">
