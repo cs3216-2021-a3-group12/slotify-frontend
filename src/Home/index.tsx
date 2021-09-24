@@ -89,8 +89,8 @@ function Home() {
             >
               {events.map((event) => {
                 return (
-                  <IonSlide key={event.id} className=" w-56 h-auto p-3">
-                    <Link to={`/events/${event.id}`} className="w-full h-full">
+                  <IonSlide key={event.id} className="w-56 p-3">
+                    <Link to={`/events/${event.id}`} className="w-full">
                       <EventCard event={event} />
                     </Link>
                   </IonSlide>

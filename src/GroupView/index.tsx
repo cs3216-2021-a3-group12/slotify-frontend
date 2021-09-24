@@ -92,12 +92,16 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
                 <IonBackButton color="primary" defaultHref="/home" />
               </IonButtons>
             </IonToolbar>
-            <IonList className=" -mt-12">
+            <IonList className="-mt-12">
               <div>
                 <img
-                  className="h-36 w-full object-cover"
+                  className="w-full object-cover"
                   alt="Group Banner"
-                  src={group.banner_url}
+                  src={
+                    group.banner_url
+                      ? group.banner_url
+                      : "https://api.slotify.club/media/groups/group-default.jpg"
+                  }
                 />
                 <div className="m-4 text-center">
                   <IonLabel className="text-2xl font-bold">
