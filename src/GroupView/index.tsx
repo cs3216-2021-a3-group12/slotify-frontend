@@ -94,14 +94,11 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
             </IonToolbar>
             <IonList className=" -mt-12">
               <div>
-                <div className=" h-40">
-                  <img
-                    className="h-full w-full object-cover "
-                    alt="Group Banner"
-                    src={group.banner_url}
-                  />
-                </div>
-
+                <img
+                  className="h-36 w-full object-cover"
+                  alt="Group Banner"
+                  src={group.banner_url}
+                />
                 <div className="m-4 text-center">
                   <IonLabel className="text-2xl font-bold">
                     {group.name}
