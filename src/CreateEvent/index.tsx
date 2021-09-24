@@ -99,7 +99,7 @@ function CreateEvent() {
     // create slots dictionary
     var slots: { [tag: string]: number } = {};
     if (isPublic && publicSlots) slots["Public"] = publicSlots;
-    if (memberSlots) slots["Members"] = memberSlots;
+    if (memberSlots) slots["Member"] = memberSlots;
     if (juniorSlots) slots["Junior"] = juniorSlots;
     if (seniorSlots) slots["Senior"] = seniorSlots;
     formData.append("slots", JSON.stringify(slots));
@@ -231,7 +231,7 @@ function CreateEvent() {
           )}
           <EventSlots
             slot="end"
-            label="Members"
+            label="Member"
             subLabel="Members regardless of tag."
             value={memberSlots}
             onValueChange={setMemberSlots}
