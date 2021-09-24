@@ -4,8 +4,8 @@ export function getTimeDateText(
   start_date_time: number,
   end_date_time: number
 ) {
-  const start = new Date(start_date_time);
-  const end = new Date(end_date_time);
+  const start = new Date(start_date_time * 1000);
+  const end = new Date(end_date_time * 1000);
   const startMoment = moment(start);
   const endMoment = moment(end);
 
@@ -16,9 +16,9 @@ export function getTimeDateText(
   ) {
     return `${startMoment.format("DD MMM")} | ${startMoment.format(
       "ddd"
-    )} | ${startMoment.format("H:mmA")} - ${endMoment.format("H:mmA")}`;
+    )} | ${startMoment.format("h:mmA")} - ${endMoment.format("h:mmA")}`;
   }
-  return `${startMoment.format("DD MMM H:mmA")} - ${endMoment.format(
-    "DD MMM H:mmA"
+  return `${startMoment.format("DD MMM h:mmA")} - ${endMoment.format(
+    "DD MMM h:mmA"
   )}`;
 }

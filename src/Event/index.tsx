@@ -92,7 +92,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
   }
 
   const redirectToGroup = () => {
-    history.push(`/groups/${match.params.id}`);
+    history.push(`/groups/${group.id}`);
   };
 
   function getSignupCount(): number {
