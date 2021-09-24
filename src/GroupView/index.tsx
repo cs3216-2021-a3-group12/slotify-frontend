@@ -86,22 +86,23 @@ const GroupView: React.FC<GroupViewProps> = ({ match }) => {
         </Fragment>
       ) : (
         <Fragment>
-          <IonHeader mode="ios" className="ion-no-border" translucent={true}>
+          <IonHeader mode="ios" className="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start" className="h-10">
                 <IonBackButton color="primary" defaultHref="/home" />
               </IonButtons>
             </IonToolbar>
-            <IonList className=" -mt-12">
+            <IonList className="-mt-12">
               <div>
-                <div className=" h-40">
-                  <img
-                    className="h-full w-full object-cover "
-                    alt="Group Banner"
-                    src={group.banner_url}
-                  />
-                </div>
-
+                <img
+                  className="h-56 w-full object-cover"
+                  alt="Group Banner"
+                  src={
+                    group.banner_url
+                      ? group.banner_url
+                      : "https://api.slotify.club/media/groups/group-default.jpg"
+                  }
+                />
                 <div className="m-4 text-center">
                   <IonLabel className="text-2xl font-bold">
                     {group.name}

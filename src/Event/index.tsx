@@ -117,7 +117,7 @@ const Event: React.FC<UserDetailPageProps> = ({ match, history }) => {
         <img
           alt="Event Banner"
           src={event?.image_url ?? eventPlaceholder}
-          className="h-28 w-full object-cover"
+          className="h-32 w-full object-cover"
         ></img>
         <div className="flex justify-center mx-auto transform -translate-y-1/2 z-50 bg-transparent">
           <IonChip outline={true} className="shadow h-10 bg-white">
